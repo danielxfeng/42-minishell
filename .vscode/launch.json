@@ -1,0 +1,114 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build and Compile Tests",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug Test with sub-processes",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    // https://sourceware.org/gdb/onlinedocs/gdb/Forks.html
+                    "description": "Fork follows Child process",
+                    "text": "set follow-fork-mode child",
+                    "ignoreFailures": true
+                },
+                {
+                    // https://sourceware.org/gdb/onlinedocs/gdb/Forks.html
+                    "description": "Fork will keep the other process attached to debugger",
+                    "text": "set detach-on-fork off",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build and Compile Tests",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug Test with threads",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "set scheduler-locking on",
+                    "description": "Lock scheduler to stop other threads",
+                    "ignoreFailures": true
+                },
+                {
+                    "text": "thread apply all bt",
+                    "description": "Show backtrace for all threads",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build and Compile Tests",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Run with Valgrind",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build and Compile Tests",
+            "postDebugTask": "valgrind",
+            "environment": [],
+            "linux": {
+                "program": "valgrind",
+                "args": ["--leak-check=full", "--show-leak-kinds=all", "--track-origins=yes", "${workspaceFolder}/build/your_program"]
+            }
+        }
+    ]
+}

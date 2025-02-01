@@ -1,0 +1,26 @@
+{
+  "[c]": {
+      "editor.defaultFormatter": "keyhr.42-c-format"
+  },
+  "42header.username": "Xifeng",
+  "42header.email": "xifeng@student.hive.fi",
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "*.embeddedhtml": "html",
+    "unity.h": "c",
+    "bitset": "c",
+    "libft.h": "c",
+    "unistd.h": "c",
+    "stdio.h": "c",
+    "deque": "c",
+    "string": "c",
+    "vector": "c",
+    "push_swap.h": "c",
+    "ft_printf.h": "c",
+    "stdlib.h": "c",
+    "pipe_x.h": "c",
+    "wait.h": "c",
+    "philo.h": "c"
+  },
+  "cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx"
+}

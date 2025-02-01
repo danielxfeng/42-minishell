@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and Compile Tests",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-pthread",
+                "-o",
+                "build/${fileBasenameNoExtension}",
+                "${file}",
+                "test/unity/unity.c",
+                "-Itest/unity",
+                "-I./src/",
+                "src/*.c",
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Compiles the test file and source files with Unity"
+        },
+        {
+            "label": "C/C++: gcc build active file",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-pthread",
+                "-o",
+                "build/${fileBasenameNoExtension}",
+                "${file}",
+                "test/unity/unity.c",
+                "-Itest/unity",
+                "-I./src/",
+                "src/*.c",
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Compiles the test file and source files with Unity"
+        }
+    ]
+}
