@@ -1,36 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_x.h                                           :+:      :+:    :+:   */
+/*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 20:24:37 by Xifeng            #+#    #+#             */
-/*   Updated: 2024/12/12 11:33:38 by Xifeng           ###   ########.fr       */
+/*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
+/*   Updated: 2025/02/03 21:11:24 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPE_X_H
-# define PIPE_X_H
+#ifndef EXECUTOR_H
+# define EXECUTOR_H
 
 # include <stdbool.h>
-# include <stdlib.h>
 # include <sys/types.h>
-# include <unistd.h>
-
-# define MALLOC_ERR ": malloc() failed"
-# define FORK_ERR "fork() error"
-# define PIPE_ERR "pipe() creation failed"
-# define PERMISSION_ERR "Permission denied"
-# define FILE_ERR ": No such file or directory"
-# define DIRECTORY_ERR "Is a directory"
-# define DUP_ERR "dup2() error"
-# define ORIGIN_DUP_ERR "dup() error"
-# define CMD_ERR "command not found"
-# define LEFT 0
-# define RIGHT 1
-# define EXIT_EXEC_ERR 126
-# define EXIT_CMD_ERR 127
 
 typedef struct s_ast_node	t_ast_node;
 
@@ -45,16 +29,10 @@ typedef enum a_node_type
 // The AST tree.
 // `root` the root node of AST tree.
 // `path` the string array of path from `env`.
-// `envp` is the raw `env`.
-// `fd_in` the saved `stdin`. Saving this is for `here_doc`.
-// `fd_out` the saved `stdin`.
 typedef struct s_ast
 {
 	t_ast_node				*root;
-	char					**envp;
 	char					**path;
-	int						fd_in;
-	int						fd_out;
 }							t_ast;
 
 // Represents a node of AST.
@@ -64,6 +42,7 @@ typedef struct s_ast
 //                 as it must be implemented differently for each node type.
 // `node_closer`: the pointer to closer function. Also a "pure virtual function"
 //                as well as the "destructor" in C++.
+// `node_printer`: the pointer to printer function.
 // `left` `right`: left/right node.
 //
 // Note:
@@ -82,6 +61,7 @@ typedef struct s_ast_node
 	int						(*node_handler)(t_ast *t_ast,
 			t_ast_node *t_ast_node);
 	void					(*node_closer)(t_ast_node *t_ast_node);
+	void					(*node_printer)(t_ast_node *t_ast_node);
 	t_ast_node				*left;
 	t_ast_node				*right;
 }							t_ast_node;
