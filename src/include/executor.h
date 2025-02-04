@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 19:05:36 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 19:56:22 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ typedef struct s_ast_node
 {
 	t_node_type				type;
 	void					*prop;
-	int						(*node_handler)(t_ast *t_ast,
-			t_ast_node *t_ast_node);
+	int						(*node_handler)(t_ast *t_ast, t_ast_node *t_ast_node);
 	void					(*node_closer)(t_ast_node *t_ast_node);
-	void					(*node_printer)(t_ast_node *t_ast_node);
+	void					(*node_printer)(t_ast *t_ast, t_ast_node *node, t_ast_node *curr, char *msg);
 	t_ast_node				*left;
 	t_ast_node				*right;
 }							t_ast_node;
@@ -132,9 +131,9 @@ int							red_handler(t_ast *ast, t_ast_node *ast_node);
 
 // Printer of AST.
 
-void						print_ast(t_ast *ast);
-void						print_pipe_node(t_ast_node *node);
-void						print_cmd_node(t_ast_node *node);
-void						print_red_node(t_ast_node *node);
+bool						p(t_ast *ast, t_ast_node *curr, char *msg);
+void						print_pipe_node(t_ast *ast, t_ast_node *node, int layer, t_ast_node *curr, char *msg);
+void						print_cmd_node(t_ast *ast, t_ast_node *node, int layer, t_ast_node *curr, char *msg);
+void						print_red_node(t_ast *ast, t_ast_node *node, int layer, t_ast_node *curr, char *msg);
 
 #endif
