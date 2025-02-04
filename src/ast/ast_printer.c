@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_print.c                                        :+:      :+:    :+:   */
+/*   ast_printer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 18:45:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 20:38:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 21:38:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ static void	print_ast_helper(t_ast *ast, t_ast_node *node, int layer, t_ast_node
 // @param ast: the pointer to ast tree.
 // @param curr: the current node, prints a *** to identify the current node.
 // @param msg: the debug message to be printed.
-// @return true
-bool	p(t_ast *ast, t_ast_node *curr, char *msg)
+void	print_ast(t_ast *ast, t_ast_node *curr, char *msg)
 {
 	int	i;
 
