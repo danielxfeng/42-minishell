@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/03 21:11:24 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 18:49:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 # include <stdbool.h>
 # include <sys/types.h>
+
+
+# define DEBUG true
+# define LEFT 0
+# define RIGHT 1
+# define EXIT_EXEC_ERR 126
+# define EXIT_CMD_ERR 127
 
 typedef struct s_ast_node	t_ast_node;
 
@@ -26,34 +33,35 @@ typedef enum a_node_type
 	CMD
 }							t_node_type;
 
-// The AST tree.
+// Represents the Abstract Syntax Tree.
+//
 // `root` the root node of AST tree.
 // `path` the string array of path from `env`.
+// `tokens` the array of tokens.
+// `tk_size: the size of tokens.
+// `fd_in`: the std_in before executing the AST execution.
+// `fd_out` the std_out before executing the AST execution.
+//
+// The std_in/out may be redirected in sub-process, so we need the
+// original std_in/out, in case we need read/print to terminal.  
 typedef struct s_ast
 {
 	t_ast_node				*root;
 	char					**path;
+	char					**tokens;
+	int						tk_size;
+	int						fd_in;
+	int						fd_out;
 }							t_ast;
 
 // Represents a node of AST.
+//
 // `prop`: the specific properties depends on `t_node_type`.
 // `node_handler`: the pointer to handler function.
-//                 This ideasimilar to a "pure virtual function" in C++,
-//                 as it must be implemented differently for each node type.
-// `node_closer`: the pointer to closer function. Also a "pure virtual function"
-//                as well as the "destructor" in C++.
+// `node_closer`: the pointer to closer function.
 // `node_printer`: the pointer to printer function.
-// `left` `right`: left/right node.
+// `left` `right`: left/right child-node.
 //
-// Note:
-// - The `prop`, `node_handler`,
-//	and `node_closer` fields together implement a form of
-//   runtime polymorphism,
-//	allowing nodes of different types (`t_node_type`) to exhibit
-//   type-specific behavior.
-//
-//	- This idea is from the concept of polymorphism in OOP,
-//   while adhering to C's procedural programming paradigm.
 typedef struct s_ast_node
 {
 	t_node_type				type;
@@ -67,30 +75,33 @@ typedef struct s_ast_node
 }							t_ast_node;
 
 // Represents properties of CMD.
-// `args` the cmd and argumens.
-// `cmd` the cmd with full path.
+//
+// `start` the index of start token for this command.
+// `size` how many tokens are for this command? 
 // `pid` sub-process for running the `cmd`.
 typedef struct s_cmd_prop
 {
-	char					**args;
-	char					*full_cmd;
+	int						start;
+	int						size;
 	pid_t					pid;
 }							t_cmd_prop;
 
 // Represents properties of RED.
-// `file_name`: the filename of `RED`.
+//
+// `idx` the index of token points to the file name.
 // `fd`: the file descriptor of a file.
 // `is_in`: `true` for `<` or `<<`.
 // `is_single`: `true` for `<` or '>'.
 typedef struct s_red_prop
 {
-	char					*file_name;
+	int						idx;
 	int						fd;
 	bool					is_in;
 	bool					is_single;
 }							t_red_prop;
 
 // Represents properties of PIPE.
+//
 // `fds`: file descriptor of pipe.
 // `pids`: pid of sub-process.
 typedef struct s_pipe_prop
@@ -102,11 +113,10 @@ typedef struct s_pipe_prop
 // AST
 // The constructors of AST.
 
-t_ast						*create_ast(char **envp, char **path);
+t_ast						*create_ast(char **tokens, int tk_size, char **path);
 t_ast_node					*create_pipe_node(t_ast *ast);
-t_ast_node					*create_cmd_node(t_ast *ast, char *argv);
-t_ast_node					*create_red_node(t_ast *ast, char *file_name,
-								bool is_in, bool is_single);
+t_ast_node					*create_cmd_node(t_ast *ast, int start, int size);
+t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single);
 
 // The destructors of AST.
 
@@ -115,30 +125,17 @@ void						close_pipe_node(t_ast_node *node);
 void						close_cmd_node(t_ast_node *node);
 void						close_red_node(t_ast_node *node);
 
-// Other methods of AST.
-
-void						print_ast(t_ast *ast);
-
 // The handlers.
 
 int							pipe_handler(t_ast *ast, t_ast_node *ast_node);
 int							cmd_handler(t_ast *ast, t_ast_node *ast_node);
 int							red_handler(t_ast *ast, t_ast_node *ast_node);
-void						build_ast(t_ast *ast, int argc, char **argv,
-								bool is_single);
-int							return_process_res(int status);
 
-// Parameter handler.
+// Printer of AST.
 
-char						**parse_path(char **envp);
-bool						validate_param(int argc, char **argv,
-								bool is_bonus);
-
-// Program.
-
-int							pipe_x(int argc, char **argv, char **envp,
-								bool is_bonus);
-void						exit_prog(t_ast **ast, char *context, char *msg,
-								int code);
+void						print_ast(t_ast *ast);
+void						print_pipe_node(t_ast_node *node);
+void						print_cmd_node(t_ast_node *node);
+void						print_red_node(t_ast_node *node);
 
 #endif
