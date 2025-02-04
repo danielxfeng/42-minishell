@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:58:36 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 19:59:43 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 20:48:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	close_ast_node(t_ast_node *node)
 	}
 }
 
-// @brief Deconstructor of the AST tree.
+// @brief deconstructor of the AST tree.
 //
 // @param ast: the pointer to pointer of an ast tree.
 void	close_ast(t_ast **ast)

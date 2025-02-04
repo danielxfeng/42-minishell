@@ -6,14 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:41:30 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 20:37:35 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 20:48:34 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
 #include "../include/executor.h"
 
-// Constructor of a AST node for PIPE.
+// @brief constructor of a AST node for PIPE.
 t_ast_node	*create_pipe_node(t_ast *ast)
 {
 	t_ast_node	*node;
@@ -38,7 +38,7 @@ t_ast_node	*create_pipe_node(t_ast *ast)
 	return (node);
 }
 
-// Constructor of a AST node for CMD.
+// @brief constructor of a AST node for CMD.
 t_ast_node	*create_cmd_node(t_ast *ast, int start, int size)
 {
 	t_ast_node	*node;
@@ -63,7 +63,7 @@ t_ast_node	*create_cmd_node(t_ast *ast, int start, int size)
 	return (node);
 }
 
-// Constructor of a AST node for REDIRECT.
+// @brief constructor of a AST node for REDIRECT.
 t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in,
 		bool is_single)
 {
@@ -91,7 +91,7 @@ t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in,
 	return (node);
 }
 
-// Constructor of AST tree.
+// @brief constructor of AST tree.
 //
 // @param tokens: the string array of tokens.
 // @param tk_size: the size of tokens.
