@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 19:56:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 20:37:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ typedef enum a_node_type
 	CMD
 }							t_node_type;
 
-// Represents the Abstract Syntax Tree.
+// Represents the Abstract Syntax Tree as well as 
+// the main data structure of executor.
 //
 // `root` the root node of AST tree.
 // `path` the string array of path from `env`.
@@ -111,10 +112,10 @@ typedef struct s_pipe_prop
 // AST
 // The constructors of AST.
 
-t_ast						*create_ast(char **tokens, int tk_size, char **path);
+t_ast	*create_ast(char **tokens, int tk_size, char **path);
 t_ast_node					*create_pipe_node(t_ast *ast);
-t_ast_node					*create_cmd_node(t_ast *ast, int start, int size);
-t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single);
+t_ast_node	*create_cmd_node(t_ast *ast, int start, int size);
+t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single);
 
 // The destructors of AST.
 
@@ -132,8 +133,10 @@ int							red_handler(t_ast *ast, t_ast_node *ast_node);
 // Printer of AST.
 
 bool						p(t_ast *ast, t_ast_node *curr, char *msg);
-void						print_pipe_node(t_ast *ast, t_ast_node *node, int layer, t_ast_node *curr, char *msg);
-void						print_cmd_node(t_ast *ast, t_ast_node *node, int layer, t_ast_node *curr, char *msg);
-void						print_red_node(t_ast *ast, t_ast_node *node, int layer, t_ast_node *curr, char *msg);
+void	print_pipe_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg);
+void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg);
+void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg);
+
+void exit_with_err(t_ast **ast, int err_code, char *msg);
 
 #endif

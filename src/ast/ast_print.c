@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 18:45:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 19:57:34 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 20:38:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void print_curr_msg(t_ast_node *node, t_ast_node *curr, char *msg);
 
 // @brief the printer of a pipe node.
-void	print_pipe_helper(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
+void	print_pipe_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
 {
 	t_pipe_prop	*prop;
 
@@ -27,7 +27,7 @@ void	print_pipe_helper(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg
 }
 
 // @brief the printer of a command node.
-void	print_cmd_helper(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
+void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
 {
 	t_cmd_prop	*prop;
 	int			i;
@@ -41,7 +41,7 @@ void	print_cmd_helper(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
 }
 
 // @brief the printer of a red node.
-void	print_red_helper(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
+void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
 {
 	t_red_prop	*prop;
 
