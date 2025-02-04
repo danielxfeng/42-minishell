@@ -6,14 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 19:23:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 20:00:35 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <stdlib.h>
 
-// Destructor of path.
+// @brief destructor of path.
 void close_path(t_ast *ast)
 {
     int i;
@@ -30,7 +30,7 @@ void close_path(t_ast *ast)
 	ast->path = NULL;
 }
 
-// Destructor of tokens.
+// @brief destructor of tokens.
 void close_tokens(t_ast *ast)
 {
     int i;

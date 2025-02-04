@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:58:36 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 19:21:02 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 19:59:43 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 void close_path(t_ast *ast);
 void close_tokens(t_ast *ast);
 
-// Helper function to free a pipe node.
-static void	close_pipe_node(t_ast_node *node)
+// @brief the destructor of a pipe node.
+void	close_pipe_node(t_ast_node *node)
 {
 	t_pipe_prop	*prop;
 
@@ -33,8 +33,8 @@ static void	close_pipe_node(t_ast_node *node)
 	}
 }
 
-// Helper function to free a cmd node.
-static void	close_cmd_node(t_ast_node *node)
+// @brief the destructor of a cmd node.
+void	close_cmd_node(t_ast_node *node)
 {
 	t_cmd_prop	*prop;
 	int			i;
@@ -47,8 +47,8 @@ static void	close_cmd_node(t_ast_node *node)
 	}
 }
 
-// Helper function to free a red node.
-static void	close_red_node(t_ast_node *node)
+// @brief the destructor of a red node.
+void	close_red_node(t_ast_node *node)
 {
 	t_red_prop	*prop;
 
@@ -62,7 +62,7 @@ static void	close_red_node(t_ast_node *node)
 	}
 }
 
-// Helper function to close a AST node.
+// @brief the helper function of the destructor of ast node.
 static void	close_ast_node(t_ast_node *node)
 {
 	if (node)
@@ -83,7 +83,9 @@ static void	close_ast_node(t_ast_node *node)
 	}
 }
 
-// Deconstructor of the AST tree.
+// @brief Deconstructor of the AST tree.
+//
+// @param ast: the pointer to pointer of an ast tree.
 void	close_ast(t_ast **ast)
 {
 	if (ast && *ast)
