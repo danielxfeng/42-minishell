@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_close_helper.c                                 :+:      :+:    :+:   */
+/*   ast_close_supp.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 19:21:49 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/04 19:23:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/executor.h"
+#include "../include/executor.h"
 #include <stdlib.h>
 
 // Destructor of path.
