@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 18:45:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:51:39 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:53:18 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	debug_print_ast(t_ast *ast, t_ast_node *curr, char *msg)
 	int	i;
 
 	if (!DEBUG)
-		return (true);
+		return ;
 	printf("-----------------------AST Tree-----------------------\n");
 	if (!ast)
 	{
@@ -97,5 +97,4 @@ void	debug_print_ast(t_ast *ast, t_ast_node *curr, char *msg)
 	printf("\n");
 	print_ast_helper(ast, ast->root, 0, curr, msg);
 	ft_printf("------------------------------------------------------\n");
-	return (true);
 }
