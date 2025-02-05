@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 12:43:45 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 20:52:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@
 # include <sys/types.h>
 
 # define DEBUG true
+# define INVALID_ERR_NO -1
 # define STD_IN 0
 # define STD_OUT 1
 # define LEFT 0
 # define RIGHT 1
+# define EXIT_OK 0
+# define EXIT_FAIL 1
 # define EXIT_EXEC_ERR 126
 # define EXIT_CMD_ERR 127
 
@@ -150,5 +153,7 @@ void						print_red_node(t_ast *ast, t_ast_node *node,
 
 void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
+int return_with_err(int err_no, int rtn_code, char *msg);
+int return_with_err_pipe(char *msg, int *pipe);
 
 #endif

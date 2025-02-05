@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handler.c                                    :+:      :+:    :+:   */
+/*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 11:45:53 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 20:52:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <stdio.h>
+#include <errno.h>
 
 // @brief exit the program because of fatal error.
 //
@@ -32,4 +33,32 @@ void exit_without_err(t_ast **ast)
 {
 	close_ast(ast);
 	exit(0);	
+}
+
+// @brief return the function with error.
+//
+// @param err_no: the error number to be set.
+// @param rtn_code: the return code.
+// @param msg: the message to perror.
+// @return rtn_code.
+int return_with_err(int err_no, int rtn_code, char *msg)
+{
+	if (err_no != INVALID_ERR_NO)
+		errno = err_no;
+	perror(msg);
+	return (rtn_code);
+}
+
+// @brief close the pipe and return the function with error.
+//
+// @param msg: the message to perror.
+// @param pipe: the fds of a pipe.
+// @return rtn_code.
+int return_with_err_pipe(char *msg, int *pipe)
+{
+	if (pipe[0] != -1)
+		close(pipe[0]);
+	if (pipe[1] != -1)
+		close(pipe[1]);	
+	return (return_with_err(INVALID_ERR_NO, EXIT_CMD_ERR, msg));
 }
