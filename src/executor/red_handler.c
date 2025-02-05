@@ -6,14 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 20:56:32 by Xifeng            #+#    #+#             */
-/*   Updated: 2024/12/12 16:31:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 15:45:12 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../get_next_line/get_next_line.h"
-#include "../libft/libft.h"
-#include "../pipe_x.h"
+#include "../include/executor.h"
+#include "../libs/libft/libft.h"
 #include <fcntl.h>
+#include <unistd.h>
 
 // A helper function to deal with the get next line.
 static void	here_doc_read_line(t_ast *ast, t_red_prop *prop, int *pipe_fds)
@@ -76,10 +76,11 @@ static int	here_doc_handler(t_ast *ast, t_ast_node *ast_node)
 }
 
 // Helper function to open the file, and deal with the error handling.
-static void	open_file_helper(t_ast *ast, t_red_prop *prop, bool is_in)
+static int	open_file_helper(t_ast *ast, t_red_prop *prop, bool is_in)
 {
 	int	access_code;
 	int	open_code;
+	char *file_name;
 
 	access_code = W_OK;
 	if (is_in)
@@ -92,39 +93,46 @@ static void	open_file_helper(t_ast *ast, t_red_prop *prop, bool is_in)
 		else
 			open_code = O_WRONLY | O_CREAT | O_APPEND;
 	}
-	if (access(prop->file_name, F_OK) == 0 && access(prop->file_name,
-			access_code) == -1)
+	file_name = ast->tokens[prop->idx];
+	if (access(file_name, F_OK) == 0 && access(file_name, access_code) == -1)
 		exit_prog(&ast, prop->file_name, PERMISSION_ERR, EXIT_FAILURE);
-	prop->fd = open(prop->file_name, open_code, 0644);
+	prop->fd = open(file_name, open_code, 0644);
 	if (prop->fd < 0)
-		exit_prog(&ast, prop->file_name, FILE_ERR, EXIT_FAILURE);
+		exit_prog(&ast, file_name, FILE_ERR, EXIT_FAILURE);
 }
 
-// RED handler is mainly about the `std` redirction.
-// The only special case is to deal with `here_doc`.
-// - In this project, the `RED` has exactly one `child`
-// - And the child is a `leaf` (node without any `child`).
+// @brief the executor of a `red` node.
+//
+// The `red` node has 1 child or 2 children.
+//
+// @param ast: the pointer to the ast tree.
+// @param ast_node: the `red` node.
 int	red_handler(t_ast *ast, t_ast_node *ast_node)
 {
 	t_red_prop	*prop;
 	int			std;
+	int			res;
 
 	prop = (t_red_prop *)ast_node->prop;
-	std = STDOUT_FILENO;
+	std = STD_OUT;
 	if ((prop->is_in))
 	{
 		if (!(prop->is_single))
 			return (here_doc_handler(ast, ast_node));
-		std = STDIN_FILENO;
-		open_file_helper(ast, prop, true);
+		std = STD_IN;
+		res = open_file_helper(ast, prop, true);
 	}
 	else
-		open_file_helper(ast, prop, false);
+		res = open_file_helper(ast, prop, false);
+	if (res)
+		
 	if (dup2(prop->fd, std) < 0)
-		exit_prog(&ast, "dup2()", DUP_ERR, EXIT_FAILURE);
+		exit_with_err(&ast, 1, "dup2()");
 	close(prop->fd);
 	prop->fd = -1;
-	if (prop->is_in)
-		return (ast_node->right->node_handler(ast, ast_node->right));
-	return (ast_node->left->node_handler(ast, ast_node->left));
+	if (ast_node->left)
+		res = ast_node->left->node_handler(ast, ast_node->left);
+	if (ast_node->right)
+		res = ast_node->right->node_handler(ast, ast_node->right);
+	return (res);
 }

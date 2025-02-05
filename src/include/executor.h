@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 11:55:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 12:43:45 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <sys/types.h>
 
 # define DEBUG true
+# define STD_IN 0
+# define STD_OUT 1
 # define LEFT 0
 # define RIGHT 1
 # define EXIT_EXEC_ERR 126
