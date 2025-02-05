@@ -6,12 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 19:42:01 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 12:52:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 21:14:48 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <sys/wait.h>
+#include <unistd.h>
 
 int	return_process_res(int status);
 
@@ -26,14 +27,14 @@ static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input)
 	int	dest;
 
 	src = prop->fds[1];
-	dest = STD_OUT;
+	dest = STDOUT_FILENO;
 	if (is_pipe_input)
 	{
 		src = prop->fds[0];
-		dest = STD_IN;
+		dest = STDIN_FILENO;
 	}
 	if (dup2(src, dest) < 0)
-		exit_with_err(&ast, 1, "dup2()");
+		exit_with_err(&ast, EXIT_CMD_ERR, "dup2()");
 	close(prop->fds[0]);
 	close(prop->fds[1]);
 }
@@ -57,7 +58,7 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 	{
 		if (direction == RIGHT)
 			waitpid(prop->pids[LEFT], NULL, 0);
-			exit_with_err(&ast, 1, "fork()");
+			exit_with_err(&ast, EXIT_FAIL, "fork()");
 	}
 	if (prop->pids[direction] == 0)
 	{

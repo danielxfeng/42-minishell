@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 20:52:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 21:11:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	exit_with_err(t_ast **ast, int err_code, char *msg)
 void exit_without_err(t_ast **ast)
 {
 	close_ast(ast);
-	exit(0);	
+	exit(EXIT_OK);	
 }
 
 // @brief return the function with error.
