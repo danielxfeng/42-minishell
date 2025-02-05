@@ -6,28 +6,30 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 18:45:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 21:38:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:37:01 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <stdlib.h>
 
-void print_curr_msg(t_ast_node *node, t_ast_node *curr, char *msg);
+void		print_curr_msg(t_ast_node *node, t_ast_node *curr, char *msg);
 
 // @brief the printer of a pipe node.
-void	print_pipe_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
+void	print_pipe_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
+		char *msg)
 {
 	t_pipe_prop	*prop;
 
 	prop = (t_pipe_prop *)node->prop;
-	printf("-PIP, fd0: %d, fd1: %d, pids: %d, %d ", prop->fds[0],
-		prop->fds[1], prop->pids[0], prop->pids[1]);
+	printf("-PIP, fd0: %d, fd1: %d, pids: %d, %d ", prop->fds[0], prop->fds[1],
+		prop->pids[0], prop->pids[1]);
 	print_curr_msg(node, curr, msg);
 }
 
 // @brief the printer of a command node.
-void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
+void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
+		char *msg)
 {
 	t_cmd_prop	*prop;
 	int			i;
@@ -41,7 +43,8 @@ void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
 }
 
 // @brief the printer of a red node.
-void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
+void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
+		char *msg)
 {
 	t_red_prop	*prop;
 
@@ -52,7 +55,8 @@ void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr, char *msg)
 }
 
 // @brief a helper function to print the ast tree.
-static void	print_ast_helper(t_ast *ast, t_ast_node *node, int layer, t_ast_node *curr, char *msg)
+static void	print_ast_helper(t_ast *ast, t_ast_node *node, int layer,
+		t_ast_node *curr, char *msg)
 {
 	int	i;
 

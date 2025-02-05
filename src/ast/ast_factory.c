@@ -6,12 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:41:30 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 20:48:34 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:36:56 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libs/libft/libft.h"
 #include "../include/executor.h"
+#include "../libs/libft/libft.h"
 
 // @brief constructor of a AST node for PIPE.
 t_ast_node	*create_pipe_node(t_ast *ast)
@@ -64,8 +64,7 @@ t_ast_node	*create_cmd_node(t_ast *ast, int start, int size)
 }
 
 // @brief constructor of a AST node for REDIRECT.
-t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in,
-		bool is_single)
+t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single)
 {
 	t_ast_node	*node;
 	t_red_prop	*prop;

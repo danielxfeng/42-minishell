@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 20:00:35 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:36:50 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include <stdlib.h>
 
 // @brief destructor of path.
-void close_path(t_ast *ast)
+void	close_path(t_ast *ast)
 {
-    int i;
+	int	i;
 
-    if (!(ast->path))
-        return;   
-    i = 0;
-    while ((ast->path)[i])
+	if (!(ast->path))
+		return ;
+	i = 0;
+	while ((ast->path)[i])
 	{
 		free((ast->path)[i]);
 		(ast->path)[i++] = NULL;
@@ -31,18 +31,18 @@ void close_path(t_ast *ast)
 }
 
 // @brief destructor of tokens.
-void close_tokens(t_ast *ast)
+void	close_tokens(t_ast *ast)
 {
-    int i;
+	int	i;
 
-    if (!(ast->tokens) || ast->tk_size <= 0)
-        return;  
-    i = 0;
-    while (i < ast->tk_size)
+	if (!(ast->tokens) || ast->tk_size <= 0)
+		return ;
+	i = 0;
+	while (i < ast->tk_size)
 	{
 		free((*ast->tokens)[i]);
 		(ast->tokens)[i++] = NULL;
 	}
-    free(ast->tokens);
+	free(ast->tokens);
 	ast->tokens = NULL;
 }

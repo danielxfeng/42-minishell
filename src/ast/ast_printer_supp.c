@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:48:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 20:50:00 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:36:58 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 //
 // @param curr: the current node.
 // @param msg: the given message.
-void print_curr_msg(t_ast_node *node, t_ast_node *curr, char *msg)
+void	print_curr_msg(t_ast_node *node, t_ast_node *curr, char *msg)
 {
-    if (node == curr)
+	if (node == curr)
 	{
 		printf("*** ");
 		if (msg)

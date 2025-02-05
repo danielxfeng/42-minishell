@@ -6,15 +6,15 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:58:36 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/04 20:48:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:36:52 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <stdlib.h>
 
-void close_path(t_ast *ast);
-void close_tokens(t_ast *ast);
+void		close_path(t_ast *ast);
+void		close_tokens(t_ast *ast);
 
 // @brief the destructor of a pipe node.
 void	close_pipe_node(t_ast_node *node)
