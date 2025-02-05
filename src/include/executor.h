@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:36:31 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:52:29 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,8 @@ int							red_handler(t_ast *ast, t_ast_node *ast_node);
 
 // Printer of AST.
 
-void						print_ast(t_ast *ast, t_ast_node *curr, char *msg);
+void						debug_print_ast(t_ast *ast, t_ast_node *curr,
+								char *msg);
 void						print_pipe_node(t_ast *ast, t_ast_node *node,
 								t_ast_node *curr, char *msg);
 void						print_cmd_node(t_ast *ast, t_ast_node *node,

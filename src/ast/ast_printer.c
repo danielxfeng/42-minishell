@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 18:45:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:37:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 10:51:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	print_ast_helper(t_ast *ast, t_ast_node *node, int layer,
 // @param ast: the pointer to ast tree.
 // @param curr: the current node, prints a *** to identify the current node.
 // @param msg: the debug message to be printed.
-void	print_ast(t_ast *ast, t_ast_node *curr, char *msg)
+void	debug_print_ast(t_ast *ast, t_ast_node *curr, char *msg)
 {
 	int	i;
 
