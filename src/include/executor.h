@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:52:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 11:55:22 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXECUTOR_H
 
 # include <stdbool.h>
+# include <stdio.h>
 # include <sys/types.h>
 
 # define DEBUG true
@@ -146,5 +147,6 @@ void						print_red_node(t_ast *ast, t_ast_node *node,
 								t_ast_node *curr, char *msg);
 
 void						exit_with_err(t_ast **ast, int err_code, char *msg);
+void						exit_without_err(t_ast **ast);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:37:05 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 11:45:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,13 @@ void	exit_with_err(t_ast **ast, int err_code, char *msg)
 	close_ast(ast);
 	perror(msg);
 	exit(err_code);
+}
+
+// @brief exit the program successfully
+//
+// @param ast: the pointer to ast.
+void exit_without_err(t_ast **ast)
+{
+	close_ast(ast);
+	exit(0);	
 }

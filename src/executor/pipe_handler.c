@@ -6,62 +6,44 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 19:42:01 by Xifeng            #+#    #+#             */
-/*   Updated: 2024/12/13 13:09:31 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/05 12:02:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipe_x.h"
+#include "../include/executor.h"
 #include <sys/wait.h>
 
-// Helper function to deal with fds in sub-process.
+int	return_process_res(int status);
+
+// @brief a helper function to handle the file discriptors in sub-process
 //
-// 1 Redirects the `stdin` or `stdout` to to the pipe's corresponding end.
-// 2 Closes the redirected fd because it has been redirected.
-// 3 Closes another fd because we will not use it.
-//
-// The `fds` of parent-proc will be copied when `fork`.
-// So sub-process has a copy of parent-proc's `fds`.
-// And, they are copied, so the `close` doesnot affect the `fds` in parent-proc.
+// @param ast: the pointer to tree.
+// @param prop: the property of node.
+// @param is_pipe_input: is this the input fd? or output?
 static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input)
 {
 	int	src;
 	int	dest;
 
 	src = prop->fds[1];
-	dest = STDOUT_FILENO;
+	dest = 1;
 	if (is_pipe_input)
 	{
 		src = prop->fds[0];
-		dest = STDIN_FILENO;
+		dest = 0;
 	}
 	if (dup2(src, dest) < 0)
-		exit_prog(&ast, "dup2()", DUP_ERR, EXIT_FAILURE);
+		exit_with_err(&ast, 1, "dup2()");
 	close(prop->fds[0]);
 	close(prop->fds[1]);
 }
 
-// Helper function to handle the sub_process.
+// @brief a helper function to handle the sub-process for a `pipe` node.
 //
-// 1 Start a new process by syscall `fork`.
-// Note The memory state of the current process will be COPIED to sub-process,
-// which means in sub-proc, we can access `prop`, but it's a copied one,
-// any modification in sub-proc does not affect the `prop` in parent-process.
-//
-// -----NOW WE ARE IN SUB-PROCESS------
-// 2 Handle the pipe in sub-process.
-// 3 Execute the child node here and return.
-//
-// Note: before return, we have to free resources which are copied from
-// parent.
-//
-// Note we use `pid` to determine where we are (in SUB-PROCESS,
-// or PARENT-PROCESS)
-// We can do this because of this expression `prop->pids[direction] = fork()`
-// As I mentioned before, sub-proc gets a stand alone copy when `fork`,
-// which means
-//  - In sub-proc, the process is created before `fork`'s return
-//    so `pid` cannot be updated.
-//  - In parent-proc. the `pid` has been updated by `fork`'s return.
+// @param ast: the pointer to tree.
+// @param node: the `pipe` node.
+// @param prop: the property of node.
+// @param direction: LEFT child or RIGHT?
 static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 		int direction)
 {
@@ -72,44 +54,40 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 		child = node->right;
 	prop->pids[direction] = fork();
 	if (prop->pids[direction] < 0)
-		exit_prog(&ast, "fork()", FORK_ERR, EXIT_FAILURE);
+	{
+		if (direction == RIGHT)
+			// todo
+			exit_with_err(&ast, 1, "fork()");
+	}
 	if (prop->pids[direction] == 0)
 	{
 		handle_sub_fds(ast, prop, direction);
 		child->node_handler(ast, child);
-		exit_prog(&ast, NULL, NULL, EXIT_SUCCESS);
+		exit_without_err(&ast);
 	}
 }
 
-// Handle the operation of PIPE.
-// Pipe is a information channel like `file` or `stdin` across the processes,
-// so it can be represented as 2 `fds`.
+// @brief the handler of `pipe` executor.
 //
-// The main logic is:
-// 1 Call the syscall `pipe` to assign 2 `fds` which represents the pipe.
-// 2 Start 2 sub-processes to run the left and right children.
-// 3 Wait until 2 sub-processces stop and then clear the resources.
+// For a pipe node, it always have 2 children.
 //
-// Note the process is a recurrsive call by hybrid pre-post traversal,
-// which means mid->left->right->mid
-// 
-// Note We apply `waitpid` to wait for the sub-process return.
-// When `RIGHT` returns, it closes the pipe before quit the process.
-// Therefore, even if `LEFT` is in an infinity loop, it will still quit 
-// for `write` is error.
+// @param ast: the ast tree.
+// @param ast_node: the node to be executed.
+// @return the exit code from right child.
 int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 {
 	t_pipe_prop	*prop;
 	int			status;
 
+	debug_print_ast(ast, ast_node, "");
 	prop = (t_pipe_prop *)ast_node->prop;
 	if (pipe(prop->fds) < 0)
-		exit_prog(&ast, "pipe()", PIPE_ERR, EXIT_FAILURE);
+		exit_with_err(&ast, 1, "pipe()");
 	perform_sub_proc(ast, ast_node, prop, LEFT);
 	close(prop->fds[1]);
 	perform_sub_proc(ast, ast_node, prop, RIGHT);
 	close(prop->fds[0]);
-	waitpid(prop->pids[LEFT], &status, 0);
+	waitpid(prop->pids[LEFT], NULL, 0);
 	waitpid(prop->pids[RIGHT], &status, 0);
 	status = return_process_res(status);
 	prop->fds[1] = -1;
