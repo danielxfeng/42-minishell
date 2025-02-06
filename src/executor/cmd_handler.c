@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:08:19 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 20:48:32 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/06 21:09:49 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,13 @@ static bool parse_full_cmd(t_ast *ast, t_cmd_prop *prop)
 		if (access(full_cmd, F_OK) == 0)
 		{
 			prop->full_cmd = full_cmd;
+			free_path(&path);
 			return (true);
 		}
 		free(full_cmd);
 		++i;
 	}
+	free_path(&path);
 	return (false);
 }
 

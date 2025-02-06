@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 18:45:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:53:18 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/06 21:08:24 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	int			i;
 
 	prop = (t_cmd_prop *)node->prop;
-	printf("-CMD, pid: %d, cmd: ", prop->pid);
+	printf("-CMD, pid: %d, full_cmd: %d, cmd: ", prop->pid, prop->full_cmd);
 	i = prop->start;
 	while (i < prop->size)
 		printf("%s ", ast->tokens[i]);
@@ -86,11 +86,7 @@ void	debug_print_ast(t_ast *ast, t_ast_node *curr, char *msg)
 		printf("NULL\n");
 		return ;
 	}
-	printf("ENVP: ");
-	i = 0;
-	while (ast->path && ast->path[i])
-		printf("%s, ", ast->path[i++]);
-	printf("\nTokens: ");
+	printf("Tokens: ");
 	i = 0;
 	while (i < ast->tk_size)
 		printf("%s ", ast->tokens[i++]);
