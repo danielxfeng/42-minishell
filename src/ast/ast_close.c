@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:58:36 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:36:52 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:13:20 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	close_ast(t_ast **ast)
 	{
 		if ((*ast)->root)
 			close_ast_node((*ast)->root);
-		close_path(*ast);
 		close_tokens(*ast);
 		free(*ast);
 		*ast = NULL;

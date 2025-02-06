@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:41:30 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 10:36:56 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:12:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,8 @@ t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single)
 //
 // @param tokens: the string array of tokens.
 // @param tk_size: the size of tokens.
-// @param path: the env path.
 // @return the pointer to ast. Returns NULL when error on malloc.
-t_ast	*create_ast(char **tokens, int tk_size, char **path)
+t_ast	*create_ast(char **tokens, int tk_size)
 {
 	t_ast	*ast;
 
@@ -106,7 +105,6 @@ t_ast	*create_ast(char **tokens, int tk_size, char **path)
 	ast->root = NULL;
 	ast->tokens = tokens;
 	ast->tk_size = tk_size;
-	ast->path = path;
 	ast->fd_in = -1;
 	ast->fd_out = -1;
 	return (ast);

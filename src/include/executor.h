@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 20:52:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:13:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef enum a_node_type
 // the main data structure of executor.
 //
 // `root` the root node of AST tree.
-// `path` the string array of path from `env`.
 // `tokens` the array of tokens.
 // `tk_size: the size of tokens.
 // `fd_in`: the std_in before executing the AST execution.
@@ -53,7 +52,6 @@ typedef enum a_node_type
 typedef struct s_ast
 {
 	t_ast_node				*root;
-	char					**path;
 	char					**tokens;
 	int						tk_size;
 	int						fd_in;
@@ -120,8 +118,7 @@ typedef struct s_pipe_prop
 // AST
 // The constructors of AST.
 
-t_ast						*create_ast(char **tokens, int tk_size,
-								char **path);
+t_ast						*create_ast(char **tokens, int tk_size);
 t_ast_node					*create_pipe_node(t_ast *ast);
 t_ast_node					*create_cmd_node(t_ast *ast, int start, int size);
 t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in,
