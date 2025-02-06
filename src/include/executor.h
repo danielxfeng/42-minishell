@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 08:13:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:20:10 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,15 @@ typedef struct s_ast_node
 // `start` the index of start token for this command.
 // `size` how many tokens are for this command?
 // `pid` sub-process for running the `cmd`.
+// `argv` the argv to be executed.
+// `full_cmd` the cmd with path.
 typedef struct s_cmd_prop
 {
 	int						start;
 	int						size;
 	pid_t					pid;
+	char					**argv;
+	char					*full_cmd;
 }							t_cmd_prop;
 
 // Represents properties of RED.
