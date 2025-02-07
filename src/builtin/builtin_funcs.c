@@ -6,11 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 14:50:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 18:51:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
+#include <stdlib.h>
 
 // @brief `echo` with option `-n`
 int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
@@ -27,7 +28,12 @@ int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 // @brief `pwd` with no options
 int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 {
-	return (0);
+	char *home;
+
+    if (prop->size != 1)
+        return_with_err(?, EXIT_FAIL, "minishell: pwd: ");
+	home = getenv("HOME");
+	printf("%s\n", home);
 }
 
 // @brief `export` with no options
