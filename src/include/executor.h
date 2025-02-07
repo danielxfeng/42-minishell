@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 14:35:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 14:37:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_ast
 // `node_closer`: the pointer to closer function.
 // `node_printer`: the pointer to printer function.
 // `left` `right`: left/right child-node.
-//
 typedef struct s_ast_node
 {
 	t_node_type				type;
