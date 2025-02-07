@@ -6,13 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/05 21:11:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 10:23:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
-#include <stdio.h>
 #include <errno.h>
+#include <stdio.h>
 
 // @brief exit the program because of fatal error.
 //
@@ -29,10 +29,10 @@ void	exit_with_err(t_ast **ast, int err_code, char *msg)
 // @brief exit the program successfully
 //
 // @param ast: the pointer to ast.
-void exit_without_err(t_ast **ast)
+void	exit_without_err(t_ast **ast)
 {
 	close_ast(ast);
-	exit(EXIT_OK);	
+	exit(EXIT_OK);
 }
 
 // @brief return the function with error.
@@ -41,7 +41,7 @@ void exit_without_err(t_ast **ast)
 // @param rtn_code: the return code.
 // @param msg: the message to perror.
 // @return rtn_code.
-int return_with_err(int err_no, int rtn_code, char *msg)
+int	return_with_err(int err_no, int rtn_code, char *msg)
 {
 	if (err_no != INVALID_ERR_NO)
 		errno = err_no;
@@ -54,11 +54,11 @@ int return_with_err(int err_no, int rtn_code, char *msg)
 // @param msg: the message to perror.
 // @param pipe: the fds of a pipe.
 // @return rtn_code.
-int return_with_err_pipe(char *msg, int *pipe)
+int	return_with_err_pipe(char *msg, int *pipe)
 {
 	if (pipe[0] != -1)
 		close(pipe[0]);
 	if (pipe[1] != -1)
-		close(pipe[1]);	
+		close(pipe[1]);
 	return (return_with_err(INVALID_ERR_NO, EXIT_CMD_ERR, msg));
 }

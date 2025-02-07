@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 07:45:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 08:53:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 10:23:18 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 //
 // @param the given cmd to be matched.
 // @return if the function is built-in.
-bool is_builtin_func(char *cmd)
+bool	is_builtin_func(char *cmd)
 {
-    return (false);
+	return (false);
 }
 
 // @brief execute the built-in function.
@@ -30,7 +30,7 @@ bool is_builtin_func(char *cmd)
 // @param start: the index of command.
 // @param size: the size of argv.
 // @return the status code.
-int exec_builtin_func(char **tokens, int start, int size)
+int	exec_builtin_func(char **tokens, int start, int size)
 {
-    return (EXIT_OK);
+	return (EXIT_OK);
 }

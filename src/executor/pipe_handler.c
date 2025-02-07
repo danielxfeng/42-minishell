@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 21:16:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 10:23:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	return_process_res(int status);
+int			return_process_res(int status);
 
 // @brief a helper function to handle the file discriptors in sub-process
 //
@@ -58,7 +58,7 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 	{
 		if (direction == RIGHT)
 			waitpid(prop->pids[LEFT], NULL, 0);
-			exit_with_err(&ast, EXIT_FAIL, "fork()");
+		exit_with_err(&ast, EXIT_FAIL, "fork()");
 	}
 	if (prop->pids[direction] == 0)
 	{

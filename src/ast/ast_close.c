@@ -6,14 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 21:15:12 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 10:23:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <stdlib.h>
 
-void		close_path(t_ast *ast);
 void		close_tokens(t_ast *ast);
 
 // @brief the destructor of a pipe node.
@@ -102,7 +101,7 @@ void	close_ast(t_ast **ast)
 		if ((*ast)->fd_in > 0)
 			close((*ast)->fd_in);
 		if ((*ast)->fd_out > 0)
-			close((*ast)->fd_out);			
+			close((*ast)->fd_out);
 		free(*ast);
 		*ast = NULL;
 	}

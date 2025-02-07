@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 08:53:35 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 10:23:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,10 +154,12 @@ void						print_red_node(t_ast *ast, t_ast_node *node,
 
 void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
-int return_with_err(int err_no, int rtn_code, char *msg);
-int return_with_err_pipe(char *msg, int *pipe);
+int							return_with_err(int err_no, int rtn_code,
+								char *msg);
+int							return_with_err_pipe(char *msg, int *pipe);
 
-bool is_builtin_func(char *cmd);
-int exec_builtin_func(char **tokens, int start, int size);
+bool						is_builtin_func(char *cmd);
+int							exec_builtin_func(char **tokens, int start,
+								int size);
 
 #endif

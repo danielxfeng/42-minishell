@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 20:12:19 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 10:23:22 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 //
 // @param cmd: the command.
 // @return if the cmd is with absolute path or relative path.
-bool is_parse_free_cmd(char *cmd)
+bool	is_parse_free_cmd(char *cmd)
 {
-	if (ft_strncmp("/", *cmd, 1) || ft_strncmp("./", *cmd, 2) ||
-	 ft_strncmp("../", *cmd, 3))
+	if (ft_strncmp("/", *cmd, 1) || ft_strncmp("./", *cmd, 2)
+		|| ft_strncmp("../", *cmd, 3))
 		return (true);
 	return (false);
 }
@@ -47,11 +47,11 @@ bool	is_empty_cmd(char *cmd)
 // @brief to parse the PATH from env.
 //
 // @return the array of path.
-char **get_path()
+char	**get_path(void)
 {
-	char *path_str;
-	char **path;
-	
+	char	*path_str;
+	char	**path;
+
 	path_str = getenv("PATH");
 	if (!path_str)
 		return (NULL);
@@ -64,10 +64,10 @@ char **get_path()
 // @brief free the array of path.
 //
 // @param path: the pointer to path.
-void free_path(char ***path)
+void	free_path(char ***path)
 {
-	int i;
-	
+	int	i;
+
 	if (!path || *(*path))
 		return ;
 	i = 0;
@@ -84,8 +84,8 @@ void free_path(char ***path)
 //
 // @param path: the path.
 // @param cmd: the cmd.
-// @return path/cmd;
-char *ms_strjoin(t_ast *ast, char *path, char *cmd)
+// @return (path/cmd);
+char	*ms_strjoin(t_ast *ast, char *path, char *cmd)
 {
 	char	*joined;
 

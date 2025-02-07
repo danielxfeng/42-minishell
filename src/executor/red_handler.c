@@ -6,32 +6,32 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 21:16:20 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 10:23:28 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
+#include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <errno.h>
 
 // @brief to run in a loop for reading lines from here_doc.
 //
 // @param ast: the pointer to ast tree.
 // @param prop: the property of node.
 // @param stdout_backup: the backup of stdout.
-static void read_lines_helper(t_ast *ast, t_red_prop *prop, int stdout_backup)
+static void	read_lines_helper(t_ast *ast, t_red_prop *prop, int stdout_backup)
 {
 	char	*line;
 	char	*file_name;
-	
+
 	file_name = ast->tokens[prop->idx];
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+			break ;
 		if ((ft_strncmp(file_name, line, ft_strlen(file_name)) == 0)
 			&& line[ft_strlen(file_name)] == '\n')
 		{
@@ -44,31 +44,31 @@ static void read_lines_helper(t_ast *ast, t_red_prop *prop, int stdout_backup)
 }
 
 // @brief help here_doc_handler to read lines from here_doc
-// 
+//
 // @param ast: the pointer to ast tree.
 // @param prop: the property of node.
 // @param pipe_fds: the array of fds of pipe.
 // @return the status code.
 static int	here_doc_read_line(t_ast *ast, t_red_prop *prop, int *pipe_fds)
 {
-	int		stdin_backup;
-	int		stdout_backup;
+	int	stdin_backup;
+	int	stdout_backup;
 
 	stdin_backup = dup(STDIN_FILENO);
 	stdout_backup = dup(STDOUT_FILENO);
 	if (stdin_backup == -1 || stdout_backup == -1)
 		return_with_err_pipe("dup()", pipe_fds);
-	if (dup2(ast->fd_in, STDIN_FILENO) < 0 ||
-	 dup2(ast->fd_out, STDOUT_FILENO) < 0)
+	if (dup2(ast->fd_in, STDIN_FILENO) < 0 || dup2(ast->fd_out,
+			STDOUT_FILENO) < 0)
 		return_with_err_pipe("dup2()", pipe_fds);
 	read_lines_helper(ast, prop, stdout_backup);
-	if (dup2(stdin_backup, STDIN_FILENO) < 0 ||
-	 dup2(stdout_backup, STDOUT_FILENO) < 0)
+	if (dup2(stdin_backup, STDIN_FILENO) < 0 || dup2(stdout_backup,
+			STDOUT_FILENO) < 0)
 		return_with_err_pipe("dup2()", pipe_fds);
 }
 
 // @brief help the `red` node to handle the heredoc.
-// 
+//
 // @param ast: the pointer to the tree.
 // @param ast_node: the `red` node.
 // @return the status code.
@@ -99,9 +99,9 @@ static int	here_doc_handler(t_ast *ast, t_ast_node *ast_node)
 // @return the status code.
 static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 {
-	int	access_code;
-	int	open_code;
-	char *file_name;
+	int		access_code;
+	int		open_code;
+	char	*file_name;
 
 	access_code = W_OK;
 	if (prop->is_in)
@@ -145,8 +145,8 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 		res = open_file_helper(ast, prop);
 		if (res != 0)
 			return (res);
-		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) ||
-		(!(prop->is_in) && dup2(prop->fd, STDOUT_FILENO) < 0))
+		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) || (!(prop->is_in)
+				&& dup2(prop->fd, STDOUT_FILENO) < 0))
 			exit_with_err(&ast, 1, "dup2()");
 		close(prop->fd);
 		prop->fd = -1;
