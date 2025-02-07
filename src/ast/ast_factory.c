@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 21:15:50 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:16:35 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ t_ast_node	*create_pipe_node(t_ast *ast)
 
 	node = ft_calloc(1, sizeof(t_ast_node));
 	if (!node)
-		exit_with_err(&ast, 1, "create_pipe_node()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	prop = ft_calloc(1, sizeof(t_pipe_prop));
 	if (!(prop))
 	{
 		free(node);
-		exit_with_err(&ast, 1, "create_pipe_node()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	}
 	prop->fds[0] = -1;
 	prop->fds[1] = -1;
@@ -46,12 +46,12 @@ t_ast_node	*create_cmd_node(t_ast *ast, int start, int size)
 
 	node = ft_calloc(1, sizeof(t_ast_node));
 	if (!node)
-		exit_with_err(&ast, 1, "create_cmd_node()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	prop = ft_calloc(1, sizeof(t_cmd_prop));
 	if (!prop)
 	{
 		free(node);
-		exit_with_err(&ast, 1, "create_cmd_node()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	}
 	prop->start = start;
 	prop->size = size;
@@ -71,12 +71,12 @@ t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single)
 
 	node = ft_calloc(1, sizeof(t_ast_node));
 	if (!node)
-		exit_with_err(&ast, 1, "create_red_node()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	prop = ft_calloc(1, sizeof(t_red_prop));
 	if (!prop)
 	{
 		free(node);
-		exit_with_err(&ast, 1, "create_red_node()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	}
 	prop->idx = idx;
 	prop->is_in = is_in;
@@ -101,7 +101,7 @@ t_ast	*create_ast(char **tokens, int tk_size)
 
 	ast = ft_calloc(1, sizeof(t_ast));
 	if (!ast)
-		exit_with_err(NULL, 1, "create_ast()");
+		exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
 	ast->root = NULL;
 	ast->tokens = tokens;
 	ast->tk_size = tk_size;

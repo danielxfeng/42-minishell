@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 10:23:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:17:49 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*ms_strjoin(t_ast *ast, char *path, char *cmd)
 		return (cmd);
 	joined = ft_calloc((ft_strlen(path) + ft_strlen(cmd) + 2), sizeof(char));
 	if (!joined)
-		exit_with_err(&ast, EXIT_FAIL, "malloc()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	ft_memcpy(joined, path, ft_strlen(path));
 	joined[ft_strlen(path)] = '/';
 	ft_memcpy(joined + ft_strlen(path) + 1, cmd, ft_strlen(cmd));

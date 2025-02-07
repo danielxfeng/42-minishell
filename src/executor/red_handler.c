@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 10:23:28 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:26:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ static int	here_doc_read_line(t_ast *ast, t_red_prop *prop, int *pipe_fds)
 	stdin_backup = dup(STDIN_FILENO);
 	stdout_backup = dup(STDOUT_FILENO);
 	if (stdin_backup == -1 || stdout_backup == -1)
-		return_with_err_pipe("dup()", pipe_fds);
+		return_with_err_pipe("minishell: dup", pipe_fds);
 	if (dup2(ast->fd_in, STDIN_FILENO) < 0 || dup2(ast->fd_out,
 			STDOUT_FILENO) < 0)
-		return_with_err_pipe("dup2()", pipe_fds);
+		return_with_err_pipe("minishell: dup2", pipe_fds);
 	read_lines_helper(ast, prop, stdout_backup);
 	if (dup2(stdin_backup, STDIN_FILENO) < 0 || dup2(stdout_backup,
 			STDOUT_FILENO) < 0)
-		return_with_err_pipe("dup2()", pipe_fds);
+		return_with_err_pipe("minishell: dup2", pipe_fds);
 }
 
 // @brief help the `red` node to handle the heredoc.
@@ -78,7 +78,7 @@ static int	here_doc_handler(t_ast *ast, t_ast_node *ast_node)
 	int			pipe_fds[2];
 
 	if (pipe(pipe_fds) < 0)
-		exit_with_err(&ast, EXIT_FAIL, "pipe()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
 	prop = (t_red_prop *)ast_node->prop;
 	if (here_doc_read_line(ast, prop, pipe_fds) == EXIT_FAIL)
 		return (EXIT_FAIL);
@@ -86,7 +86,7 @@ static int	here_doc_handler(t_ast *ast, t_ast_node *ast_node)
 	if (dup2(pipe_fds[0], STDIN_FILENO) < 0)
 	{
 		close(pipe_fds[0]);
-		exit_with_err(&ast, EXIT_FAIL, "dup2()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: dup2");
 	}
 	close(pipe_fds[0]);
 	return (EXIT_OK);
@@ -115,12 +115,12 @@ static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 	}
 	file_name = ast->tokens[prop->idx];
 	if (access(file_name, F_OK) == -1)
-		return (return_with_err(ENOENT, EXIT_FAIL, file_name));
+		return (return_with_err(ENOENT, EXIT_FAIL, file_name)); // todo
 	if (access(file_name, access_code) == -1)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name));
+		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name)); // todo
 	prop->fd = open(file_name, open_code, 0644);
 	if (prop->fd < 0)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name));
+		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name)); // todo
 	return (EXIT_OK);
 }
 
@@ -147,7 +147,7 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 			return (res);
 		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) || (!(prop->is_in)
 				&& dup2(prop->fd, STDOUT_FILENO) < 0))
-			exit_with_err(&ast, 1, "dup2()");
+			exit_with_err(&ast, EXIT_FAIL, "minishell: dup2");
 		close(prop->fd);
 		prop->fd = -1;
 	}

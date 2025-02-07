@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 10:23:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:20:47 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input)
 		dest = STDIN_FILENO;
 	}
 	if (dup2(src, dest) < 0)
-		exit_with_err(&ast, EXIT_CMD_ERR, "dup2()");
+		exit_with_err(&ast, EXIT_CMD_ERR, "minishell: dup2");
 	close(prop->fds[0]);
 	close(prop->fds[1]);
 }
@@ -58,7 +58,7 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 	{
 		if (direction == RIGHT)
 			waitpid(prop->pids[LEFT], NULL, 0);
-		exit_with_err(&ast, EXIT_FAIL, "fork()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: fork");
 	}
 	if (prop->pids[direction] == 0)
 	{
@@ -83,7 +83,7 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 	debug_print_ast(ast, ast_node, "");
 	prop = (t_pipe_prop *)ast_node->prop;
 	if (pipe(prop->fds) < 0)
-		exit_with_err(&ast, 1, "pipe()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
 	perform_sub_proc(ast, ast_node, prop, LEFT);
 	close(prop->fds[1]);
 	perform_sub_proc(ast, ast_node, prop, RIGHT);

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 14:27:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:27:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ static int	check_cmd(t_ast *ast, t_cmd_prop *prop)
 
 	if (access(prop->full_cmd, F_OK) < 0)
 		return (return_with_err(INVALID_ERR_NO, EXIT_CMD_ERR,
-				ast->tokens[prop->start]));
+				ast->tokens[prop->start])); //todo
 	if (access(prop->full_cmd, X_OK) < 0)
 		return (return_with_err(INVALID_ERR_NO, EXIT_EXEC_ERR,
-				ast->tokens[prop->start]));
+				ast->tokens[prop->start])); //todo
 	stat(prop->full_cmd, &buf);
 	if (S_ISDIR(buf.st_mode))
 		return (return_with_err(EISDIR, EXIT_EXEC_ERR,
-				ast->tokens[prop->start]));
+				ast->tokens[prop->start])); //todo
 	return (true);
 }
 
@@ -97,7 +97,7 @@ static void	generate_argv(t_ast *ast, t_cmd_prop *prop)
 
 	prop->argv = ft_calloc(prop->size + 1, sizeof(char *));
 	if (!(prop->argv))
-		exit_with_err(&ast, EXIT_FAIL, "malloc()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	i = 0;
 	while (i < prop->size)
 	{
@@ -124,7 +124,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 		ast_node->left->node_handler(ast, ast_node->left);
 	if (is_empty_cmd(ast->tokens[prop->start]))
 		return (return_with_err(ENOENT, EXIT_CMD_ERR,
-				ast->tokens[prop->start]));
+				ast->tokens[prop->start])); // todo
 	if (is_builtin_func(ast->tokens[prop->start]))
 		return (exec_builtin_func(ast->tokens, prop->start, prop->size));
 	status = parse_full_cmd_and_check(ast, prop);
@@ -133,9 +133,9 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 	generate_argv(ast, prop);
 	prop->pid = fork();
 	if (prop->pid < 0)
-		exit_with_err(&ast, EXIT_FAIL, "fork()");
+		exit_with_err(&ast, EXIT_FAIL, "minishell: fork");
 	if (prop->pid == 0 && execve(prop->full_cmd, prop->argv, NULL) < 0)
-		return (return_with_err(INVALID_ERR_NO, EXIT_EXEC_ERR, "execve()"));
+		return (return_with_err(INVALID_ERR_NO, EXIT_EXEC_ERR, "minishell: execve"));
 	waitpid(prop->pid, &status, 0);
 	if (ast_node->right)
 		return (ast_node->right->node_handler(ast, ast_node->right));
