@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 14:37:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 14:44:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_ast_node
 	int						(*node_handler)(t_ast *ast, t_ast_node *node);
 	void					(*node_closer)(t_ast_node *ast_node);
 	void					(*node_printer)(t_ast *ast, t_ast_node *n,
-			t_ast_node *c, char *m);
+							t_ast_node *c, char *m);
 	t_ast_node				*left;
 	t_ast_node				*right;
 }							t_ast_node;
@@ -150,14 +150,26 @@ void						print_cmd_node(t_ast *ast, t_ast_node *node,
 void						print_red_node(t_ast *ast, t_ast_node *node,
 								t_ast_node *curr, char *msg);
 
+// Quit functions.
+
 void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,
 								char *msg);
 int							return_with_err_pipe(char *msg, int *pipe);
 
+
+// Built-in functions.
+
 bool						is_builtin_func(char *cmd);
 int							exec_builtin_func(char **tokens, int start,
 								int size);
+int							cmd_echo(t_ast *ast, t_cmd_prop *prop);
+int							cmd_cd(t_ast *ast, t_cmd_prop *prop);
+int							cmd_pwd(t_ast *ast, t_cmd_prop *prop);
+int							cmd_export(t_ast *ast, t_cmd_prop *prop);
+int							cmd_unset(t_ast *ast, t_cmd_prop *prop);
+int							cmd_env(t_ast *ast, t_cmd_prop *prop);
+int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 
 #endif
