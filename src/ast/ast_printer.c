@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 21:15:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 14:32:54 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 }
 
 // @brief a helper function to print the ast tree.
-static void	print_ast_helper(t_ast *ast, t_ast_node *node, int layer,
-		t_ast_node *curr, char *msg)
+static void	print_ast_helper(t_ast *ast, t_ast_node *node, t_ast_node *curr,
+		char *msg)
 {
 	int	i;
 
 	i = 0;
 	if (!node)
 		return ;
-	print_ast_helper(ast, node->left, layer + 1, curr, msg);
+	print_ast_helper(ast, node->left, curr, msg);
 	if (node->node_printer)
 		node->node_printer(ast, node, curr, msg);
-	print_ast_helper(ast, node->right, layer + 1, curr, msg);
+	print_ast_helper(ast, node->right, curr, msg);
 }
 
 // @brief Print the AST tree by In-order Traversal when DEBUG Flag is set.
@@ -78,7 +78,7 @@ void	debug_print_ast(t_ast *ast, t_ast_node *curr, char *msg)
 {
 	int	i;
 
-	if (!DEBUG)
+	if (!DEBUG_FLAG)
 		return ;
 	printf("-----------------------AST Tree-----------------------\n");
 	if (!ast)
@@ -91,6 +91,6 @@ void	debug_print_ast(t_ast *ast, t_ast_node *curr, char *msg)
 	while (i < ast->tk_size)
 		printf("%s ", ast->tokens[i++]);
 	printf("\n");
-	print_ast_helper(ast, ast->root, 0, curr, msg);
+	print_ast_helper(ast, ast->root, curr, msg);
 	ft_printf("------------------------------------------------------\n");
 }

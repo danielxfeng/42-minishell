@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 10:23:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 14:35:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <sys/types.h>
 
-# define DEBUG true
+# define DEBUG_FLAG 1
 # define INVALID_ERR_NO -1
 # define STD_IN 0
 # define STD_OUT 1
@@ -70,11 +70,10 @@ typedef struct s_ast_node
 {
 	t_node_type				type;
 	void					*prop;
-	int						(*node_handler)(t_ast *t_ast,
-								t_ast_node *t_ast_node);
-	void					(*node_closer)(t_ast_node *t_ast_node);
-	void					(*node_printer)(t_ast *t_ast, t_ast_node *node,
-							t_ast_node *curr, char *msg);
+	int						(*node_handler)(t_ast *ast, t_ast_node *node);
+	void					(*node_closer)(t_ast_node *ast_node);
+	void					(*node_printer)(t_ast *ast, t_ast_node *n,
+			t_ast_node *c, char *m);
 	t_ast_node				*left;
 	t_ast_node				*right;
 }							t_ast_node;
