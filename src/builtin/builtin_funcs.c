@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 14:43:07 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/07 14:50:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ int	cmd_env(t_ast *ast, t_cmd_prop *prop)
 	return (0);
 }
 
-// @brief `exit` with no optins
+// @brief `exit` with no options
 int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 {
+    if (prop->size != 1)
+        return_with_err(?, EXIT_FAIL, "minishell: exit: ");
+    close_ast(&ast);
+    exit(EXIT_OK);
 }
