@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 08:13:02 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 11:35:23 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 	if (is_empty_cmd(ast->tokens[prop->start]))
 		return (return_prt_err(EXIT_CMD_ERR, NULL, cmd, "command not found"));
 	if (is_builtin_func(ast->tokens[prop->start]))
-		return (exec_builtin_func(ast->tokens, prop->start, prop->size));
+		return (exec_builtin_func(ast, prop));
 	status = parse_full_cmd_and_check(ast, prop);
 	if (status != 0)
 		return (status);
