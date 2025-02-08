@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 11:17:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 11:26:38 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,7 @@ int 						return_prt_err(int rtn_code, char *cmd,
 // Built-in functions.
 
 bool						is_builtin_func(char *cmd);
-int							exec_builtin_func(char **tokens, int start,
-								int size);
+int							exec_builtin_func(t_ast *ast, t_cmd_prop *prop);
 int							cmd_echo(t_ast *ast, t_cmd_prop *prop);
 int							cmd_cd(t_ast *ast, t_cmd_prop *prop);
 int							cmd_pwd(t_ast *ast, t_cmd_prop *prop);
