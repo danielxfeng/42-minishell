@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 15:07:09 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:55:45 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,18 @@ typedef struct s_cmd_prop
 // `fd`: the file descriptor of a file.
 // `is_in`: `true` for `<` or `<<`.
 // `is_single`: `true` for `<` or '>'.
+// `is_skip`: when there is several reds with same direction, 
+// only the right most `red` will set.
+// has been set.
+// `is_open`: is the file opened.
 typedef struct s_red_prop
 {
 	int						idx;
 	int						fd;
 	bool					is_in;
 	bool					is_single;
+	bool					is_skip;
+	bool					is_open;
 }							t_red_prop;
 
 // Represents properties of PIPE.
@@ -157,7 +163,6 @@ void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,
 								char *msg);
-int							return_with_err_pipe(char *msg, int *pipe);
 int 						return_prt_err(int rtn_code, char *cmd,
 								char *filename, char *msg);
 
