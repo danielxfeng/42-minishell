@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 16:06:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:21:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,21 @@ static void build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
     *node = create_cmd_node(tree, left, right - left + 1);
 }
 
+// @brief helper function for build_red_node.
+//
+// @param tree: the ast tree.
+// @param params: an array of indexes.
+// 0 curr index of tokens, 1 left index, 2 right index.
+// @param is_in: is < or >.
+// @param is_single: is << or <.
 static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
     bool is_single)
 {
-    t_ast_node *node;
+    t_ast_node  *node;
     
     node = create_red_node(tree, params[0], is_in, is_single);
-    build_cmd_node(tree, &(node->left), params[1], params[0] - 1);
-    build_red_node(tree, &(node->right), params[0] + 1, params[2]);
+    build_cmd_node(tree, &(node->left), params[1], params[0] - 2);
+    build_red_node(tree, &(node->right), params[0] + 2, params[2]);
     return (node);
 }
 
