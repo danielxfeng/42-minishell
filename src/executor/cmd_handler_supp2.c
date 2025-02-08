@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 07:50:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 08:07:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 08:17:19 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	check_cmd(t_ast *ast, t_cmd_prop *prop)
 			NULL));
 	stat(prop->full_cmd, &buf);
 	if (S_ISDIR(buf.st_mode))
-		return (return_prt_err(EXIT_CMD_ERR, "minishell", ast->tokens[prop->start],
+		return (return_prt_err(EXIT_EXEC_ERR, "minishell", ast->tokens[prop->start],
 			"Is a directory"));
 	return (true);
 }
