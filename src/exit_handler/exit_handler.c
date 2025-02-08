@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 07:21:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:40:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,4 @@ int return_prt_err(int rtn_code, char *cmd, char *filename, char *msg)
         ft_putstr_fd(strerror(errno), 2);  
     ft_putstr_fd("\n", 2);
 	return (rtn_code);
-}
-
-// @brief close the pipe and return the function with error.
-//
-// @param msg: the message to perror.
-// @param pipe: the fds of a pipe.
-// @return rtn_code.
-int	return_with_err_pipe(char *msg, int *pipe)
-{
-	if (pipe[0] != -1)
-		close(pipe[0]);
-	if (pipe[1] != -1)
-		close(pipe[1]);
-	return (return_with_err(INVALID_ERR_NO, EXIT_CMD_ERR, msg));
 }
