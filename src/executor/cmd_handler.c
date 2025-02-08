@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 11:35:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 15:58:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 
 // @ brief to execute the `cmd` node.
 //
-// The command node may has 0 - 2 children.
+// The command node is a leaf node.
 //
 // @param ast: the ast tree.
 // @param ast_node: the `cmd` node.
@@ -56,8 +56,6 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 
 	debug_print_ast(ast, ast_node, "");
 	prop = (t_cmd_prop *)ast_node->prop;
-	if (ast_node->left)
-		ast_node->left->node_handler(ast, ast_node->left);
 	status = preprocess_cmd(ast, prop);
 	if (status != EXIT_OK)
 		return (status);
@@ -68,7 +66,5 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 		return (return_prt_err(EXIT_FAIL, "minishell", ast->tokens[prop->start],
 			NULL));
 	waitpid(prop->pid, &status, 0);
-	if (ast_node->right)
-		return (ast_node->right->node_handler(ast, ast_node->right));
 	return (return_process_res(status));
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 21:26:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 15:55:01 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 
 // @brief the executor of a `red` node.
 //
-// The `red` node has only 1 left leaf child.
+// The `red` node has 1 possible left child for cmd,
+// and 1 possible right child for reds.
 //
 // @param ast: the pointer to the ast tree.
 // @param ast_node: the `red` node.
