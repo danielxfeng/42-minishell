@@ -5,16 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 21:58:36 by Xifeng            #+#    #+#             */
-/*   Updated: 2024/12/10 19:16:32 by Xifeng           ###   ########.fr       */
+/*   Created: 2025/02/06 21:15:09 by Xifeng            #+#    #+#             */
+/*   Updated: 2025/02/07 10:23:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include "../pipe_x.h"
+#include "../include/executor.h"
 #include <stdlib.h>
 
-// Helper function to free a pipe node.
+void		close_tokens(t_ast *ast);
+
+// @brief the destructor of a pipe node.
 void	close_pipe_node(t_ast_node *node)
 {
 	t_pipe_prop	*prop;
@@ -31,7 +32,7 @@ void	close_pipe_node(t_ast_node *node)
 	}
 }
 
-// Helper function to free a cmd node.
+// @brief the destructor of a cmd node.
 void	close_cmd_node(t_ast_node *node)
 {
 	t_cmd_prop	*prop;
@@ -41,27 +42,17 @@ void	close_cmd_node(t_ast_node *node)
 	if (prop)
 	{
 		if (prop->full_cmd)
-		{
 			free(prop->full_cmd);
-			prop->full_cmd = NULL;
-		}
-		if (prop->args)
-		{
-			i = 0;
-			while (prop->args[i])
-			{
-				free(prop->args[i]);
-				prop->args[i++] = NULL;
-			}
-			free(prop->args);
-			prop->args = NULL;
-		}
+		prop->full_cmd = NULL;
+		if (prop->argv)
+			free(prop->argv);
+		prop->argv = NULL;
 		free(prop);
 		node->prop = NULL;
 	}
 }
 
-// Helper function to free a red node.
+// @brief the destructor of a red node.
 void	close_red_node(t_ast_node *node)
 {
 	t_red_prop	*prop;
@@ -76,19 +67,19 @@ void	close_red_node(t_ast_node *node)
 	}
 }
 
-// Helper function to free a AST node.
-static void	free_ast_node(t_ast_node *node)
+// @brief the helper function of the destructor of ast node.
+static void	close_ast_node(t_ast_node *node)
 {
 	if (node)
 	{
 		if (node->left)
 		{
-			free_ast_node(node->left);
+			close_ast_node(node->left);
 			node->left = NULL;
 		}
 		if (node->right)
 		{
-			free_ast_node(node->right);
+			close_ast_node(node->right);
 			node->right = NULL;
 		}
 		if (node->node_closer)
@@ -97,26 +88,20 @@ static void	free_ast_node(t_ast_node *node)
 	}
 }
 
-// Deconstructor of the AST tree.
+// @brief deconstructor of the AST tree.
+//
+// @param ast: the pointer to pointer of an ast tree.
 void	close_ast(t_ast **ast)
 {
-	int	i;
-
-	i = 0;
 	if (ast && *ast)
 	{
 		if ((*ast)->root)
-			free_ast_node((*ast)->root);
-		if ((*ast)->path)
-		{
-			while (((*ast)->path)[i])
-			{
-				free(((*ast)->path)[i]);
-				((*ast)->path)[i++] = NULL;
-			}
-			free((*ast)->path);
-			(*ast)->path = NULL;
-		}
+			close_ast_node((*ast)->root);
+		close_tokens(*ast);
+		if ((*ast)->fd_in > 0)
+			close((*ast)->fd_in);
+		if ((*ast)->fd_out > 0)
+			close((*ast)->fd_out);
 		free(*ast);
 		*ast = NULL;
 	}

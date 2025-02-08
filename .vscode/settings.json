@@ -20,7 +20,9 @@
     "stdlib.h": "c",
     "pipe_x.h": "c",
     "wait.h": "c",
-    "philo.h": "c"
+    "philo.h": "c",
+    "cstdlib": "c",
+    "executor.h": "c"
   },
   "cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx"
 }
