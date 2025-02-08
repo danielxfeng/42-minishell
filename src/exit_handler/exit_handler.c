@@ -6,13 +6,15 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 10:23:36 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 07:21:29 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
+#include "../libs/libft/libft.h"
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 
 // @brief exit the program because of fatal error.
 //
@@ -46,6 +48,31 @@ int	return_with_err(int err_no, int rtn_code, char *msg)
 	if (err_no != INVALID_ERR_NO)
 		errno = err_no;
 	perror(msg);
+	return (rtn_code);
+}
+
+// @brief return the function with printing error.
+//
+// @param rtn_code: the return code.
+// @param msg: the message to print.
+// @return rtn_code.
+int return_prt_err(int rtn_code, char *cmd, char *filename, char *msg)
+{
+	if (cmd)
+    {
+        ft_putstr_fd(cmd, 2);
+        ft_putstr_fd(": ", 2);
+    }
+    if (filename)
+    {
+        ft_putstr_fd(filename, 2);
+        ft_putstr_fd(": ", 2);        
+    }
+    if (msg)
+        ft_putstr_fd(msg, 2);
+    else
+        ft_putstr_fd(strerror(errno), 2);  
+    ft_putstr_fd("\n", 2);
 	return (rtn_code);
 }
 

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 21:17:49 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 07:49:05 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //
 // @param cmd: the command.
 // @return if the cmd is with absolute path or relative path.
-bool	is_parse_free_cmd(char *cmd)
+bool	is_relative_or_absolute_cmd(char *cmd)
 {
 	if (ft_strncmp("/", *cmd, 1) || ft_strncmp("./", *cmd, 2)
 		|| ft_strncmp("../", *cmd, 3))
@@ -26,7 +26,6 @@ bool	is_parse_free_cmd(char *cmd)
 }
 
 // @brief is this a empty command?
-// TODO to be implemented.
 //
 // @param the command to be checked.
 // @return is the command empty?

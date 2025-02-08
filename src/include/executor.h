@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 14:44:36 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 07:27:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 typedef struct s_ast_node	t_ast_node;
 
 // Enum: type of AST nodes.
-typedef enum a_node_type
+typedef enum e_node_type
 {
 	PIPE,
 	RED,
@@ -157,6 +157,8 @@ void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,
 								char *msg);
 int							return_with_err_pipe(char *msg, int *pipe);
+int 						return_prt_err(int rtn_code, char *cmd,
+								char *filename, char *msg);
 
 
 // Built-in functions.
