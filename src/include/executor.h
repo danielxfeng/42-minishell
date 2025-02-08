@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 07:27:59 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 08:41:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef enum e_node_type
 //
 // `root` the root node of AST tree.
 // `tokens` the array of tokens.
+// `envp` the envp.
 // `tk_size: the size of tokens.
 // `fd_in`: the std_in before executing the AST execution.
 // `fd_out` the std_out before executing the AST execution.
@@ -53,6 +54,7 @@ typedef struct s_ast
 {
 	t_ast_node				*root;
 	char					**tokens;
+	char					**envp;
 	int						tk_size;
 	int						fd_in;
 	int						fd_out;
