@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 19:37:03 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 19:45:58 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
     t_ast_node  *node;
     
     node = create_red_node(tree, params[0], is_in, is_single);
-    build_cmd_node(tree, &(node->left), params[1], params[0] - 2);
-    build_red_node(tree, &(node->right), params[0] + 2, params[2]);
+    build_red_node(tree, &(node->left), params[1], params[0] - 1);
     return (node);
 }
 
@@ -66,19 +65,19 @@ static void build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 
     if (left > right)
         return  ;
-    curr = left;
+    curr = right;
     params[1] = left;
     params[2] = right;
-    while (curr++ <= right)
+    while (curr-- >= left)
     {
         params[0] = curr - 1;
-        if (ft_strncmp(tree->tokens[curr - 1], "<", 2) == 0)
+        if (ft_strncmp(tree->tokens[curr + 1], "<", 2) == 0)
             *node = build_red_node_helper(tree, params, true, true);
-        else if (ft_strncmp(tree->tokens[curr - 1], "<<", 3) == 0)
+        else if (ft_strncmp(tree->tokens[curr + 1], "<<", 3) == 0)
             *node = build_red_node_helper(tree, params, true, false);
-        else if (ft_strncmp(tree->tokens[curr - 1], ">", 2) == 0)
+        else if (ft_strncmp(tree->tokens[curr + 1], ">", 2) == 0)
             *node = build_red_node_helper(tree, params, false, true);
-        else if (ft_strncmp(tree->tokens[curr - 1], ">>", 3) == 0)
+        else if (ft_strncmp(tree->tokens[curr + 1], ">>", 3) == 0)
             *node = build_red_node_helper(tree, params, false, false);
         else
             continue;       
@@ -125,22 +124,22 @@ static void build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 //
 // The pipeline is:
 // 1. parse the pipe node (from right to left).
-// 2. parse the red node (from left to right).
+// 2. parse the red node (from right to left).
 // 3. parse the cmd mode.
 //
 // Expamle:
 // cmd < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 | cmd4 > outfile2 > outfile3
 //                                         Pipe3
 //                              /                      /
-//                            Pipe2              Red(> outfile2)
+//                            Pipe2              Red(> outfile3)
 //                       /       /                   /
-//                   Pipe1     Red(> outfile1)   Red(> outfile3)
+//                   Pipe1     Red(> outfile1)   Red(> outfile2)
 //                   /   /         /                /
-//       Red(< infile1)  Cmd2    Cmd3             Cmd4
+//       Red(> outfile0)  Cmd2    Cmd3             Cmd4
 //         /               
 //    Red(< infile2)
 //      /
-//  Red(> outfile0)
+//  Red(> infile1)
 //   /
 //  Cmd
 // 
