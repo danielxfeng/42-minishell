@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 16:21:53 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 19:26:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
 
 // @brief to build a red node.
 //
-// A red node has 1 - 2 children.
+// A red node has only 1 child.
 // When not found: we try to find a cmd node.
 // When found:
 // We iterate from left to right, so there is no left red node.
@@ -123,6 +123,27 @@ static void build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 
 // @brief build the ast by given array of tokens.
 //
+// The pipeline is:
+// 1. parse the pipe node (from right to left).
+// 2. parse the red node (from left to right).
+// 3. parse the cmd mode.
+//
+// Expamle:
+// cmd < infile < infile2 > outfile0 | cmd2 | cmd3 > outfile | cmd4 > outfile2 > outfile3
+//                                         Pipe3
+//                              /                      /
+//                            Pipe2              Red(> outfile2)
+//                       /       /                   /
+//                   Pipe1     Red(> outfile)   Red(> outfile3)
+//                   /   /         /                /
+//       Red(< infile1)  Cmd2    Cmd3             Cmd4
+//         /               
+//    Red(< infile2)
+//      /
+//  Red(> outfile0)
+//   /
+//  Cmd
+// 
 // @param ast: the pointer to ast.
 // @param tokens: the array of tokens.
 void    build_tree(char **tokens, int tk_size)
