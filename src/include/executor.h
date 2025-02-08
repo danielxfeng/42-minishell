@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 08:41:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 11:17:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_ast
 	int						tk_size;
 	int						fd_in;
 	int						fd_out;
+	// leave ur stuff here @abdul
 }							t_ast;
 
 // Represents a node of AST.
