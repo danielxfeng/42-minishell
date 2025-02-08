@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 08:41:07 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 15:06:24 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,9 @@ t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single)
 // @brief constructor of AST tree.
 //
 // @param tokens: the string array of tokens.
-// @param envp: the envp.
 // @param tk_size: the size of tokens.
 // @return the pointer to ast. Returns NULL when error on malloc.
-t_ast	*create_ast(char **tokens, char **envp, int tk_size)
+t_ast	*create_ast(char **tokens, int tk_size)
 {
 	t_ast	*ast;
 
@@ -105,7 +104,6 @@ t_ast	*create_ast(char **tokens, char **envp, int tk_size)
 		exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
 	ast->root = NULL;
 	ast->tokens = tokens;
-	ast->envp = envp;
 	ast->tk_size = tk_size;
 	ast->fd_in = -1;
 	ast->fd_out = -1;
