@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 08:37:59 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/08 10:36:38 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,66 @@
 #include "../include/executor.h"
 #include <stdlib.h>
 #include <errno.h>
+#include <unistd.h>
 
 // @brief `echo` with option `-n`
 int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 {
-	return (0);
+	int		i;
+	bool	line_break;
+
+	line_break = false;
+	if (prop->size > 1 && (ft_strcmp(ast->tokens[prop->start + 1], "-n") == 0))
+		line_break = true;
+	i = 1;
+	if (line_break)
+		++i;
+	while (i < prop->size)
+	{
+		printf("%s", ast->tokens[prop->start + i]);
+		if (i + 1 < prop->size)
+			printf(" ");
+		++i;
+	}
+	if (!line_break)
+		printf("\n");
+	return EXIT_OK;
 }
 
 // @brief `cd` with only a relative or absolute path
 int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 {
-	if (prop->size != 1)
-		return_prt_err(EXIT_FAIL, "minishell: exit: too many arguments\n");
+	char *path;
+	char dir[PATH_MAX + 1];
 	
-	if (chdir(ast->tokens[prop->start + 1]) != 0)
-		return_with_err(INVALID_ERR_NO, EXIT_FAIL, "");
+	if (prop->size != 1 && prop->size != 2 )
+		return_prt_err(EXIT_FAIL, "minishell", "cd", "too many arguments");
+	if (prop->size == 1)
+	{
+		path = getenv("HOME");
+		if (!path)
+		{
+			if (getcwd(dir, sizeof(dir)) == NULL)
+				return_prt_err(EXIT_FAIL, "minishell", "cd", NULL);
+			path = dir;			
+		}
+	}
+	else
+		path = ast->tokens[prop->start + 1];
+	if (chdir(path) != 0)
+		return_prt_err(EXIT_FAIL, "minishell: cd", path, NULL);
 	return (EXIT_OK);
 }
 
 // @brief `pwd` with no options
 int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 {
-	char *home;
+	char dir[PATH_MAX + 1];
 
-    if (prop->size != 1)
-	return_prt_err(EXIT_FAIL, "minishell: exit: too many arguments\n");
-	home = getenv("HOME");
-	printf("%s\n", home);
-}
-
-// @brief `export` with no options
-int	cmd_export(t_ast *ast, t_cmd_prop *prop)
-{
-	return (0);
-}
-
-// @brief `unset` with no options
-int	cmd_unset(t_ast *ast, t_cmd_prop *prop)
-{
-	return (0);
-}
-
-// @brief `env` with no options or arguments
-int	cmd_env(t_ast *ast, t_cmd_prop *prop)
-{
-	return (0);
+	if (getcwd(dir, sizeof(dir)) == NULL)
+		return_prt_err(EXIT_FAIL, "minishell", "pwd", NULL);
+	printf("%s\n", dir);
+	return (EXIT_OK);
 }
 
 // @brief `exit` with no options
@@ -84,4 +99,5 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 	}
 	close_ast(&ast);
     exit(status);
+	return(status);
 }
