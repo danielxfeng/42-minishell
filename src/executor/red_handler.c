@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/09 07:04:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/09 07:46:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop, bool is_in)
     if (!(node->left) || node->left->type != RED)
         return  (EXIT_OK);
     prop = (t_red_prop *)node->left->prop;
+	if (prop->is_in == is_in && prop->is_skip)
+		return	(EXIT_OK);
     if (prop->is_in == is_in)
         prop->is_skip = true;
 	res = open_file(ast, node->left, prop, is_in);
@@ -168,7 +170,8 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 
 	debug_print_ast(ast, ast_node, "");
 	prop = (t_red_prop *)ast_node->prop;
-	open_file(ast, ast_node, prop, prop->is_in);
+	if (!prop->is_skip)
+		open_file(ast, ast_node, prop, prop->is_in);
 	if (!prop->is_skip)
 	{
 		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) || (!(prop->is_in) 
