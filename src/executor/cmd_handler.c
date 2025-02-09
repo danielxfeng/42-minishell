@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 15:58:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/09 07:29:24 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ bool		is_empty_cmd(char *cmd);
 int			parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop);
 void		generate_argv(t_ast *ast, t_cmd_prop *prop);
 
-// @brief to check 1 empty cmd, 2 build-in function, 3 parse full cmd,
-// 4 generate argv.
+// @brief perform the preprocess here.
+// 
+// - empty cmd check
+// - perform build-in function
+// - parsing full cmd
+// - generating argv
 //
 // @param ast: the pointer to ast.
 // @param prop: the pointer to property of node.
@@ -45,6 +49,10 @@ static int preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 // @ brief to execute the `cmd` node.
 //
 // The command node is a leaf node.
+// 
+// We preprocess the node at first:
+//   - errer handling, built-in function, path parsing, etc...
+// Then create a new subprocess to execute the cmd.
 //
 // @param ast: the ast tree.
 // @param ast_node: the `cmd` node.

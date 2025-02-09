@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 19:45:58 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/09 07:23:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,13 @@ static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
 
 // @brief to build a red node.
 //
-// A red node has only 1 child.
-// When not found: we try to find a cmd node.
+// A red node has only left child which can be another red node or cmd node.
+//
+// We iterate from right to left, try to find a red node.
+// When not found: 
+//   - restart the iteration, and try to find a cmd node.
 // When found:
-// We iterate from left to right, so there is no left red node.
-// Then we try to find a cmd in the left, and red in the right.
+//   - We try to find another red node on the left.
 //
 // @param tree: the ast tree.
 // @param node: the pointer to the node to be created.
@@ -89,10 +91,18 @@ static void build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 // @brief to build a pipe node.
 //
 // A pipe node has 2 children.
-// When not found: we try to find a red node.
+// The left child can be another pipe node, a red node, or a cmd node.
+// The right child can be a red node, or a cmd node. 
+//
+// We iterate from right to left, try to find a pipe node.
+// When not found: 
+//   - restart the iteration, and try to find a red node.
 // When found:
-// We iterate from right to left, so there is no right pipe node.
-// Then we try to find another pipe in the left, and red in the right.
+//   - We try to find a red node on the right.
+//   - And we try to find another pipe on the left.
+//   - Because the iteration was from right to left,
+//     so there is no pipe node on the right, but may still have some
+//     on the left.
 //
 // @param tree: the ast tree.
 // @param node: the pointer to the node to be created.
@@ -123,9 +133,9 @@ static void build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 // @brief build the ast by given array of tokens.
 //
 // The pipeline is:
-// 1. parse the pipe node (from right to left).
-// 2. parse the red node (from right to left).
-// 3. parse the cmd mode.
+// 1. parsing all the pipe nodes (from right to left).
+// 2. parsing all the the red nodes (from right to left).
+// 3. parsing all the cmd modes.
 //
 // Expamle:
 // cmd < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 | cmd4 > outfile2 > outfile3

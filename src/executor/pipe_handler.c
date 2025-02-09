@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 21:20:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/09 07:32:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 // @brief the handler of `pipe` executor.
 //
 // For a pipe node, it always have 2 children.
+//
+// We create a pipe and setup 2 sub-processes to handle it.
 //
 // @param ast: the ast tree.
 // @param ast_node: the node to be executed.
