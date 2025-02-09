@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/09 07:23:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/09 08:06:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
 // 0 curr index of tokens, 1 left index, 2 right index.
 // @param is_in: is < or >.
 // @param is_single: is << or <.
+// @return the created red node.
 static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
     bool is_single)
 {
@@ -155,7 +156,7 @@ static void build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 // 
 // @param ast: the pointer to ast.
 // @param tokens: the array of tokens.
-void    build_tree(char **tokens, int tk_size)
+t_ast    *build_tree(char **tokens, int tk_size)
 {
     t_ast *tree;
 
@@ -165,4 +166,5 @@ void    build_tree(char **tokens, int tk_size)
     if (tree->fd_in == -1 || tree->fd_out == -1)
         exit_with_err(&tree, EXIT_FAIL, "minishell: dup");
     build_pipe_node(tree, &(tree->root), 0, tk_size - 1);
+    return (tree);
 }

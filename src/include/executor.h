@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 20:55:45 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/09 08:05:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,7 @@ int							cmd_export(t_ast *ast, t_cmd_prop *prop);
 int							cmd_unset(t_ast *ast, t_cmd_prop *prop);
 int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
+
+t_ast    					*build_tree(char **tokens, int tk_size);
 
 #endif
