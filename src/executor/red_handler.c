@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 21:15:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/09 07:04:47 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,31 @@
 //
 // @param ast: the pointer to ast tree.
 // @param prop: the property of node.
-// @param stdout_backup: the backup of stdout.
-static void	read_lines_helper(t_ast *ast, t_red_prop *prop, int stdout_backup)
+// @return EXIT_OK.
+static int	read_lines_helper(t_ast *ast, t_red_prop *prop)
 {
 	char	*line;
-	char	*file_name;
+	char	*eof;
 
-	file_name = ast->tokens[prop->idx];
+	eof = ast->tokens[prop->idx];
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
-		if ((ft_strncmp(file_name, line, ft_strlen(file_name)) == 0)
-			&& line[ft_strlen(file_name)] == '\n')
+		if ((ft_strncmp(eof, line, ft_strlen(eof)) == 0)
+			&& line[ft_strlen(eof)] == '\n')
 		{
 			free(line);
 			line = NULL;
 			break ;
 		}
-		write(prop->fd, line, ft_strlen(line));
+		if (!prop->is_skip)
+			write(prop->fd, line, ft_strlen(line));
 		free(line);
 	}
+	prop->is_open = true;
+	return (EXIT_OK);
 }
 
 // @brief help the `red` node to handle the heredoc.
@@ -56,9 +59,12 @@ static int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	int		stdout_backup;
 	char	*line;
 
-	prop->fd = open("./here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (prop->fd < 0)
-		exit_with_err(&ast, EXIT_FAIL, "minishell: open");
+	if (!prop->is_skip)
+	{
+		prop->fd = open("./here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (prop->fd < 0)
+			exit_with_err(&ast, EXIT_FAIL, "minishell: open");		
+	}
 	stdin_backup = dup(STDIN_FILENO);
 	stdout_backup = dup(STDOUT_FILENO);
 	if (stdin_backup == -1 || stdout_backup == -1)
@@ -66,11 +72,10 @@ static int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	if (dup2(ast->fd_in, STDIN_FILENO) < 0 || dup2(ast->fd_out,
 			STDOUT_FILENO) < 0)
 		return_with_err(INVALID_ERR_NO, EXIT_FAIL, "minishell: dup2");
-	read_lines_helper(ast, prop, stdout_backup);
+	read_lines_helper(ast, prop);
 	if (dup2(stdin_backup, STDIN_FILENO) < 0 || dup2(stdout_backup,
 			STDOUT_FILENO) < 0)
 		return_with_err(INVALID_ERR_NO, EXIT_FAIL, "minishell: dup2");
-	prop->is_open = true;
 	return (EXIT_OK);
 }
 
@@ -149,6 +154,9 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop, bool is_in)
 // Because the file in left node is opened first,
 // and for each direction, only right most node is redirected.
 // 2 Perform the in-order travelsal to apply the redirection.
+// 3 For heredoc input, only un-skipped node creates tmp file
+// for avoiding the confilict when there are several heredoc inputs.
+// 
 //
 // @param ast: the pointer to the ast tree.
 // @param ast_node: the `red` node.
@@ -169,7 +177,7 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	}
 	close(prop->fd);
 	prop->fd = -1;
-	if (prop->is_in && !(prop->is_single))
+	if (!prop->is_skip && prop->is_in && !(prop->is_single))
 		unlink("./here_doc_tmp");
 	if (ast_node->left)
 		res = ast_node->left->node_handler(ast, ast_node->left);
