@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 11:33:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 20:10:19 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 			status = EXIT_FAIL;
 		}
 	}
-	close_ast(&ast);
-    exit(status);
+	exit_with_err(&ast, status, NULL);
 	return(status);
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/10 19:08:05 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 20:05:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in,
 
 // The destructors of AST.
 
-void						close_ast(t_ast **ast);
+int							close_ast(t_ast **ast);
 void						close_pipe_node(t_ast_node *node);
 void						close_cmd_node(t_ast_node *node);
 void						close_red_node(t_ast_node *node);

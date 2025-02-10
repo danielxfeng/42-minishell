@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/10 19:14:10 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 20:11:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-// @brief exit the program because of fatal error.
+// @brief exit the program with a possible error.
 //
 // @param ast: the pointer to ast.
 // @param err_code: the return code.
-// @param msg: the error msg.
+// @param msg: the error msg, set to NULL if there is not an error msg.
 void	exit_with_err(t_ast **ast, int err_code, char *msg)
 {
-	close_ast(ast);
-	perror(msg);
-	exit(err_code);
+    int status;
+    
+    if (msg)
+        perror(msg);
+	status = close_ast(ast);
+    if (status == EXIT_OK)
+        status = err_code;
+	exit(status);
 }
 
 // @brief exit the program successfully
@@ -34,8 +39,10 @@ void	exit_with_err(t_ast **ast, int err_code, char *msg)
 // @param ast: the pointer to ast.
 void	exit_without_err(t_ast **ast)
 {
-	close_ast(ast);
-	exit(EXIT_OK);
+    int status;
+    
+	status = close_ast(ast);
+	exit(status);
 }
 
 // @brief return the function with error.
