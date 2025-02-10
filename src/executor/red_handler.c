@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/09 07:46:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 19:34:20 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 // @brief to run in a loop for reading lines from here_doc.
 //
@@ -136,7 +140,7 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop, bool is_in)
 	if (!prop->is_open)
 	{
 		if (prop->is_in && !(prop->is_single))
-			res = here_doc_handler(ast, node);
+			res = here_doc_handler(ast, prop);
 		else
 			res = open_file_helper(ast, prop);
 		if (res != EXIT_OK)

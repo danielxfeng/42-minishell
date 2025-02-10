@@ -6,12 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 10:23:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 18:56:35 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void		close_tokens(t_ast *ast);
 

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 07:50:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 08:17:19 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 19:17:33 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../libs/libft/libft.h"
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 bool		is_relative_or_absolute_cmd(char *cmd);
 char		**get_path(void);

@@ -6,13 +6,15 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/09 08:06:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 18:55:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
 #include "../include/executor.h"
 #include <unistd.h>
+
+void build_red_node(t_ast *tree, t_ast_node **node, int left, int right);
 
 // @brief to build a cmd node.
 //
@@ -61,7 +63,7 @@ static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
 // @param node: the pointer to the node to be created.
 // @param left: the left index of tokens.
 // @param right: the right index of tokens.
-static void build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
+void build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 {
     int curr;
     int params[3];

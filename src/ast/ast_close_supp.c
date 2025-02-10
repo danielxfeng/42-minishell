@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/06 08:13:10 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 19:01:52 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	close_tokens(t_ast *ast)
 	i = 0;
 	while (i < ast->tk_size)
 	{
-		free((*ast->tokens)[i]);
+		free(ast->tokens[i]);
 		(ast->tokens)[i++] = NULL;
 	}
 	free(ast->tokens);

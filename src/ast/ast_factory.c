@@ -6,12 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 15:06:24 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 19:02:50 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
+#include <stdlib.h>
 
 // @brief constructor of a AST node for PIPE.
 t_ast_node	*create_pipe_node(t_ast *ast)

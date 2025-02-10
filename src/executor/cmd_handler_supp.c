@@ -6,12 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 11:34:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 19:16:57 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
+#include <stdlib.h>
 
 // @brief is the cmd with absolute path, or relative path?
 //
@@ -19,8 +20,8 @@
 // @return if the cmd is with absolute path or relative path.
 bool	is_relative_or_absolute_cmd(char *cmd)
 {
-	if (ft_strncmp("/", *cmd, 1) || ft_strncmp("./", *cmd, 2)
-		|| ft_strncmp("../", *cmd, 3))
+	if (ft_strncmp("/", cmd, 1) || ft_strncmp("./", cmd, 2)
+		|| ft_strncmp("../", cmd, 3))
 		return (true);
 	return (false);
 }
@@ -54,7 +55,7 @@ char	**get_path(void)
 	path_str = getenv("PATH");
 	if (!path_str)
 		return (NULL);
-	path = ft_split(path_str, ":");
+	path = ft_split(path_str, ':');
 	if (!path)
 		return (NULL);
 	return (path);

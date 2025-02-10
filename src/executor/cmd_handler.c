@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/09 07:29:24 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/10 19:15:33 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 bool		is_empty_cmd(char *cmd);
 int			parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop);
 void		generate_argv(t_ast *ast, t_cmd_prop *prop);
+int			return_process_res(int status);
 
 // @brief perform the preprocess here.
 // 
