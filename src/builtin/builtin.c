@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 07:45:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 19:43:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 19:51:08 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	exec_builtin_func(t_ast *ast, t_cmd_prop *prop)
 {
 	char	*cmd;
 
-	cmd = ast->tokens[prop->size];
+	cmd = ast->tokens[prop->start];
 	if (ms_strcmp(cmd, "cd") == 0)
 		return (cmd_cd(ast, prop));
 	if (ms_strcmp(cmd, "echo") == 0)

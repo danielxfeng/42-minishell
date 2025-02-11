@@ -165,15 +165,27 @@ void    testBuildTree_MultiNodes(void)
 
 void	testExec_OneCmd(void)
 {
-	char *free_tokens[] = {"pwd"};
-	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1);
+	char *free_tokens[] = {"cat", "./pg/a"};
+	char **tokens = createTokens(free_tokens, 2);
+	t_ast *tree = build_tree(tokens, 2);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
 	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
 	TEST_ASSERT_EQUAL_INT(0, prop->start);
-	TEST_ASSERT_EQUAL_INT(1, prop->size);
+	TEST_ASSERT_EQUAL_INT(2, prop->size);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_CmdRed(void)
+{
+	char *free_tokens[] = {"cat", "./pg/a", ">", "./pg/c"};
+	char **tokens = createTokens(free_tokens, 4);
+	t_ast *tree = build_tree(tokens, 4);
+
+	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -185,9 +197,10 @@ int	main(void)
 	UNITY_BEGIN();
     //RUN_TEST(testBuildTree_OnePipe);
 	//RUN_TEST(testBuildTree_OneRED);
-	//RUN_TEST(testBuildTree_OneCMD);
+	//RUN_TEST(testBuildTree_OneCMD);ca
 	//RUN_TEST(testBuildTree_ThreeNodes);
 	//RUN_TEST(testBuildTree_MultiNodes);
-	RUN_TEST(testExec_OneCmd);
+	//RUN_TEST(testExec_OneCmd);
+	RUN_TEST(testExec_CmdRed);
 	return (UNITY_END());
 }

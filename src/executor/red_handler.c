@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 19:44:32 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 20:29:50 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,9 @@ static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 			open_code = O_WRONLY | O_CREAT | O_APPEND;
 	}
 	file_name = ast->tokens[prop->idx];
-	if (access(file_name, F_OK) == -1)
-		return (return_with_err(ENOENT, EXIT_FAIL, file_name)); // todo
-	if (access(file_name, access_code) == -1)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name)); // todo
 	prop->fd = open(file_name, open_code, 0644);
 	if (prop->fd < 0)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name)); // todo
+		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name));
 	prop->is_open = true;
 	return (EXIT_OK);
 }
@@ -128,16 +124,17 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 {
 	int	res;
 
-	if (!(node->left) || node->left->type != RED)
-		return (EXIT_OK);
-	prop = (t_red_prop *)node->left->prop;
-	if (prop->is_in == is_in && prop->is_skip)
-		return (EXIT_OK);
-	if (prop->is_in == is_in)
-		prop->is_skip = true;
-	res = open_file(ast, node->left, prop, is_in);
-	if (res != EXIT_OK)
-		return (res);
+	if (node->left && node->left->type == RED)
+	{
+		prop = (t_red_prop *)node->left->prop;
+		if (prop->is_in == is_in && prop->is_skip)
+			return (EXIT_OK);
+		if (prop->is_in == is_in)
+			prop->is_skip = true;
+		res = open_file(ast, node->left, prop, is_in);
+		if (res != EXIT_OK)
+			return (res);
+	}
 	if (!prop->is_open)
 	{
 		if (prop->is_in && !(prop->is_single))
