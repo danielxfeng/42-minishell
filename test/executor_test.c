@@ -77,11 +77,41 @@ void    testBuildTree_OneCMD(void)
 
 void    testBuildTree_ThreeNodes(void)
 {
-	char *free_tokens[] = {"cmd1", "param1", "param2", "<", "a", "|", "cmd2", "<<", "b"};
+	char *free_tokens[] = {"cmd1", "param1", "param2", "<", "a", "|", "cmd2", ">>", "b"};
 	char **tokens = createTokens(free_tokens, 9);
 	t_ast *tree = build_tree(tokens, 9);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(PIPE, tree->root->type);
+	TEST_ASSERT_EQUAL_INT(RED, tree->root->left->type);
+	t_red_prop *red_prop = (t_red_prop *)tree->root->left->prop;
+	TEST_ASSERT_TRUE(red_prop->is_single);
+	TEST_ASSERT_TRUE(red_prop->is_in);
+	TEST_ASSERT_EQUAL_INT(4, red_prop->idx);
+	TEST_ASSERT_EQUAL_INT(RED, tree->root->right->type);
+	red_prop = (t_red_prop *)tree->root->right->prop;
+	TEST_ASSERT_FALSE(red_prop->is_single);
+	TEST_ASSERT_FALSE(red_prop->is_in);
+	TEST_ASSERT_EQUAL_INT(RED, tree->root->left->type);
+	TEST_ASSERT_EQUAL_INT(8, red_prop->idx);
+	TEST_ASSERT_EQUAL_INT(CMD, tree->root->left->left->type);
+	t_cmd_prop *cmd_prop = (t_cmd_prop *)tree->root->left->left->prop;
+	TEST_ASSERT_EQUAL_INT(0, cmd_prop->start);
+	TEST_ASSERT_EQUAL_INT(3, cmd_prop->size);	
+	TEST_ASSERT_EQUAL_INT(CMD, tree->root->right->left->type);
+	cmd_prop = (t_cmd_prop *)tree->root->right->left->prop;
+	TEST_ASSERT_EQUAL_INT(6, cmd_prop->start);
+	TEST_ASSERT_EQUAL_INT(1, cmd_prop->size);	
+	close_ast(&tree);
+    return ;
+}
+
+void    testBuildTree_MultiNodes(void)
+{
+	// cmd param1 < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 | cmd4 > outfile2 > outfile3
+	char *free_tokens[] = {"cmd1", "param1", ">", "infile1", "<", "infile2", ">", "outfile0", "|", "cmd2", "|", "cmd3", ">", "outfile1", "|", "cmd4", ">", "outfile2", ">", "outfile3"};
+	char **tokens = createTokens(free_tokens, 20);
+	t_ast *tree = build_tree(tokens, 20);
 	close_ast(&tree);
     return ;
 }
@@ -90,9 +120,10 @@ void    testBuildTree_ThreeNodes(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    //RUN_TEST(testBuildTree_OnePipe);
+    RUN_TEST(testBuildTree_OnePipe);
 	RUN_TEST(testBuildTree_OneRED);
-	//RUN_TEST(testBuildTree_OneCMD);
+	RUN_TEST(testBuildTree_OneCMD);
 	RUN_TEST(testBuildTree_ThreeNodes);
+	RUN_TEST(testBuildTree_MultiNodes);
 	return (UNITY_END());
 }

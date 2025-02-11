@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 12:14:10 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 15:19:07 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 // 3. parsing all the cmd modes.
 //
 // Expamle:
-// cmd < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 | cmd4 > outfile2 > outfile3
+// cmd param1 < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 | cmd4 > outfile2 > outfile3
 //                                         Pipe3
 //                              /                      /
 //                            Pipe2              Red(> outfile3)
@@ -155,7 +155,7 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 //      /
 //  Red(> infile1)
 //   /
-//  Cmd
+//  Cmd param1
 //
 // @param ast: the pointer to ast.
 // @param tokens: the array of tokens.

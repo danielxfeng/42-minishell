@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 12:00:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 14:48:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	print_level(level);
 	printf("-CMD(%d), pid: %d, full_cmd: %s, cmd: ", level, prop->pid,
 		prop->full_cmd);
-	i = prop->start;
+	i = 0;
 	while (i < prop->size)
-		printf("%s ", ast->tokens[i++]);
+		printf("%s ", ast->tokens[i++ + prop->start]);
 	print_curr_msg(node, curr);
 }
 
