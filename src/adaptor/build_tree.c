@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 10:28:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 11:27:18 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_ast_node	*build_red_node_helper(t_ast *tree, int *params, bool is_in,
 {
 	t_ast_node	*node;
 
-	node = create_red_node(tree, params[0], is_in, is_single);
+	node = create_red_node(tree, params[0] + 1, is_in, is_single);
 	build_red_node(tree, &(node->left), params[1], params[0] - 1);
 	return (node);
 }
@@ -76,7 +76,7 @@ void	build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 	params[2] = right;
 	while (curr-- >= left)
 	{
-		params[0] = curr - 1;
+		params[0] = curr + 1;
 		if (ft_strncmp(tree->tokens[curr + 1], "<", 2) == 0)
 			*node = build_red_node_helper(tree, params, true, true);
 		else if (ft_strncmp(tree->tokens[curr + 1], "<<", 3) == 0)

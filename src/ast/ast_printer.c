@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/10 19:04:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 11:29:08 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_cmd_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	printf("-CMD, pid: %d, full_cmd: %s, cmd: ", prop->pid, prop->full_cmd);
 	i = prop->start;
 	while (i < prop->size)
-		printf("%s ", ast->tokens[i]);
+		printf("%s ", ast->tokens[i++]);
 	print_curr_msg(node, curr, msg);
 }
 
@@ -49,8 +49,9 @@ void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	t_red_prop	*prop;
 
 	prop = (t_red_prop *)node->prop;
-	printf("-RED, file: %s, fd: %d, is_in: %d, is_single: %d ",
+	printf("-RED, file: %s, fd: %d, is_in: %d, is_single: %d, ",
 		ast->tokens[prop->idx], prop->fd, prop->is_in, prop->is_single);
+	printf("is_skip: %d, is_open: %d ", prop->is_skip, prop->is_open);
 	print_curr_msg(node, curr, msg);
 }
 
