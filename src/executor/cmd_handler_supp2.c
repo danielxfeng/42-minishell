@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 07:50:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 10:26:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 17:21:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	check_cmd(t_ast *ast, t_cmd_prop *prop)
 	if (S_ISDIR(buf.st_mode))
 		return (return_prt_err(EXIT_EXEC_ERR, "minishell",
 				ast->tokens[prop->start], "Is a directory"));
-	return (true);
+	return (EXIT_OK);
 }
 
 // @brief generate the argv for cmd.

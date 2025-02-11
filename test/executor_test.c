@@ -174,7 +174,7 @@ void	testExec_OneCmd(void)
 	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
 	TEST_ASSERT_EQUAL_INT(0, prop->start);
 	TEST_ASSERT_EQUAL_INT(2, prop->size);
-	tree->root->node_handler(tree, tree->root);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
 }
