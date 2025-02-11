@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 11:27:18 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 12:14:10 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,19 @@ void	build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 
 	if (left > right)
 		return ;
-	curr = right;
+	curr = right + 1;
 	params[1] = left;
 	params[2] = right;
-	while (curr-- >= left)
+	while (--curr >= left)
 	{
-		params[0] = curr + 1;
-		if (ft_strncmp(tree->tokens[curr + 1], "<", 2) == 0)
+		params[0] = curr;
+		if (ft_strncmp(tree->tokens[curr], "<", 2) == 0)
 			*node = build_red_node_helper(tree, params, true, true);
-		else if (ft_strncmp(tree->tokens[curr + 1], "<<", 3) == 0)
+		else if (ft_strncmp(tree->tokens[curr], "<<", 3) == 0)
 			*node = build_red_node_helper(tree, params, true, false);
-		else if (ft_strncmp(tree->tokens[curr + 1], ">", 2) == 0)
+		else if (ft_strncmp(tree->tokens[curr], ">", 2) == 0)
 			*node = build_red_node_helper(tree, params, false, true);
-		else if (ft_strncmp(tree->tokens[curr + 1], ">>", 3) == 0)
+		else if (ft_strncmp(tree->tokens[curr], ">>", 3) == 0)
 			*node = build_red_node_helper(tree, params, false, false);
 		else
 			continue ;

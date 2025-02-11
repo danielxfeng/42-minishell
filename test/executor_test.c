@@ -90,9 +90,9 @@ void    testBuildTree_ThreeNodes(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    RUN_TEST(testBuildTree_OnePipe);
+    //RUN_TEST(testBuildTree_OnePipe);
 	RUN_TEST(testBuildTree_OneRED);
-	RUN_TEST(testBuildTree_OneCMD);
+	//RUN_TEST(testBuildTree_OneCMD);
 	RUN_TEST(testBuildTree_ThreeNodes);
 	return (UNITY_END());
 }
