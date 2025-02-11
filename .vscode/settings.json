@@ -24,5 +24,6 @@
     "cstdlib": "c",
     "executor.h": "c"
   },
-  "cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx"
+"cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx",
+"C_Cpp.errorSquiggles": "disabled"
 }

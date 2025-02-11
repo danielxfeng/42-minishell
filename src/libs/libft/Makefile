@@ -6,7 +6,7 @@
 #    By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/25 19:36:06 by Xifeng            #+#    #+#              #
-#    Updated: 2024/11/07 16:53:13 by Xifeng           ###   ########.fr        #
+#    Updated: 2025/02/08 17:12:01 by Xifeng           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ OBJS_BONUS = $(BONUS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(OBJS_BONUS)
 	ar -rc $@ $^
 
 bonus: .bonus
