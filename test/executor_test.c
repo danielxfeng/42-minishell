@@ -191,6 +191,18 @@ void	testExec_CmdRed(void)
     return ;
 }
 
+void	testExec_CmdRedPipe(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/a", "|", "cat", ">", "./pg/c"};
+	char **tokens = createTokens(free_tokens, 7);
+	t_ast *tree = build_tree(tokens, 7);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -201,6 +213,7 @@ int	main(void)
 	//RUN_TEST(testBuildTree_ThreeNodes);
 	//RUN_TEST(testBuildTree_MultiNodes);
 	//RUN_TEST(testExec_OneCmd);
-	RUN_TEST(testExec_CmdRed);
+	//RUN_TEST(testExec_CmdRed);
+	RUN_TEST(testExec_CmdRedPipe);
 	return (UNITY_END());
 }
