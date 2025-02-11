@@ -112,6 +112,69 @@ void    testBuildTree_MultiNodes(void)
 	char *free_tokens[] = {"cmd1", "param1", ">", "infile1", "<", "infile2", ">", "outfile0", "|", "cmd2", "|", "cmd3", ">", "outfile1", "|", "cmd4", ">", "outfile2", ">", "outfile3"};
 	char **tokens = createTokens(free_tokens, 20);
 	t_ast *tree = build_tree(tokens, 20);
+	t_ast_node *root = tree->root;
+	TEST_ASSERT_EQUAL_INT(PIPE, root->type);
+	t_ast_node *pipe1 = root->left;
+	TEST_ASSERT_EQUAL_INT(PIPE, pipe1->type);
+	t_ast_node *pipe2 = pipe1->left;
+	TEST_ASSERT_EQUAL_INT(PIPE, pipe2->type);
+	t_ast_node *red1 = root->right;
+	TEST_ASSERT_EQUAL_INT(RED, red1->type);
+	t_red_prop *red1prop = (t_red_prop *)red1->prop;
+	TEST_ASSERT_EQUAL_INT(19, red1prop->idx);
+	t_ast_node *red21 = pipe1->right;
+	TEST_ASSERT_EQUAL_INT(RED, red21->type);
+	t_red_prop *red21prop = (t_red_prop *)red21->prop;
+	TEST_ASSERT_EQUAL_INT(13, red21prop->idx);
+	t_ast_node *red22 = red1->left;
+	TEST_ASSERT_EQUAL_INT(RED, red22->type);
+	t_red_prop *red22prop = (t_red_prop *)red22->prop;
+	TEST_ASSERT_EQUAL_INT(17, red22prop->idx);
+	t_ast_node *red3 = pipe2->left;
+	TEST_ASSERT_EQUAL_INT(RED, red3->type);
+	t_red_prop *red3prop = (t_red_prop *)red3->prop;
+	TEST_ASSERT_EQUAL_INT(7, red3prop->idx);
+	t_ast_node *cmd31 = pipe2->right;
+	TEST_ASSERT_EQUAL_INT(CMD, cmd31->type);
+	t_cmd_prop *cmd31prop = (t_cmd_prop *)cmd31->prop;
+	TEST_ASSERT_EQUAL_INT(9, cmd31prop->start);
+	t_ast_node *cmd32 = red21->left;
+	TEST_ASSERT_EQUAL_INT(CMD, cmd32->type);
+	t_cmd_prop *cmd32prop = (t_cmd_prop *)cmd32->prop;
+	TEST_ASSERT_EQUAL_INT(11, cmd32prop->start);
+	t_ast_node *cmd33 = red22->left;
+	TEST_ASSERT_EQUAL_INT(CMD, cmd33->type);
+	t_cmd_prop *cmd33prop = (t_cmd_prop *)cmd33->prop;
+	TEST_ASSERT_EQUAL_INT(15, cmd33prop->start);
+	t_ast_node *red4 = red3->left;
+	TEST_ASSERT_EQUAL_INT(RED, red4->type);
+	t_red_prop *red4prop = (t_red_prop *)red4->prop;
+	TEST_ASSERT_EQUAL_INT(5, red4prop->idx);
+	t_ast_node *red5 = red4->left;
+	TEST_ASSERT_EQUAL_INT(RED, red5->type);
+	t_red_prop *red5prop = (t_red_prop *)red5->prop;
+	TEST_ASSERT_EQUAL_INT(3, red5prop->idx);
+	t_ast_node *cmd6 = red5->left;
+	TEST_ASSERT_EQUAL_INT(CMD, cmd6->type);
+	t_cmd_prop *cmd6prop = (t_cmd_prop *)cmd6->prop;
+	TEST_ASSERT_EQUAL_INT(0, cmd6prop->start);
+	TEST_ASSERT_EQUAL_INT(2, cmd6prop->size);
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_OneCmd(void)
+{
+	char *free_tokens[] = {"cat", "a"};
+	char **tokens = createTokens(free_tokens, 2);
+	t_ast *tree = build_tree(tokens, 2);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
+	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
+	TEST_ASSERT_EQUAL_INT(0, prop->start);
+	TEST_ASSERT_EQUAL_INT(2, prop->size);
+	tree->root->node_handler(tree, tree->root);
 	close_ast(&tree);
     return ;
 }
@@ -125,5 +188,6 @@ int	main(void)
 	RUN_TEST(testBuildTree_OneCMD);
 	RUN_TEST(testBuildTree_ThreeNodes);
 	RUN_TEST(testBuildTree_MultiNodes);
+	
 	return (UNITY_END());
 }
