@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/10 20:05:36 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:26:42 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 # include <stdio.h>
 # include <sys/types.h>
 
-#ifndef PATH_MAX
-#define PATH_MAX 4096
-#endif
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
 
 # define DEBUG_FLAG 1
 # define INVALID_ERR_NO -1
@@ -104,7 +104,7 @@ typedef struct s_cmd_prop
 // `fd`: the file descriptor of a file.
 // `is_in`: `true` for `<` or `<<`.
 // `is_single`: `true` for `<` or '>'.
-// `is_skip`: when there is several reds with same direction, 
+// `is_skip`: when there is several reds with same direction,
 // only the right most `red` will set.
 // has been set.
 // `is_open`: is the file opened.
@@ -167,9 +167,8 @@ void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,
 								char *msg);
-int 						return_prt_err(int rtn_code, char *cmd,
+int							return_prt_err(int rtn_code, char *cmd,
 								char *filename, char *msg);
-
 
 // Built-in functions.
 
@@ -183,6 +182,6 @@ int							cmd_unset(t_ast *ast, t_cmd_prop *prop);
 int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 
-t_ast    					*build_tree(char **tokens, int tk_size);
+t_ast						*build_tree(char **tokens, int tk_size);
 
 #endif

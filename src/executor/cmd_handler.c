@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/10 19:15:33 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:26:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		generate_argv(t_ast *ast, t_cmd_prop *prop);
 int			return_process_res(int status);
 
 // @brief perform the preprocess here.
-// 
+//
 // - empty cmd check
 // - perform build-in function
 // - parsing full cmd
@@ -30,12 +30,12 @@ int			return_process_res(int status);
 // @param ast: the pointer to ast.
 // @param prop: the pointer to property of node.
 // @return status code.
-static int preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
+static int	preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 {
-    char *cmd;
-    int status;
-    
-    cmd = ast->tokens[prop->start];
+	char	*cmd;
+	int		status;
+
+	cmd = ast->tokens[prop->start];
 	if (is_empty_cmd(ast->tokens[prop->start]))
 		return (return_prt_err(EXIT_CMD_ERR, NULL, cmd, "command not found"));
 	if (is_builtin_func(ast->tokens[prop->start]))
@@ -44,13 +44,13 @@ static int preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 	if (status != 0)
 		return (status);
 	generate_argv(ast, prop);
-    return (EXIT_OK);
+	return (EXIT_OK);
 }
 
 // @ brief to execute the `cmd` node.
 //
 // The command node is a leaf node.
-// 
+//
 // We preprocess the node at first:
 //   - errer handling, built-in function, path parsing, etc...
 // Then create a new subprocess to execute the cmd.
@@ -73,7 +73,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: fork");
 	if (prop->pid == 0 && execve(prop->full_cmd, prop->argv, NULL) < 0)
 		return (return_prt_err(EXIT_FAIL, "minishell", ast->tokens[prop->start],
-			NULL));
+				NULL));
 	waitpid(prop->pid, &status, 0);
 	return (return_process_res(status));
 }

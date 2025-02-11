@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 07:45:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 11:33:02 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:26:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	is_builtin_func(char *cmd)
 // @return the status code.
 int	exec_builtin_func(t_ast *ast, t_cmd_prop *prop)
 {
-	char *cmd;
+	char	*cmd;
 
 	cmd = ast->tokens[prop->size];
 	if (ft_strncmp(cmd, "cd", 3) == 0)

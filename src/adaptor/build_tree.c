@@ -6,15 +6,16 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/10 18:55:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:25:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libs/libft/libft.h"
 #include "../include/executor.h"
+#include "../libs/libft/libft.h"
 #include <unistd.h>
 
-void build_red_node(t_ast *tree, t_ast_node **node, int left, int right);
+void				build_red_node(t_ast *tree, t_ast_node **node, int left,
+						int right);
 
 // @brief to build a cmd node.
 //
@@ -24,11 +25,11 @@ void build_red_node(t_ast *tree, t_ast_node **node, int left, int right);
 // @param node: the pointer to the node to be created.
 // @param left: the left index of tokens.
 // @param right: the right index of tokens.
-static void build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
+static void	build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
 {
-    if (left > right)
-        return  ;
-    *node = create_cmd_node(tree, left, right - left + 1);
+	if (left > right)
+		return ;
+	*node = create_cmd_node(tree, left, right - left + 1);
 }
 
 // @brief helper function for build_red_node.
@@ -39,14 +40,14 @@ static void build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
 // @param is_in: is < or >.
 // @param is_single: is << or <.
 // @return the created red node.
-static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
-    bool is_single)
+static t_ast_node	*build_red_node_helper(t_ast *tree, int *params, bool is_in,
+		bool is_single)
 {
-    t_ast_node  *node;
-    
-    node = create_red_node(tree, params[0], is_in, is_single);
-    build_red_node(tree, &(node->left), params[1], params[0] - 1);
-    return (node);
+	t_ast_node	*node;
+
+	node = create_red_node(tree, params[0], is_in, is_single);
+	build_red_node(tree, &(node->left), params[1], params[0] - 1);
+	return (node);
 }
 
 // @brief to build a red node.
@@ -54,7 +55,7 @@ static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
 // A red node has only left child which can be another red node or cmd node.
 //
 // We iterate from right to left, try to find a red node.
-// When not found: 
+// When not found:
 //   - restart the iteration, and try to find a cmd node.
 // When found:
 //   - We try to find another red node on the left.
@@ -63,42 +64,42 @@ static t_ast_node *build_red_node_helper(t_ast *tree, int *params, bool is_in,
 // @param node: the pointer to the node to be created.
 // @param left: the left index of tokens.
 // @param right: the right index of tokens.
-void build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
+void	build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 {
-    int curr;
-    int params[3];
+	int	curr;
+	int	params[3];
 
-    if (left > right)
-        return  ;
-    curr = right;
-    params[1] = left;
-    params[2] = right;
-    while (curr-- >= left)
-    {
-        params[0] = curr - 1;
-        if (ft_strncmp(tree->tokens[curr + 1], "<", 2) == 0)
-            *node = build_red_node_helper(tree, params, true, true);
-        else if (ft_strncmp(tree->tokens[curr + 1], "<<", 3) == 0)
-            *node = build_red_node_helper(tree, params, true, false);
-        else if (ft_strncmp(tree->tokens[curr + 1], ">", 2) == 0)
-            *node = build_red_node_helper(tree, params, false, true);
-        else if (ft_strncmp(tree->tokens[curr + 1], ">>", 3) == 0)
-            *node = build_red_node_helper(tree, params, false, false);
-        else
-            continue;       
-        return  ;
-    }
-    build_cmd_node(tree, node, left, right);    
+	if (left > right)
+		return ;
+	curr = right;
+	params[1] = left;
+	params[2] = right;
+	while (curr-- >= left)
+	{
+		params[0] = curr - 1;
+		if (ft_strncmp(tree->tokens[curr + 1], "<", 2) == 0)
+			*node = build_red_node_helper(tree, params, true, true);
+		else if (ft_strncmp(tree->tokens[curr + 1], "<<", 3) == 0)
+			*node = build_red_node_helper(tree, params, true, false);
+		else if (ft_strncmp(tree->tokens[curr + 1], ">", 2) == 0)
+			*node = build_red_node_helper(tree, params, false, true);
+		else if (ft_strncmp(tree->tokens[curr + 1], ">>", 3) == 0)
+			*node = build_red_node_helper(tree, params, false, false);
+		else
+			continue ;
+		return ;
+	}
+	build_cmd_node(tree, node, left, right);
 }
 
 // @brief to build a pipe node.
 //
 // A pipe node has 2 children.
 // The left child can be another pipe node, a red node, or a cmd node.
-// The right child can be a red node, or a cmd node. 
+// The right child can be a red node, or a cmd node.
 //
 // We iterate from right to left, try to find a pipe node.
-// When not found: 
+// When not found:
 //   - restart the iteration, and try to find a red node.
 // When found:
 //   - We try to find a red node on the right.
@@ -111,26 +112,26 @@ void build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 // @param node: the pointer to the node to be created.
 // @param left: the left index of tokens.
 // @param right: the right index of tokens.
-static void build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
+static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 {
-    int curr;
+	int	curr;
 
-    if (left > right)
-        return  ;
-    curr = right;
-    while (curr >= left)
-    {
-        if (ft_strncmp(tree->tokens[curr], "|", 2) == 0 ||
-        ft_strncmp(tree->tokens[curr], "||", 3) == 0)
-        {
-            *node = create_pipe_node(tree);
-            build_pipe_node(tree, &((*node)->left), left, curr - 1);
-            build_red_node(tree, &((*node)->right), curr + 1, right);
-            return  ;
-        }
-        --curr;
-    }
-    build_red_node(tree, node, left, right);
+	if (left > right)
+		return ;
+	curr = right;
+	while (curr >= left)
+	{
+		if (ft_strncmp(tree->tokens[curr], "|", 2) == 0
+			|| ft_strncmp(tree->tokens[curr], "||", 3) == 0)
+		{
+			*node = create_pipe_node(tree);
+			build_pipe_node(tree, &((*node)->left), left, curr - 1);
+			build_red_node(tree, &((*node)->right), curr + 1, right);
+			return ;
+		}
+		--curr;
+	}
+	build_red_node(tree, node, left, right);
 }
 
 // @brief build the ast by given array of tokens.
@@ -149,24 +150,24 @@ static void build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 //                   Pipe1     Red(> outfile1)   Red(> outfile2)
 //                   /   /         /                /
 //       Red(> outfile0)  Cmd2    Cmd3             Cmd4
-//         /               
+//         /
 //    Red(< infile2)
 //      /
 //  Red(> infile1)
 //   /
 //  Cmd
-// 
+//
 // @param ast: the pointer to ast.
 // @param tokens: the array of tokens.
-t_ast    *build_tree(char **tokens, int tk_size)
+t_ast	*build_tree(char **tokens, int tk_size)
 {
-    t_ast *tree;
+	t_ast	*tree;
 
-    tree = create_ast(tokens, tk_size);
-    tree->fd_in = dup(STDIN_FILENO);
-    tree->fd_out = dup(STDOUT_FILENO);
-    if (tree->fd_in == -1 || tree->fd_out == -1)
-        exit_with_err(&tree, EXIT_FAIL, "minishell: dup");
-    build_pipe_node(tree, &(tree->root), 0, tk_size - 1);
-    return (tree);
+	tree = create_ast(tokens, tk_size);
+	tree->fd_in = dup(STDIN_FILENO);
+	tree->fd_out = dup(STDOUT_FILENO);
+	if (tree->fd_in == -1 || tree->fd_out == -1)
+		exit_with_err(&tree, EXIT_FAIL, "minishell: dup");
+	build_pipe_node(tree, &(tree->root), 0, tk_size - 1);
+	return (tree);
 }

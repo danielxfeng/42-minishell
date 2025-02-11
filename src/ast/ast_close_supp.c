@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/10 20:03:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:25:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static void	close_fds_helper(t_ast *ast)
 // @return status code.
 int	close_fds(t_ast *ast)
 {
-	int stdin_backup;
-	int stdout_backup;
-	int status;
+	int	stdin_backup;
+	int	stdout_backup;
+	int	status;
 
 	status = EXIT_OK;
 	stdin_backup = dup(STDIN_FILENO);
@@ -60,8 +60,8 @@ int	close_fds(t_ast *ast)
 		status = EXIT_FAIL;
 		perror("minishell: dup");
 	}
-	if (status == EXIT_OK && 
-		dup2(stdin_backup, STDIN_FILENO) || dup2(stdout_backup, STDOUT_FILENO))
+	if (status == EXIT_OK && dup2(stdin_backup, STDIN_FILENO)
+		|| dup2(stdout_backup, STDOUT_FILENO))
 	{
 		status = EXIT_FAIL;
 		perror("minishell: dup2");
