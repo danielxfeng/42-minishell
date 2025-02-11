@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 17:09:33 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 19:41:26 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ void	build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 	while (--curr >= left)
 	{
 		params[0] = curr;
-		if (ft_strncmp(tree->tokens[curr], "<", 2) == 0)
+		if (ms_strcmp(tree->tokens[curr], "<") == 0)
 			*node = build_red_node_helper(tree, params, true, true);
-		else if (ft_strncmp(tree->tokens[curr], "<<", 3) == 0)
+		else if (ms_strcmp(tree->tokens[curr], "<<") == 0)
 			*node = build_red_node_helper(tree, params, true, false);
-		else if (ft_strncmp(tree->tokens[curr], ">", 2) == 0)
+		else if (ms_strcmp(tree->tokens[curr], ">") == 0)
 			*node = build_red_node_helper(tree, params, false, true);
-		else if (ft_strncmp(tree->tokens[curr], ">>", 3) == 0)
+		else if (ms_strcmp(tree->tokens[curr], ">>") == 0)
 			*node = build_red_node_helper(tree, params, false, false);
 		else
 			continue ;
@@ -121,8 +121,8 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 	curr = right;
 	while (curr >= left)
 	{
-		if (ft_strncmp(tree->tokens[curr], "|", 2) == 0
-			|| ft_strncmp(tree->tokens[curr], "||", 3) == 0)
+		if (ms_strcmp(tree->tokens[curr], "|") == 0
+			|| ms_strcmp(tree->tokens[curr], "||") == 0)
 		{
 			*node = create_pipe_node(tree);
 			build_pipe_node(tree, &((*node)->left), left, curr - 1);

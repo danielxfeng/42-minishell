@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 11:58:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 19:39:30 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,5 +183,9 @@ int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 
 t_ast						*build_tree(char **tokens, int tk_size);
+
+// Utils
+
+int 						ms_strcmp(char *s1, char *s2);
 
 #endif

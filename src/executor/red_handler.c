@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 17:10:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 19:44:32 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if ((ft_strncmp(eof, line, ft_strlen(eof)) == 0)
+		if ((ms_strcmp(eof, line) == 0)
 			&& line[ft_strlen(eof)] == '\n')
 		{
 			free(line);

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 10:26:14 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 19:44:08 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 // @return if the cmd is with absolute path or relative path.
 bool	is_relative_or_absolute_cmd(char *cmd)
 {
-	if (ft_strncmp("/", cmd, 1) || ft_strncmp("./", cmd, 2) || ft_strncmp("../",
-			cmd, 3))
+	if (ms_strcmp("/", cmd) || ms_strcmp("./", cmd) || ms_strcmp("../", cmd))
 		return (true);
 	return (false);
 }

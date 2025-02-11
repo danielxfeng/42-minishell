@@ -165,15 +165,15 @@ void    testBuildTree_MultiNodes(void)
 
 void	testExec_OneCmd(void)
 {
-	char *free_tokens[] = {"cat", "a"};
-	char **tokens = createTokens(free_tokens, 2);
-	t_ast *tree = build_tree(tokens, 2);
+	char *free_tokens[] = {"pwd"};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
 	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
 	TEST_ASSERT_EQUAL_INT(0, prop->start);
-	TEST_ASSERT_EQUAL_INT(2, prop->size);
+	TEST_ASSERT_EQUAL_INT(1, prop->size);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;

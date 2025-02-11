@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 10:26:08 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 19:42:48 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 
 	bool line_break ;
 	line_break = false;
-	if (prop->size > 1 && (ft_strncmp(ast->tokens[prop->start + 1], "-n",
-				3) == 0))
+	if (prop->size > 1 && (ms_strcmp(ast->tokens[prop->start + 1], "-n") == 0))
 		line_break = true;
 	i = 1;
 	if (line_break)
@@ -85,10 +84,9 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 	if (prop->size != 1 && prop->size != 2)
 		return_prt_err(EXIT_FAIL, "minishell", "exit", "too many arguments");
 	status = EXIT_OK;
-	if (prop->size == 2 && (ft_strncmp(ast->tokens[prop->start + 1], "0",
-				2) != 0 && ft_strncmp(ast->tokens[prop->start + 1], "+0",
-				3) != 0 && ft_strncmp(ast->tokens[prop->start + 1], "-0",
-				3) != 0))
+	if (prop->size == 2 && (ms_strcmp(ast->tokens[prop->start + 1], "0") != 0 &&
+	ms_strcmp(ast->tokens[prop->start + 1], "+0") != 0 &&
+	ms_strcmp(ast->tokens[prop->start + 1], "-0") != 0))
 	{
 		status = ft_atoi(ast->tokens[prop->start + 1]);
 		if (status == 0)
