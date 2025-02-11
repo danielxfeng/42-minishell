@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 10:26:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 17:10:43 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 	t_cmd_prop	*prop;
 	int			status;
 
-	debug_print_ast(ast, ast_node, "");
+	debug_print_ast(ast, ast_node, "Exec Cmd.");
 	prop = (t_cmd_prop *)ast_node->prop;
 	status = preprocess_cmd(ast, prop);
 	if (status != EXIT_OK)

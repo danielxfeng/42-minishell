@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 10:26:33 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 17:10:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	t_red_prop	*prop;
 	int			res;
 
-	debug_print_ast(ast, ast_node, "");
+	debug_print_ast(ast, ast_node, "Exec Red.");
 	prop = (t_red_prop *)ast_node->prop;
 	if (!prop->is_skip)
 		open_file(ast, ast_node, prop, prop->is_in);

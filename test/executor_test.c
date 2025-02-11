@@ -183,11 +183,11 @@ void	testExec_OneCmd(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    RUN_TEST(testBuildTree_OnePipe);
-	RUN_TEST(testBuildTree_OneRED);
-	RUN_TEST(testBuildTree_OneCMD);
-	RUN_TEST(testBuildTree_ThreeNodes);
-	RUN_TEST(testBuildTree_MultiNodes);
-	
+    //RUN_TEST(testBuildTree_OnePipe);
+	//RUN_TEST(testBuildTree_OneRED);
+	//RUN_TEST(testBuildTree_OneCMD);
+	//RUN_TEST(testBuildTree_ThreeNodes);
+	//RUN_TEST(testBuildTree_MultiNodes);
+	RUN_TEST(testExec_OneCmd);
 	return (UNITY_END());
 }

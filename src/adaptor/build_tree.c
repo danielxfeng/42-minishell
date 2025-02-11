@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 15:19:07 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 17:09:33 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,6 @@ t_ast	*build_tree(char **tokens, int tk_size)
 	if (tree->fd_in == -1 || tree->fd_out == -1)
 		exit_with_err(&tree, EXIT_FAIL, "minishell: dup");
 	build_pipe_node(tree, &(tree->root), 0, tk_size - 1);
-	debug_print_ast(tree, tree->root, "");
+	debug_print_ast(tree, tree->root, "Build tree");
 	return (tree);
 }
