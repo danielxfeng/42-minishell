@@ -68,6 +68,20 @@ void    testBuildTree_OneCMD(void)
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
+	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
+	TEST_ASSERT_EQUAL_INT(0, prop->start);
+	TEST_ASSERT_EQUAL_INT(4, prop->size);
+	close_ast(&tree);
+    return ;
+}
+
+void    testBuildTree_ThreeNodes(void)
+{
+	char *free_tokens[] = {"cmd1", "param1", "param2", "<", "a", "|", "cmd2", "<<", "b"};
+	char **tokens = createTokens(free_tokens, 9);
+	t_ast *tree = build_tree(tokens, 9);
+
+	TEST_ASSERT_NOT_NULL(tree);
 	close_ast(&tree);
     return ;
 }
@@ -79,5 +93,6 @@ int	main(void)
     RUN_TEST(testBuildTree_OnePipe);
 	RUN_TEST(testBuildTree_OneRED);
 	RUN_TEST(testBuildTree_OneCMD);
+	RUN_TEST(testBuildTree_ThreeNodes);
 	return (UNITY_END());
 }

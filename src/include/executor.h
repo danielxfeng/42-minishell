@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 10:26:42 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 11:58:22 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_ast_node
 	int						(*node_handler)(t_ast *ast, t_ast_node *node);
 	void					(*node_closer)(t_ast_node *ast_node);
 	void					(*node_printer)(t_ast *ast, t_ast_node *n,
-							t_ast_node *c, char *m);
+							t_ast_node *c, int l);
 	t_ast_node				*left;
 	t_ast_node				*right;
 }							t_ast_node;
@@ -155,11 +155,11 @@ int							red_handler(t_ast *ast, t_ast_node *ast_node);
 void						debug_print_ast(t_ast *ast, t_ast_node *curr,
 								char *msg);
 void						print_pipe_node(t_ast *ast, t_ast_node *node,
-								t_ast_node *curr, char *msg);
+								t_ast_node *curr, int level);
 void						print_cmd_node(t_ast *ast, t_ast_node *node,
-								t_ast_node *curr, char *msg);
+								t_ast_node *curr, int level);
 void						print_red_node(t_ast *ast, t_ast_node *node,
-								t_ast_node *curr, char *msg);
+								t_ast_node *curr, int level);
 
 // Quit functions.
 
