@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:38:56 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 22:18:45 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 12:46:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_prompt(void)
 	if (shell.exit_status == EXIT_SUCCESS)
 		ft_putstr(GREEN);
 	else
-		ft_putstr(RED);
+		ft_putstr(RED_BOLD);
 	ft_putstr("minishell → ");
 	ft_putstr(RESET);
 }

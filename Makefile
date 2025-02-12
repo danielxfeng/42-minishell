@@ -6,7 +6,7 @@
 #    By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/08 15:25:33 by Xifeng            #+#    #+#              #
-#    Updated: 2025/02/08 19:12:40 by Xifeng           ###   ########.fr        #
+#    Updated: 2025/02/12 12:59:06 by Xifeng           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ FLAG := -Wall -Wextra -Werror
 LIBFT_DIR := ./src/libs/libft
 LIBFT := $(LIBFT_DIR)/libft.a
 HEADERS := -I ./src -I $(LIBFT_DIR)/libft.h #chage to /inc
-LINK := -L$(LIBFT_DIR) -lft -lncurses
+LINK := -L$(LIBFT_DIR) -lft -lncurses -lreadline
 
 SRC_DIR := src
 #SRC := $(shell ls src/*.c)

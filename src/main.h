@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 20:37:02 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 12:24:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 12:57:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <errno.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # include "struct.h"
 # include "utils/utils.h"
@@ -31,6 +33,7 @@
 # include "constants.h"
 # include "input/input.h"
 # include "parse/parse.h"
+
 
 int	minishell(int ac, char **av, char **envp);
 

@@ -6,11 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 20:01:39 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 13:00:10 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 14:23:29 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+#include "./include/executor.h"
 
 void print_tokens(char **tokens);
 
@@ -41,6 +42,12 @@ int	minishell(int ac, char **av, char **envp)
 		enable_canonical_mode(&shell.termcaps);
 		char **tokens = tokenize((const char *)input -> data);
 		print_tokens(tokens);
+		int i = 0;
+		while (tokens[i])
+			++i;
+		t_ast *tree = build_tree(tokens, i);
+		tree->root->node_handler(tree, tree->root);
+		close_ast(&tree);
 	}
 	return (0);
 }
