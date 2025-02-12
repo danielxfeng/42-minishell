@@ -163,6 +163,7 @@ void    testBuildTree_MultiNodes(void)
     return ;
 }
 
+// "cat ./pg/a"
 void	testExec_OneCmd(void)
 {
 	char *free_tokens[] = {"cat", "./pg/a"};
@@ -179,8 +180,10 @@ void	testExec_OneCmd(void)
     return ;
 }
 
+//"cat < ./pg/a > ./pg/c"
 void	testExec_CmdRed(void)
 {
+
 	char *free_tokens[] = {"cat", "./pg/a", ">", "./pg/c"};
 	char **tokens = createTokens(free_tokens, 4);
 	t_ast *tree = build_tree(tokens, 4);
@@ -191,6 +194,7 @@ void	testExec_CmdRed(void)
     return ;
 }
 
+//"cat < ./pg/a | cat > ./pg/c"
 void	testExec_CmdRedPipe(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", "|", "cat", ">", "./pg/c"};
@@ -205,6 +209,7 @@ void	testExec_CmdRedPipe(void)
 
 void	testExec_MultiRedPipe(void)
 {
+	//"cat < ./pg/a < ./pg/b"
 	char *free_tokens[] = {"cat", "<", "./pg/a", "<", "./pg/b"};
 	char **tokens = createTokens(free_tokens, 5);
 	t_ast *tree = build_tree(tokens, 5);
@@ -215,14 +220,86 @@ void	testExec_MultiRedPipe(void)
     return ;
 }
 
-void	testExec_CornerCases(void)
+void	testExec_NonExistCmdRelative(void)
 {
-	char *free_tokens[] = {"cat", "<", "./pg/b", "./pg/a"};
-	char **tokens = createTokens(free_tokens, 5);
-	t_ast *tree = build_tree(tokens, 5);
+	char *free_tokens[] = {"./pg/nonexist"};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_NonExistCmd(void)
+{
+	char *free_tokens[] = {"noexist"};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(127, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_NoReadCmd(void)
+{
+	char *free_tokens[] = {"./pg/cannotread"};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_NoWriteCmd(void)
+{
+	char *free_tokens[] = {"./pg/cannotwrite"};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_Dir(void)
+{
+	char *free_tokens[] = {"./pg/dir"};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_EmptyCmd(void)
+{
+	char *free_tokens[] = {"   "};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_NotProgram(void)
+{
+	char *free_tokens[] = {"./pg/notprog"};
+	char **tokens = createTokens(free_tokens, 1);
+	t_ast *tree = build_tree(tokens, 1);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
 }
@@ -242,7 +319,13 @@ int	main(void)
 	//RUN_TEST(testExec_OneCmd);
 	//RUN_TEST(testExec_CmdRed);
 	//RUN_TEST(testExec_CmdRedPipe);
-	//RUN_TEST(testExec_CornerCases);
-	RUN_TEST(testExec_MultiRedPipe);
+	//RUN_TEST(testExec_MultiRedPipe);
+	//RUN_TEST(testExec_NonExistCmdRelative);
+	//RUN_TEST(testExec_NonExistCmd);
+	//RUN_TEST(testExec_NoReadCmd);
+	//RUN_TEST(testExec_NoWriteCmd);
+	//RUN_TEST(testExec_EmptyCmd);
+	//RUN_TEST(testExec_Dir);
+	//RUN_TEST(testExec_NotProgram);
 	return (UNITY_END());
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 09:26:32 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 09:33:34 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,16 +121,17 @@ static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 		bool is_in)
 {
-	int	res;
+	int			res;
+	t_red_prop	*child_prop;
 
 	if (node->left && node->left->type == RED)
 	{
-		prop = (t_red_prop *)node->left->prop;
-		if (prop->is_in == is_in && prop->is_skip)
+		child_prop = (t_red_prop *)node->left->prop;
+		if (child_prop->is_in == is_in && child_prop->is_skip)
 			return (EXIT_OK);
-		if (prop->is_in == is_in)
-			prop->is_skip = true;
-		res = open_file(ast, node->left, prop, is_in);
+		if (child_prop->is_in == is_in)
+			child_prop->is_skip = true;
+		res = open_file(ast, node->left, child_prop, is_in);
 		if (res != EXIT_OK)
 			return (res);
 	}
