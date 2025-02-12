@@ -6,16 +6,16 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 12:11:28 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 13:46:30 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
 #include <errno.h>
+#include <readline/readline.h>
 #include <fcntl.h>
 #include <readline/history.h>
-#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -36,7 +36,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if ((ms_strcmp(eof, line) == 0) && line[ft_strlen(eof)] == '\n')
+		if ((ms_strcmp(eof, line) == 0))
 		{
 			free(line);
 			line = NULL;
@@ -57,10 +57,8 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop)
 // @return the status code.
 static int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 {
-	int		status;
 	int		stdin_backup;
 	int		stdout_backup;
-	char	*line;
 
 	if (!prop->is_skip)
 	{
@@ -171,6 +169,7 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	t_red_prop	*prop;
 	int			res;
 
+	res = EXIT_OK;
 	debug_print_ast(ast, ast_node, "Exec Red.");
 	prop = (t_red_prop *)ast_node->prop;
 	if (!prop->is_skip)

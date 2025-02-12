@@ -353,6 +353,15 @@ void	testExec_MultiNotExistRed(void)
     return ;
 }
 
+void	testDoubleRed(void)
+{
+	char *free_tokens[] = {"cat", "<<", "eof"};
+	char **tokens = createTokens(free_tokens, 3);
+	t_ast *tree = build_tree(tokens, 3);
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -379,6 +388,7 @@ int	main(void)
 	//RUN_TEST(testExec_MultiPipe);
 	//RUN_TEST(testExec_MultiRed);
 	//RUN_TEST(testExec_RedNotExist);
-	RUN_TEST(testExec_MultiNotExistRed);
+	//RUN_TEST(testExec_MultiNotExistRed);
+	RUN_TEST(testDoubleRed);
 	return (UNITY_END());
 }

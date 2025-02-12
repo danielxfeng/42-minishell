@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 11:37:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 12:48:16 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	close_fds(t_ast *ast)
 		status = EXIT_FAIL;
 		perror("minishell: dup");
 	}
-	if (status == EXIT_OK && dup2(stdin_backup, STDIN_FILENO) == -1
-		|| dup2(stdout_backup, STDOUT_FILENO) == -1)
+	if (status == EXIT_OK && (dup2(stdin_backup, STDIN_FILENO) == -1
+		|| dup2(stdout_backup, STDOUT_FILENO) == -1))
 	{
 		status = EXIT_FAIL;
 		perror("minishell: dup2");

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 09:26:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 12:50:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 {
 	char	dir[PATH_MAX + 1];
 
+	(void)ast;
+	(void)prop;
 	if (getcwd(dir, sizeof(dir)) == NULL)
 		return_prt_err(EXIT_FAIL, "minishell", "pwd", NULL);
 	printf("%s\n", dir);
