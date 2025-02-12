@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 09:33:34 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 12:11:28 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 	int			res;
 	t_red_prop	*child_prop;
 
+	res = EXIT_OK;
 	if (node->left && node->left->type == RED)
 	{
 		child_prop = (t_red_prop *)node->left->prop;
@@ -132,8 +133,8 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 		if (child_prop->is_in == is_in)
 			child_prop->is_skip = true;
 		res = open_file(ast, node->left, child_prop, is_in);
-		if (res != EXIT_OK)
-			return (res);
+		//if (res != EXIT_OK)
+		//	return (res);
 	}
 	if (!prop->is_open)
 	{
@@ -144,7 +145,7 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 		if (res != EXIT_OK)
 			return (res);
 	}
-	return (EXIT_OK);
+	return (res);
 }
 
 // @brief the executor of a `red` node.
@@ -173,7 +174,9 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	debug_print_ast(ast, ast_node, "Exec Red.");
 	prop = (t_red_prop *)ast_node->prop;
 	if (!prop->is_skip)
-		open_file(ast, ast_node, prop, prop->is_in);
+		res = open_file(ast, ast_node, prop, prop->is_in);
+	if (res != EXIT_OK)
+		return (res);
 	if (!prop->is_skip)
 	{
 		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) || (!(prop->is_in)

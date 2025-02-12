@@ -317,13 +317,49 @@ void	testExec_MultiPipe(void)
     return ;
 }
 
+void	testExec_MultiRed(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/a", "<", "./pg/b"};
+	char **tokens = createTokens(free_tokens, 5);
+	t_ast *tree = build_tree(tokens, 5);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_RedNotExist(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/d"};
+	char **tokens = createTokens(free_tokens, 3);
+	t_ast *tree = build_tree(tokens, 3);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_MultiNotExistRed(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/d", "<", "./pg/e"};
+	char **tokens = createTokens(free_tokens, 5);
+	t_ast *tree = build_tree(tokens, 5);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
 // Main function to run the tests
 int	main(void)
 {
 	UNITY_BEGIN();
     //RUN_TEST(testBuildTree_OnePipe);
 	//RUN_TEST(testBuildTree_OneRED);
-	//RUN_TEST(testBuildTree_OneCMD);ca
+	//RUN_TEST(testBuildTree_OneCMD);
 	//RUN_TEST(testBuildTree_ThreeNodes);
 	//RUN_TEST(testBuildTree_MultiNodes);
 	
@@ -340,6 +376,9 @@ int	main(void)
 	//RUN_TEST(testExec_EmptyCmd);
 	//RUN_TEST(testExec_Dir);
 	//RUN_TEST(testExec_NotProgram);
-	RUN_TEST(testExec_MultiPipe);
+	//RUN_TEST(testExec_MultiPipe);
+	//RUN_TEST(testExec_MultiRed);
+	//RUN_TEST(testExec_RedNotExist);
+	RUN_TEST(testExec_MultiNotExistRed);
 	return (UNITY_END());
 }
