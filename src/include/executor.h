@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 14:15:12 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:00:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #  define PATH_MAX 4096
 # endif
 
-# define DEBUG_FLAG 1
+# define DEBUG_FLAG 0
 # define INVALID_ERR_NO -1
 # define STD_IN 0
 # define STD_OUT 1
