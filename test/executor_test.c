@@ -395,6 +395,45 @@ void	testExec_MultiComplexRed(void)
     return ;
 }
 
+// "cat << eof"
+void	testExec_Heredoc(void)
+{
+	char *free_tokens[] = {"cat", "<<", "eof"};
+	char **tokens = createTokens(free_tokens, 3);
+	t_ast *tree = build_tree(tokens, 3);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+// "cat << eof << eof"
+void	testExec_MultiHeredoc(void)
+{
+	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof"};
+	char **tokens = createTokens(free_tokens, 5);
+	t_ast *tree = build_tree(tokens, 5);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+// "cat << eof << eof | << eof"
+void	testExec_MultiHeredocWithPipe(void)
+{
+	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof", "|", "cat", "<<", "eof"};
+	char **tokens = createTokens(free_tokens, 9);
+	t_ast *tree = build_tree(tokens, 9);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -425,6 +464,9 @@ int	main(void)
 	//RUN_TEST(testDoubleRed);
 	//RUN_TEST(testExec_RedNotRead);
 	//RUN_TEST(testExec_RedDir);
-	RUN_TEST(testExec_MultiComplexRed);
+	//RUN_TEST(testExec_MultiComplexRed);
+	//RUN_TEST(testExec_Heredoc);
+	//RUN_TEST(testExec_MultiHeredoc);
+	RUN_TEST(testExec_MultiHeredocWithPipe);
 	return (UNITY_END());
 }

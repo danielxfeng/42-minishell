@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 10:42:49 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:52:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 	prop->pid = fork();
 	if (prop->pid < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: fork");
+	// TODO: add envp here.
 	if (prop->pid == 0)
 		execve(prop->full_cmd, prop->argv, NULL);
 	waitpid(prop->pid, &status, 0);

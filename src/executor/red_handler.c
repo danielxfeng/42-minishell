@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 18:20:43 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 19:54:19 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,13 @@ static int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	if (dup2(stdin_backup, STDIN_FILENO) < 0 || dup2(stdout_backup,
 			STDOUT_FILENO) < 0)
 		return_with_err(INVALID_ERR_NO, EXIT_FAIL, "minishell: dup2");
+	if (!prop->is_skip)
+	{
+		close(prop->fd);
+		prop->fd = open("./here_doc_tmp", O_RDONLY);
+		if (prop->fd < 0)
+			exit_with_err(&ast, EXIT_FAIL, "minishell: open");	
+	}
 	return (EXIT_OK);
 }
 
@@ -178,11 +185,11 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 				&& dup2(prop->fd, STDOUT_FILENO) < 0))
 			exit_with_err(&ast, EXIT_FAIL, "minishell: dup2");
 	}
+	if (ast_node->left)
+		res = ast_node->left->node_handler(ast, ast_node->left);
 	close(prop->fd);
 	prop->fd = -1;
 	if (!prop->is_skip && prop->is_in && !(prop->is_single))
 		unlink("./here_doc_tmp");
-	if (ast_node->left)
-		res = ast_node->left->node_handler(ast, ast_node->left);
 	return (res);
 }
