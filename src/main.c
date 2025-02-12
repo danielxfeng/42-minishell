@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 20:01:39 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 14:23:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:45:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	minishell(int ac, char **av, char **envp)
 		ft_dlstadd_front(&shell.history, input);
 		if (!is_input_valid((const char *)input->data))
 			continue ;
-		enable_canonical_mode(&shell.termcaps);
+		enable_canonical_mode(&shell.termcaps); 
 		char **tokens = tokenize((const char *)input -> data);
 		print_tokens(tokens);
 		int i = 0;
