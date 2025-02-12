@@ -304,6 +304,19 @@ void	testExec_NotProgram(void)
     return ;
 }
 
+// cat ./pg/a | cat | cat
+void	testExec_MultiPipe(void)
+{
+	char *free_tokens[] = {"cat", "./pg/a", "|", "cat", "|", "cat"};
+	char **tokens = createTokens(free_tokens, 6);
+	t_ast *tree = build_tree(tokens, 6);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -327,5 +340,6 @@ int	main(void)
 	//RUN_TEST(testExec_EmptyCmd);
 	//RUN_TEST(testExec_Dir);
 	//RUN_TEST(testExec_NotProgram);
+	RUN_TEST(testExec_MultiPipe);
 	return (UNITY_END());
 }
