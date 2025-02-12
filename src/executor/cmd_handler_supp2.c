@@ -6,12 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 07:50:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 08:17:19 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 10:42:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
+#include <stdlib.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -60,17 +61,14 @@ static int	check_cmd(t_ast *ast, t_cmd_prop *prop)
 {
 	struct stat	buf;
 
-	if (access(prop->full_cmd, F_OK) < 0)
-		return (return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],
-			"command not found"));
-	if (access(prop->full_cmd, X_OK) < 0)
-		return (return_prt_err(EXIT_EXEC_ERR, "minishell", ast->tokens[prop->start],
-			NULL));
+	if (access(prop->full_cmd, R_OK) < 0 || access(prop->full_cmd, X_OK) < 0)
+		return (return_prt_err(EXIT_EXEC_ERR, "minishell",
+				ast->tokens[prop->start], NULL));
 	stat(prop->full_cmd, &buf);
 	if (S_ISDIR(buf.st_mode))
-		return (return_prt_err(EXIT_EXEC_ERR, "minishell", ast->tokens[prop->start],
-			"Is a directory"));
-	return (true);
+		return (return_prt_err(EXIT_EXEC_ERR, "minishell",
+				ast->tokens[prop->start], "Is a directory"));
+	return (EXIT_OK);
 }
 
 // @brief generate the argv for cmd.
@@ -99,9 +97,13 @@ void	generate_argv(t_ast *ast, t_cmd_prop *prop)
 // @return the status.
 int	parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop)
 {
-	if (!(is_relative_or_absolute_cmd(ast->tokens[prop->start])) ||
-	 !(parse_full_cmd(ast, prop)))
-		return (return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],
-			 "command not found"));
-	return (check_cmd(ast, prop));
+	if (is_relative_or_absolute_cmd(ast->tokens[prop->start]))
+	{
+		prop->full_cmd = ft_strdup(ast->tokens[prop->start]);	
+		return (check_cmd(ast, prop));
+	}	
+	if (parse_full_cmd(ast, prop))
+		return (check_cmd(ast, prop));
+	return (return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],
+			"command not found"));
 }

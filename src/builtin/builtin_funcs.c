@@ -6,25 +6,24 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 11:33:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 09:26:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libs/libft/libft.h"
 #include "../include/executor.h"
-#include <stdlib.h>
+#include "../libs/libft/libft.h"
 #include <errno.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 // @brief `echo` with option `-n`
 int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 {
-	int		i;
-	bool	line_break;
+	int	i;
 
+	bool line_break ;
 	line_break = false;
-	if (prop->size > 1 && 
-		(ft_strncmp(ast->tokens[prop->start + 1], "-n", 3) == 0))
+	if (prop->size > 1 && (ms_strcmp(ast->tokens[prop->start + 1], "-n") == 0))
 		line_break = true;
 	i = 1;
 	if (line_break)
@@ -38,16 +37,16 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 	}
 	if (!line_break)
 		printf("\n");
-	return EXIT_OK;
+	return (EXIT_OK);
 }
 
 // @brief `cd` with only a relative or absolute path
 int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 {
-	char *path;
-	char dir[PATH_MAX + 1];
-	
-	if (prop->size != 1 && prop->size != 2 )
+	char	*path;
+	char	dir[PATH_MAX + 1];
+
+	if (prop->size != 1 && prop->size != 2)
 		return_prt_err(EXIT_FAIL, "minishell", "cd", "too many arguments");
 	if (prop->size == 1)
 	{
@@ -56,7 +55,7 @@ int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 		{
 			if (getcwd(dir, sizeof(dir)) == NULL)
 				return_prt_err(EXIT_FAIL, "minishell", "cd", NULL);
-			path = dir;			
+			path = dir;
 		}
 	}
 	else
@@ -69,7 +68,7 @@ int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 // @brief `pwd` with no options
 int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 {
-	char dir[PATH_MAX + 1];
+	char	dir[PATH_MAX + 1];
 
 	if (getcwd(dir, sizeof(dir)) == NULL)
 		return_prt_err(EXIT_FAIL, "minishell", "pwd", NULL);
@@ -80,14 +79,14 @@ int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 // @brief `exit` with no options
 int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 {
-	int status;
-	
-    if (prop->size != 1 && prop->size != 2)
-        return_prt_err(EXIT_FAIL, "minishell", "exit", "too many arguments");
+	int	status;
+
+	if (prop->size != 1 && prop->size != 2)
+		return_prt_err(EXIT_FAIL, "minishell", "exit", "too many arguments");
 	status = EXIT_OK;
-	if (prop->size == 2 && (ft_strncmp(ast->tokens[prop->start + 1], "0", 2) != 0 &&
-		ft_strncmp(ast->tokens[prop->start + 1], "+0", 3) != 0 && 
-		ft_strncmp(ast->tokens[prop->start + 1], "-0", 3) != 0))
+	if (prop->size == 2 && (ms_strcmp(ast->tokens[prop->start + 1], "0") != 0
+			&& ms_strcmp(ast->tokens[prop->start + 1], "+0") != 0
+			&& ms_strcmp(ast->tokens[prop->start + 1], "-0") != 0))
 	{
 		status = ft_atoi(ast->tokens[prop->start + 1]);
 		if (status == 0)
@@ -98,7 +97,6 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 			status = EXIT_FAIL;
 		}
 	}
-	close_ast(&ast);
-    exit(status);
-	return(status);
+	exit_with_err(&ast, status, NULL);
+	return (status);
 }

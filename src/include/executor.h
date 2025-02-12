@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/08 20:55:45 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 09:26:42 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@
 # include <stdio.h>
 # include <sys/types.h>
 
-# define DEBUG_FLAG 1
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
+
+# define DEBUG_FLAG 0
 # define INVALID_ERR_NO -1
 # define STD_IN 0
 # define STD_OUT 1
@@ -73,7 +77,7 @@ typedef struct s_ast_node
 	int						(*node_handler)(t_ast *ast, t_ast_node *node);
 	void					(*node_closer)(t_ast_node *ast_node);
 	void					(*node_printer)(t_ast *ast, t_ast_node *n,
-							t_ast_node *c, char *m);
+							t_ast_node *c, int l);
 	t_ast_node				*left;
 	t_ast_node				*right;
 }							t_ast_node;
@@ -100,7 +104,7 @@ typedef struct s_cmd_prop
 // `fd`: the file descriptor of a file.
 // `is_in`: `true` for `<` or `<<`.
 // `is_single`: `true` for `<` or '>'.
-// `is_skip`: when there is several reds with same direction, 
+// `is_skip`: when there is several reds with same direction,
 // only the right most `red` will set.
 // has been set.
 // `is_open`: is the file opened.
@@ -135,7 +139,7 @@ t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in,
 
 // The destructors of AST.
 
-void						close_ast(t_ast **ast);
+int							close_ast(t_ast **ast);
 void						close_pipe_node(t_ast_node *node);
 void						close_cmd_node(t_ast_node *node);
 void						close_red_node(t_ast_node *node);
@@ -151,11 +155,11 @@ int							red_handler(t_ast *ast, t_ast_node *ast_node);
 void						debug_print_ast(t_ast *ast, t_ast_node *curr,
 								char *msg);
 void						print_pipe_node(t_ast *ast, t_ast_node *node,
-								t_ast_node *curr, char *msg);
+								t_ast_node *curr, int level);
 void						print_cmd_node(t_ast *ast, t_ast_node *node,
-								t_ast_node *curr, char *msg);
+								t_ast_node *curr, int level);
 void						print_red_node(t_ast *ast, t_ast_node *node,
-								t_ast_node *curr, char *msg);
+								t_ast_node *curr, int level);
 
 // Quit functions.
 
@@ -163,9 +167,8 @@ void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,
 								char *msg);
-int 						return_prt_err(int rtn_code, char *cmd,
+int							return_prt_err(int rtn_code, char *cmd,
 								char *filename, char *msg);
-
 
 // Built-in functions.
 
@@ -178,5 +181,11 @@ int							cmd_export(t_ast *ast, t_cmd_prop *prop);
 int							cmd_unset(t_ast *ast, t_cmd_prop *prop);
 int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
+
+t_ast						*build_tree(char **tokens, int tk_size);
+
+// Utils
+
+int							ms_strcmp(char *s1, char *s2);
 
 #endif

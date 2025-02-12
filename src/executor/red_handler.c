@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/09 07:04:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 09:33:34 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 #include "../libs/libft/libft.h"
 #include <errno.h>
 #include <fcntl.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 // @brief to run in a loop for reading lines from here_doc.
@@ -32,8 +36,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if ((ft_strncmp(eof, line, ft_strlen(eof)) == 0)
-			&& line[ft_strlen(eof)] == '\n')
+		if ((ms_strcmp(eof, line) == 0) && line[ft_strlen(eof)] == '\n')
 		{
 			free(line);
 			line = NULL;
@@ -63,7 +66,7 @@ static int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	{
 		prop->fd = open("./here_doc_tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (prop->fd < 0)
-			exit_with_err(&ast, EXIT_FAIL, "minishell: open");		
+			exit_with_err(&ast, EXIT_FAIL, "minishell: open");
 	}
 	stdin_backup = dup(STDIN_FILENO);
 	stdout_backup = dup(STDOUT_FILENO);
@@ -101,13 +104,9 @@ static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 			open_code = O_WRONLY | O_CREAT | O_APPEND;
 	}
 	file_name = ast->tokens[prop->idx];
-	if (access(file_name, F_OK) == -1)
-		return (return_with_err(ENOENT, EXIT_FAIL, file_name)); // todo
-	if (access(file_name, access_code) == -1)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name)); // todo
 	prop->fd = open(file_name, open_code, 0644);
 	if (prop->fd < 0)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name)); // todo
+		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name));
 	prop->is_open = true;
 	return (EXIT_OK);
 }
@@ -119,26 +118,31 @@ static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 // @param prop: the property of the node.
 // @param is_in: the direction of the node.
 // @return the status code.
-static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop, bool is_in)
+static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
+		bool is_in)
 {
-	int	res;
+	int			res;
+	t_red_prop	*child_prop;
 
-    if (!(node->left) || node->left->type != RED)
-        return  (EXIT_OK);
-    prop = (t_red_prop *)node->left->prop;
-    if (prop->is_in == is_in)
-        prop->is_skip = true;
-	res = open_file(ast, node->left, prop, is_in);
-	if (res != EXIT_OK)
-		return (res);
+	if (node->left && node->left->type == RED)
+	{
+		child_prop = (t_red_prop *)node->left->prop;
+		if (child_prop->is_in == is_in && child_prop->is_skip)
+			return (EXIT_OK);
+		if (child_prop->is_in == is_in)
+			child_prop->is_skip = true;
+		res = open_file(ast, node->left, child_prop, is_in);
+		if (res != EXIT_OK)
+			return (res);
+	}
 	if (!prop->is_open)
 	{
 		if (prop->is_in && !(prop->is_single))
-			res = here_doc_handler(ast, node);
+			res = here_doc_handler(ast, prop);
 		else
 			res = open_file_helper(ast, prop);
 		if (res != EXIT_OK)
-			return (res);		
+			return (res);
 	}
 	return (EXIT_OK);
 }
@@ -156,7 +160,7 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop, bool is_in)
 // 2 Perform the in-order travelsal to apply the redirection.
 // 3 For heredoc input, only un-skipped node creates tmp file
 // for avoiding the confilict when there are several heredoc inputs.
-// 
+//
 //
 // @param ast: the pointer to the ast tree.
 // @param ast_node: the `red` node.
@@ -166,14 +170,15 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	t_red_prop	*prop;
 	int			res;
 
-	debug_print_ast(ast, ast_node, "");
+	debug_print_ast(ast, ast_node, "Exec Red.");
 	prop = (t_red_prop *)ast_node->prop;
-	open_file(ast, ast_node, prop, prop->is_in);
+	if (!prop->is_skip)
+		open_file(ast, ast_node, prop, prop->is_in);
 	if (!prop->is_skip)
 	{
-		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) || (!(prop->is_in) 
-		&& dup2(prop->fd, STDOUT_FILENO) < 0))
-			exit_with_err(&ast, EXIT_FAIL, "minishell: dup2");		
+		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) || (!(prop->is_in)
+				&& dup2(prop->fd, STDOUT_FILENO) < 0))
+			exit_with_err(&ast, EXIT_FAIL, "minishell: dup2");
 	}
 	close(prop->fd);
 	prop->fd = -1;

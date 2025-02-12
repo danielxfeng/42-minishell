@@ -6,14 +6,16 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/07 10:23:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/11 11:06:01 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void		close_tokens(t_ast *ast);
+int			close_fds(t_ast *ast);
 
 // @brief the destructor of a pipe node.
 void	close_pipe_node(t_ast_node *node)
@@ -91,18 +93,20 @@ static void	close_ast_node(t_ast_node *node)
 // @brief deconstructor of the AST tree.
 //
 // @param ast: the pointer to pointer of an ast tree.
-void	close_ast(t_ast **ast)
+// @return status code
+int	close_ast(t_ast **ast)
 {
+	int	status;
+
+	status = EXIT_OK;
 	if (ast && *ast)
 	{
 		if ((*ast)->root)
 			close_ast_node((*ast)->root);
 		close_tokens(*ast);
-		if ((*ast)->fd_in > 0)
-			close((*ast)->fd_in);
-		if ((*ast)->fd_out > 0)
-			close((*ast)->fd_out);
+		close_fds(*ast);
 		free(*ast);
 		*ast = NULL;
 	}
+	return (status);
 }

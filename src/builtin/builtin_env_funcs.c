@@ -17,5 +17,5 @@ int	cmd_unset(t_ast *ast, t_cmd_prop *prop)
 // @brief `env` with no options or arguments
 int	cmd_env(t_ast *ast, t_cmd_prop *prop)
 {
-	return (env_helper(ast->envp, false));
+	return (EXIT_OK);
 }
