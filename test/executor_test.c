@@ -317,6 +317,7 @@ void	testExec_MultiPipe(void)
     return ;
 }
 
+// "cat < ./pg/a < ./pg/b"
 void	testExec_MultiRed(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", "<", "./pg/b"};
@@ -329,6 +330,7 @@ void	testExec_MultiRed(void)
     return ;
 }
 
+// "cat < ./pg/d"
 void	testExec_RedNotExist(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/d"};
@@ -341,6 +343,7 @@ void	testExec_RedNotExist(void)
     return ;
 }
 
+// "cat < ./pg/d < ./pg/c"
 void	testExec_MultiNotExistRed(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/d", "<", "./pg/e"};
@@ -353,6 +356,7 @@ void	testExec_MultiNotExistRed(void)
     return ;
 }
 
+// "./cat < ./pg/cannotread"
 void	testExec_RedNotRead(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/cannotread"};
@@ -365,6 +369,7 @@ void	testExec_RedNotRead(void)
     return ;
 }
 
+// "./cat < ./pg/dir"
 void	testExec_RedDir(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/dir"};
@@ -377,9 +382,10 @@ void	testExec_RedDir(void)
     return ;
 }
 
+// "./cat < ./pg.a > ./pg/c < ./pg/b > ./pg.d"
 void	testExec_MultiComplexRed(void)
 {
-	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "<", "./pg/b", ">", "./pg.d"};
+	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "<", "./pg/b", ">>", "./pg/d"};
 	char **tokens = createTokens(free_tokens, 9);
 	t_ast *tree = build_tree(tokens, 9);
 

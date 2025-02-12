@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 19:07:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:42:12 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,11 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 	t_red_prop	*child_prop;
 
 	res = EXIT_OK;
+	if (prop->is_open && prop->is_in == is_in && prop->is_skip == true)
+		return (res);
 	if (node->left && node->left->type == RED)
 	{
 		child_prop = (t_red_prop *)node->left->prop;
-		if (child_prop->is_in == is_in && child_prop->is_skip)
-			return (EXIT_OK);
 		if (child_prop->is_in == is_in)
 			child_prop->is_skip = true;
 		res = open_file(ast, node->left, child_prop, is_in);
@@ -138,8 +138,6 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 			res = here_doc_handler(ast, prop);
 		else
 			res = open_file_helper(ast, prop);
-		if (res != EXIT_OK)
-			return (res);
 	}
 	return (res);
 }
@@ -182,9 +180,9 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	}
 	close(prop->fd);
 	prop->fd = -1;
-	if (ast_node->left)
-		res = ast_node->left->node_handler(ast, ast_node->left);
 	if (!prop->is_skip && prop->is_in && !(prop->is_single))
 		unlink("./here_doc_tmp");
+	if (ast_node->left)
+		res = ast_node->left->node_handler(ast, ast_node->left);
 	return (res);
 }
