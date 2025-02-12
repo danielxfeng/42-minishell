@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 20:44:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 09:26:42 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,6 @@ t_ast						*build_tree(char **tokens, int tk_size);
 
 // Utils
 
-int 						ms_strcmp(char *s1, char *s2);
+int							ms_strcmp(char *s1, char *s2);
 
 #endif

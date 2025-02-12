@@ -203,6 +203,30 @@ void	testExec_CmdRedPipe(void)
     return ;
 }
 
+void	testExec_MultiRedPipe(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/a", "<", "./pg/b"};
+	char **tokens = createTokens(free_tokens, 5);
+	t_ast *tree = build_tree(tokens, 5);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_CornerCases(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/b", "./pg/a"};
+	char **tokens = createTokens(free_tokens, 5);
+	t_ast *tree = build_tree(tokens, 5);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -212,8 +236,13 @@ int	main(void)
 	//RUN_TEST(testBuildTree_OneCMD);ca
 	//RUN_TEST(testBuildTree_ThreeNodes);
 	//RUN_TEST(testBuildTree_MultiNodes);
+	
+	// We need to observe the output ourself now.
+
 	//RUN_TEST(testExec_OneCmd);
 	//RUN_TEST(testExec_CmdRed);
-	RUN_TEST(testExec_CmdRedPipe);
+	//RUN_TEST(testExec_CmdRedPipe);
+	//RUN_TEST(testExec_CornerCases);
+	RUN_TEST(testExec_MultiRedPipe);
 	return (UNITY_END());
 }
