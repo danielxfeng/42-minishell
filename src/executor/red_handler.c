@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 13:46:30 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 14:03:58 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 	file_name = ast->tokens[prop->idx];
 	prop->fd = open(file_name, open_code, 0644);
 	if (prop->fd < 0)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, file_name));
+		return (return_prt_err(EXIT_FAIL, "minishell", file_name, NULL));
 	prop->is_open = true;
 	return (EXIT_OK);
 }
@@ -131,8 +131,6 @@ static int	open_file(t_ast *ast, t_ast_node *node, t_red_prop *prop,
 		if (child_prop->is_in == is_in)
 			child_prop->is_skip = true;
 		res = open_file(ast, node->left, child_prop, is_in);
-		//if (res != EXIT_OK)
-		//	return (res);
 	}
 	if (!prop->is_open)
 	{
@@ -184,9 +182,9 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	}
 	close(prop->fd);
 	prop->fd = -1;
-	if (!prop->is_skip && prop->is_in && !(prop->is_single))
-		unlink("./here_doc_tmp");
 	if (ast_node->left)
 		res = ast_node->left->node_handler(ast, ast_node->left);
+	if (!prop->is_skip && prop->is_in && !(prop->is_single))
+		unlink("./here_doc_tmp");
 	return (res);
 }

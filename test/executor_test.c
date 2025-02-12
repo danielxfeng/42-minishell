@@ -344,8 +344,8 @@ void	testExec_RedNotExist(void)
 void	testExec_MultiNotExistRed(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/d", "<", "./pg/e"};
-	char **tokens = createTokens(free_tokens, 5);
-	t_ast *tree = build_tree(tokens, 5);
+	char **tokens = createTokens(free_tokens, 8);
+	t_ast *tree = build_tree(tokens, 8);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
@@ -353,13 +353,40 @@ void	testExec_MultiNotExistRed(void)
     return ;
 }
 
-void	testDoubleRed(void)
+void	testExec_RedNotRead(void)
 {
-	char *free_tokens[] = {"cat", "<<", "eof"};
+	char *free_tokens[] = {"cat", "<", "./pg/cannotread"};
 	char **tokens = createTokens(free_tokens, 3);
 	t_ast *tree = build_tree(tokens, 3);
+
+	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
+    return ;
+}
+
+void	testExec_RedDir(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/dir"};
+	char **tokens = createTokens(free_tokens, 3);
+	t_ast *tree = build_tree(tokens, 3);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+void	testExec_MultiComplexRed(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "<", "./pg/b", ">", "./pg.d"};
+	char **tokens = createTokens(free_tokens, 9);
+	t_ast *tree = build_tree(tokens, 9);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
 }
 
 // Main function to run the tests
@@ -387,8 +414,11 @@ int	main(void)
 	//RUN_TEST(testExec_NotProgram);
 	//RUN_TEST(testExec_MultiPipe);
 	//RUN_TEST(testExec_MultiRed);
-	//RUN_TEST(testExec_RedNotExist);
 	//RUN_TEST(testExec_MultiNotExistRed);
-	RUN_TEST(testDoubleRed);
+	//RUN_TEST(testExec_RedNotExist);
+	//RUN_TEST(testDoubleRed);
+	//RUN_TEST(testExec_RedNotRead);
+	//RUN_TEST(testExec_RedDir);
+	RUN_TEST(testExec_MultiComplexRed);
 	return (UNITY_END());
 }
