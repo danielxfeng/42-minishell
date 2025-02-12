@@ -346,7 +346,20 @@ void	testExec_RedNotExist(void)
 // "cat < ./pg/d < ./pg/c"
 void	testExec_MultiNotExistRed(void)
 {
-	char *free_tokens[] = {"cat", "<", "./pg/d", "<", "./pg/e"};
+	char *free_tokens[] = {"cat", "<", "./pg/dd", "<", "./pg/ee"};
+	char **tokens = createTokens(free_tokens, 5);
+	t_ast *tree = build_tree(tokens, 5);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+// "cat < ./pg/ww < ./pg/cc | < ./pg/ss"
+void	testExec_MultiNotExistRedWithPipe(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/ww", "<", "./pg/cc", "|", "<", "./pg.ss"};
 	char **tokens = createTokens(free_tokens, 8);
 	t_ast *tree = build_tree(tokens, 8);
 
@@ -388,6 +401,19 @@ void	testExec_MultiComplexRed(void)
 	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "<", "./pg/b", ">>", "./pg/d"};
 	char **tokens = createTokens(free_tokens, 9);
 	t_ast *tree = build_tree(tokens, 9);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_ast(&tree);
+    return ;
+}
+
+// "./cat < ./pg.a > ./pg/c | cat < ./pg/b > ./pg.d"
+void	testExec_MultiComplexRedWithPipe(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "|", "cat",  "<", "./pg/b", ">", "./pg/d"};
+	char **tokens = createTokens(free_tokens, 11);
+	t_ast *tree = build_tree(tokens, 11);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
@@ -460,13 +486,15 @@ int	main(void)
 	//RUN_TEST(testExec_MultiPipe);
 	//RUN_TEST(testExec_MultiRed);
 	//RUN_TEST(testExec_MultiNotExistRed);
+	RUN_TEST(testExec_MultiNotExistRedWithPipe);
 	//RUN_TEST(testExec_RedNotExist);
 	//RUN_TEST(testDoubleRed);
 	//RUN_TEST(testExec_RedNotRead);
 	//RUN_TEST(testExec_RedDir);
 	//RUN_TEST(testExec_MultiComplexRed);
+	//RUN_TEST(testExec_MultiComplexRedWithPipe);
 	//RUN_TEST(testExec_Heredoc);
 	//RUN_TEST(testExec_MultiHeredoc);
-	RUN_TEST(testExec_MultiHeredocWithPipe);
+	//RUN_TEST(testExec_MultiHeredocWithPipe);
 	return (UNITY_END());
 }
