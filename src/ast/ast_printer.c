@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 12:15:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:39:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	print_level(level);
 	printf("-RED(%d), file: %s, fd: %d, is_in: %d, is_single: %d, ", level,
 		ast->tokens[prop->idx], prop->fd, prop->is_in, prop->is_single);
-	printf("is_skip: %d, is_open: %d ", prop->is_skip, prop->is_open);
+	printf("is_skip: %d ", prop->is_skip);
 	print_curr_msg(node, curr);
 }
 
