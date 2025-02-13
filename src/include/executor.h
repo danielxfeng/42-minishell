@@ -21,7 +21,7 @@
 #  define PATH_MAX 4096
 # endif
 
-# define DEBUG_FLAG 1
+# define DEBUG_FLAG 0
 # define INVALID_ERR_NO -1
 # define STD_IN 0
 # define STD_OUT 1

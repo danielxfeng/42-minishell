@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
 // @brief set the skip flag recurrsivly.
 //
 // In one sub-process, for each redirecton direction,
@@ -71,8 +72,6 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 				&& dup2(prop->fd, STDOUT_FILENO) < 0))
 			exit_with_err(&ast, EXIT_FAIL, "minishell: dup2");
 	}
-	close(prop->fd);
-	prop->fd = -1;
 	if (ast_node->left)
 		res = ast_node->left->node_handler(ast, ast_node->left);
 	return (res);
