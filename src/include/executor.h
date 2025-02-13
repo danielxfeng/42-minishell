@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 14:15:12 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 12:13:26 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,26 @@ typedef struct s_ast
 	int						fd_in;
 	int						fd_out;
 	// leave ur stuff here @abdul
+	// env
+	// history
+	// maybe others
 }							t_ast;
 
 // Represents a node of AST.
 //
 // `prop`: the specific properties depends on `t_node_type`.
-// `node_handler`: the pointer to handler function.
-// `node_closer`: the pointer to closer function.
-// `node_printer`: the pointer to printer function.
+// `node_pre_handler`: the pointer to the function
+// which performs the preparation jobs like opening the file. 
+// `node_handler`: the pointer to the function
+// which performs as a executor.
+// `node_closer`: the pointer to close the node.
+// `node_printer`: the pointer to the printer function.
 // `left` `right`: left/right child-node.
 typedef struct s_ast_node
 {
 	t_node_type				type;
 	void					*prop;
+	void					(*node_pre_handler)(t_ast *ast, t_ast_node *node);
 	int						(*node_handler)(t_ast *ast, t_ast_node *node);
 	void					(*node_closer)(t_ast_node *ast_node);
 	void					(*node_printer)(t_ast *ast, t_ast_node *n,
@@ -120,11 +127,11 @@ typedef struct s_red_prop
 
 // Represents properties of PIPE.
 //
-// `fds`: file descriptor of pipe.
+// `is_piped`: is there an existing pipe? 
 // `pids`: pid of sub-process.
 typedef struct s_pipe_prop
 {
-	int						fds[2];
+	bool					is_piped;
 	pid_t					pids[2];
 }							t_pipe_prop;
 
