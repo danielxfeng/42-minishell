@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 12:49:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:39:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	print_pipe_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	(void)ast;
 	prop = (t_pipe_prop *)node->prop;
 	print_level(level);
-	printf("-PIP(%d), fd0: %d, fd1: %d, pids: %d, %d ", level, prop->fds[0],
-		prop->fds[1], prop->pids[0], prop->pids[1]);
+	printf("-PIP(%d), is_piped: %d, fd1: %d, pids: %d, %d ", level, prop->is_piped,
+	prop->pids[0], prop->pids[1]);
 	print_curr_msg(node, curr);
 }
 
@@ -57,7 +57,7 @@ void	print_red_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	print_level(level);
 	printf("-RED(%d), file: %s, fd: %d, is_in: %d, is_single: %d, ", level,
 		ast->tokens[prop->idx], prop->fd, prop->is_in, prop->is_single);
-	printf("is_skip: %d, is_open: %d ", prop->is_skip, prop->is_open);
+	printf("is_skip: %d ", prop->is_skip);
 	print_curr_msg(node, curr);
 }
 

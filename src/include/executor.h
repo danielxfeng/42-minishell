@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 18:00:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:50:03 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,33 @@ typedef struct s_ast
 	int						fd_in;
 	int						fd_out;
 	// leave ur stuff here @abdul
+	// env
+	// history
+	// maybe others
 }							t_ast;
 
 // Represents a node of AST.
 //
+// When execution, we apply a Pre-order traverlsal first
+// to handle the file opening. (pre_handler)
+// I failed to avoid this after several tries.
+//
+// Then we apply a mixed Pre-Post-order traversal to perform
+// the execution. 
+//
 // `prop`: the specific properties depends on `t_node_type`.
-// `node_handler`: the pointer to handler function.
-// `node_closer`: the pointer to closer function.
-// `node_printer`: the pointer to printer function.
+// `node_pre_handler`: the pointer to the function
+// which performs the preparation jobs like opening the file.
+// `node_handler`: the pointer to the function
+// which performs as a executor.
+// `node_closer`: the pointer to close the node.
+// `node_printer`: the pointer to the printer function.
 // `left` `right`: left/right child-node.
 typedef struct s_ast_node
 {
 	t_node_type				type;
 	void					*prop;
+	int						(*node_pre_handler)(t_ast *ast, t_ast_node *node);
 	int						(*node_handler)(t_ast *ast, t_ast_node *node);
 	void					(*node_closer)(t_ast_node *ast_node);
 	void					(*node_printer)(t_ast *ast, t_ast_node *n,
@@ -104,10 +118,9 @@ typedef struct s_cmd_prop
 // `fd`: the file descriptor of a file.
 // `is_in`: `true` for `<` or `<<`.
 // `is_single`: `true` for `<` or '>'.
-// `is_skip`: when there is several reds with same direction,
+// `is_skip`: when there is several `red`s with same direction,
 // only the right most `red` will set.
 // has been set.
-// `is_open`: is the file opened.
 typedef struct s_red_prop
 {
 	int						idx;
@@ -115,16 +128,15 @@ typedef struct s_red_prop
 	bool					is_in;
 	bool					is_single;
 	bool					is_skip;
-	bool					is_open;
 }							t_red_prop;
 
 // Represents properties of PIPE.
 //
-// `fds`: file descriptor of pipe.
+// `is_piped`: is there an existing pipe? 
 // `pids`: pid of sub-process.
 typedef struct s_pipe_prop
 {
-	int						fds[2];
+	bool					is_piped;
 	pid_t					pids[2];
 }							t_pipe_prop;
 
@@ -144,7 +156,13 @@ void						close_pipe_node(t_ast_node *node);
 void						close_cmd_node(t_ast_node *node);
 void						close_red_node(t_ast_node *node);
 
-// The handlers.
+// The pre_travelsal_handlers.
+
+int							pre_pipe_handler(t_ast *ast, t_ast_node *ast_node);
+int							pre_cmd_handler(t_ast *ast, t_ast_node *ast_node);
+int							pre_red_handler(t_ast *ast, t_ast_node *ast_node);
+
+// The execution handlers.
 
 int							pipe_handler(t_ast *ast, t_ast_node *ast_node);
 int							cmd_handler(t_ast *ast, t_ast_node *ast_node);
