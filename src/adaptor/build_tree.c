@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 19:06:50 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:46:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,7 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 	curr = right;
 	while (curr >= left)
 	{
-		if (ms_strcmp(tree->tokens[curr], "|") == 0
-			|| ms_strcmp(tree->tokens[curr], "||") == 0)
+		if (ms_strcmp(tree->tokens[curr], "|") == 0)
 		{
 			*node = create_pipe_node(tree);
 			build_pipe_node(tree, &((*node)->left), left, curr - 1);
