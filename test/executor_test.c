@@ -175,6 +175,7 @@ void	testExec_OneCmd(void)
 	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
 	TEST_ASSERT_EQUAL_INT(0, prop->start);
 	TEST_ASSERT_EQUAL_INT(2, prop->size);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -189,6 +190,7 @@ void	testExec_CmdRed(void)
 	t_ast *tree = build_tree(tokens, 4);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -202,6 +204,7 @@ void	testExec_CmdRedPipe(void)
 	t_ast *tree = build_tree(tokens, 7);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -215,6 +218,7 @@ void	testExec_MultiRedPipe(void)
 	t_ast *tree = build_tree(tokens, 5);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -227,6 +231,7 @@ void	testExec_NonExistCmdRelative(void)
 	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -239,6 +244,7 @@ void	testExec_NonExistCmd(void)
 	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(127, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -251,6 +257,7 @@ void	testExec_NoReadCmd(void)
 	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -263,6 +270,7 @@ void	testExec_NoWriteCmd(void)
 	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -275,6 +283,7 @@ void	testExec_Dir(void)
 	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -287,6 +296,7 @@ void	testExec_EmptyCmd(void)
 	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -299,6 +309,7 @@ void	testExec_NotProgram(void)
 	t_ast *tree = build_tree(tokens, 1);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -312,6 +323,7 @@ void	testExec_MultiPipe(void)
 	t_ast *tree = build_tree(tokens, 6);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -324,6 +336,7 @@ void	testExec_MultiRed(void)
 	t_ast *tree = build_tree(tokens, 5);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -336,6 +349,7 @@ void	testExec_RedNotExist(void)
 	t_ast *tree = build_tree(tokens, 3);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -348,6 +362,7 @@ void	testExec_MultiNotExistRed(void)
 	t_ast *tree = build_tree(tokens, 8);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -360,6 +375,7 @@ void	testExec_RedNotRead(void)
 	t_ast *tree = build_tree(tokens, 3);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -372,6 +388,7 @@ void	testExec_RedDir(void)
 	t_ast *tree = build_tree(tokens, 3);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -384,6 +401,7 @@ void	testExec_MultiComplexRed(void)
 	t_ast *tree = build_tree(tokens, 9);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -393,11 +411,11 @@ void	testExec_MultiComplexRed(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    //RUN_TEST(testBuildTree_OnePipe);
-	//RUN_TEST(testBuildTree_OneRED);
-	//RUN_TEST(testBuildTree_OneCMD);
-	//RUN_TEST(testBuildTree_ThreeNodes);
-	//RUN_TEST(testBuildTree_MultiNodes);
+    RUN_TEST(testBuildTree_OnePipe);
+	RUN_TEST(testBuildTree_OneRED);
+	RUN_TEST(testBuildTree_OneCMD);
+	RUN_TEST(testBuildTree_ThreeNodes);
+	RUN_TEST(testBuildTree_MultiNodes);
 	
 	// We need to observe the output ourself now.
 
@@ -419,6 +437,6 @@ int	main(void)
 	//RUN_TEST(testDoubleRed);
 	//RUN_TEST(testExec_RedNotRead);
 	//RUN_TEST(testExec_RedDir);
-	RUN_TEST(testExec_MultiComplexRed);
+	//RUN_TEST(testExec_MultiComplexRed);
 	return (UNITY_END());
 }

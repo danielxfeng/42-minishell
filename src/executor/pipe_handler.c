@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 12:23:18 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:49:13 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,38 +21,42 @@ int			return_process_res(int status);
 // @param ast: the pointer to tree.
 // @param prop: the property of node.
 // @param is_pipe_input: is this the input fd? or output?
-static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input)
+// @param fds: the fds of pipe.
+static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input,
+		int *fds)
 {
 	int	src;
 	int	dest;
 
-	src = prop->fds[1];
+	src = fds[1];
 	dest = STDOUT_FILENO;
 	if (is_pipe_input)
 	{
-		src = prop->fds[0];
+		src = fds[0];
 		dest = STDIN_FILENO;
 	}
 	if (dup2(src, dest) < 0)
 		exit_with_err(&ast, EXIT_CMD_ERR, "minishell: dup2");
-	close(prop->fds[0]);
-	close(prop->fds[1]);
+	close(fds[0]);
+	close(fds[1]);
 }
 
 // @brief a helper function to handle the sub-process for a `pipe` node.
 //
 // @param ast: the pointer to tree.
 // @param node: the `pipe` node.
-// @param prop: the property of node.
 // @param direction: LEFT child or RIGHT?
-static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
-		int direction)
+// @param pipe_fds: the fds of pipe.
+static void	perform_sub_proc(t_ast *ast, t_ast_node *node, int direction,
+		int *pipe_fds)
 {
 	t_ast_node	*child;
+	t_pipe_prop	*prop;
 
 	child = node->left;
 	if (direction)
 		child = node->right;
+	prop = (t_pipe_prop *)node->prop;
 	prop->pids[direction] = fork();
 	if (prop->pids[direction] < 0)
 	{
@@ -62,7 +66,7 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 	}
 	if (prop->pids[direction] == 0)
 	{
-		handle_sub_fds(ast, prop, direction);
+		handle_sub_fds(ast, prop, direction, pipe_fds);
 		child->node_handler(ast, child);
 		exit_without_err(&ast);
 	}
@@ -89,12 +93,12 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 	prop = (t_pipe_prop *)ast_node->prop;
 	if (!prop->is_piped && pipe(fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
-	perform_sub_proc(ast, ast_node, prop, LEFT);
+	perform_sub_proc(ast, ast_node, LEFT, fds);
 	if (!prop->is_piped)
-		close(prop->fds[1]);
-	perform_sub_proc(ast, ast_node, prop, RIGHT);
+		close(fds[1]);
+	perform_sub_proc(ast, ast_node, RIGHT, fds);
 	if (!prop->is_piped)
-		close(prop->fds[0]);
+		close(fds[0]);
 	waitpid(prop->pids[LEFT], NULL, 0);
 	waitpid(prop->pids[RIGHT], &status, 0);
 	status = return_process_res(status);
