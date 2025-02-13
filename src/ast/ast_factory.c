@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 11:20:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 12:14:14 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ t_ast_node	*create_pipe_node(t_ast *ast)
 		free(node);
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	}
-	prop->fds[0] = -1;
-	prop->fds[1] = -1;
 	node->type = PIPE;
 	node->prop = prop;
 	node->node_handler = pipe_handler;

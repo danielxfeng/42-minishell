@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 12:49:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 12:15:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	print_pipe_node(t_ast *ast, t_ast_node *node, t_ast_node *curr,
 	(void)ast;
 	prop = (t_pipe_prop *)node->prop;
 	print_level(level);
-	printf("-PIP(%d), fd0: %d, fd1: %d, pids: %d, %d ", level, prop->fds[0],
-		prop->fds[1], prop->pids[0], prop->pids[1]);
+	printf("-PIP(%d), is_piped: %d, fd1: %d, pids: %d, %d ", level, prop->is_piped,
+	prop->pids[0], prop->pids[1]);
 	print_curr_msg(node, curr);
 }
 
