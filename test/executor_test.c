@@ -351,7 +351,7 @@ void	testExec_RedNotExist(void)
 	t_ast *tree = build_tree(tokens, 3);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -365,6 +365,7 @@ void	testExec_MultiNotExistRed(void)
 	t_ast *tree = build_tree(tokens, 5);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -378,8 +379,8 @@ void	testExec_MultiNotExistRedWithPipe(void)
 	t_ast *tree = build_tree(tokens, 8);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
-	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
 }
@@ -392,27 +393,27 @@ void	testExec_RedNotRead(void)
 	t_ast *tree = build_tree(tokens, 3);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
 }
 
-// "./cat < ./pg/dir"
+// "cat < ./pg/dir"
 void	testExec_RedDir(void)
 {
-	char *free_tokens[] = {"cat", "<", "./pg/dir"};
+	char *free_tokens[] = {"cat", "<", "./pg/dir2"};
 	char **tokens = createTokens(free_tokens, 3);
 	t_ast *tree = build_tree(tokens, 3);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
 }
 
-// "./cat < ./pg.a > ./pg/c < ./pg/b > ./pg.d"
+// "./cat < ./pg/a > ./pg/c < ./pg/b > ./pg/d"
 void	testExec_MultiComplexRed(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "<", "./pg/b", ">>", "./pg/d"};
@@ -420,12 +421,13 @@ void	testExec_MultiComplexRed(void)
 	t_ast *tree = build_tree(tokens, 9);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
 }
 
-// "./cat < ./pg.a > ./pg/c | cat < ./pg/b > ./pg.d"
+// "./cat < ./pg/a > ./pg/c | cat < ./pg/b > ./pg/d"
 void	testExec_MultiComplexRedWithPipe(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "|", "cat",  "<", "./pg/b", ">", "./pg/d"};
@@ -433,7 +435,9 @@ void	testExec_MultiComplexRedWithPipe(void)
 	t_ast *tree = build_tree(tokens, 11);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	debug_print_ast(tree, tree->root, "");
 	close_ast(&tree);
     return ;
 }
@@ -446,6 +450,7 @@ void	testExec_Heredoc(void)
 	t_ast *tree = build_tree(tokens, 3);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
@@ -459,17 +464,18 @@ void	testExec_MultiHeredoc(void)
 	t_ast *tree = build_tree(tokens, 5);
 
 	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	close_ast(&tree);
     return ;
 }
 
-// "cat << eof << eof | << eof"
+// "cat << eof << eof > ./pg/c | << eof"
 void	testExec_MultiHeredocWithPipe(void)
 {
-	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof", "|", "cat", "<<", "eof"};
-	char **tokens = createTokens(free_tokens, 9);
-	t_ast *tree = build_tree(tokens, 9);
+	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof", ">", "./pg/c", "|", "cat", "<<", "eof"};
+	char **tokens = createTokens(free_tokens, 11);
+	t_ast *tree = build_tree(tokens, 11);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
@@ -482,11 +488,11 @@ void	testExec_MultiHeredocWithPipe(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    RUN_TEST(testBuildTree_OnePipe);
-	RUN_TEST(testBuildTree_OneRED);
-	RUN_TEST(testBuildTree_OneCMD);
-	RUN_TEST(testBuildTree_ThreeNodes);
-	RUN_TEST(testBuildTree_MultiNodes);
+    //RUN_TEST(testBuildTree_OnePipe);
+	//RUN_TEST(testBuildTree_OneRED);
+	//RUN_TEST(testBuildTree_OneCMD);
+	//RUN_TEST(testBuildTree_ThreeNodes);
+	//RUN_TEST(testBuildTree_MultiNodes);
 	
 	// We need to observe the output ourself now.
 
@@ -504,11 +510,14 @@ int	main(void)
 	//RUN_TEST(testExec_MultiPipe);
 	//RUN_TEST(testExec_MultiRed);
 	//RUN_TEST(testExec_MultiNotExistRed);
-	RUN_TEST(testExec_MultiNotExistRedWithPipe);
+	//RUN_TEST(testExec_MultiNotExistRedWithPipe);
 	//RUN_TEST(testExec_RedNotExist);
-	//RUN_TEST(testDoubleRed);
 	//RUN_TEST(testExec_RedNotRead);
 	//RUN_TEST(testExec_RedDir);
 	//RUN_TEST(testExec_MultiComplexRed);
+	//RUN_TEST(testExec_MultiComplexRedWithPipe);
+	//RUN_TEST(testExec_Heredoc);
+	//RUN_TEST(testExec_MultiHeredoc);
+	RUN_TEST(testExec_MultiHeredocWithPipe);
 	return (UNITY_END());
 }

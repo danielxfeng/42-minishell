@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:44:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:45:52 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ typedef struct s_cmd_prop
 // `is_skip`: when there is several `red`s with same direction,
 // only the right most `red` will set.
 // has been set.
+// `status`: saved status code on file opening error.
 typedef struct s_red_prop
 {
 	int						idx;
@@ -128,6 +129,7 @@ typedef struct s_red_prop
 	bool					is_in;
 	bool					is_single;
 	bool					is_skip;
+	int						status;
 }							t_red_prop;
 
 // Represents properties of PIPE.
