@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 16:52:28 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 19:30:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	int	backup[2];
 	int	pipe_fds[2];
 
+	prop->status = EXIT_FAIL;
 	if (pipe(pipe_fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
 	backup[0] = dup(STDIN_FILENO);
@@ -91,6 +92,7 @@ int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	prop->fd = pipe_fds[0];
 	if (dup2(backup[0], STDIN_FILENO) < 0 || dup2(backup[1], STDOUT_FILENO) < 0)
 		exit_and_close_pipe(ast, backup, pipe_fds, false);
+	prop->status = EXIT_OK;
 	return (EXIT_OK);
 }
 
@@ -114,6 +116,10 @@ int	open_file_helper(t_ast *ast, t_red_prop *prop)
 	file_name = ast->tokens[prop->idx];
 	prop->fd = open(file_name, open_code, 0644);
 	if (prop->fd < 0)
+	{
+		prop->status = EXIT_FAIL;
 		return (return_prt_err(EXIT_FAIL, "minishell", file_name, NULL));
+	}
+	prop->status = EXIT_OK;
 	return (EXIT_OK);
 }
