@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 15:07:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/13 19:27:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 // @param is_in: the direction of `red`, is it a < ? or > ?
 void	set_skip_flag(t_ast_node *node, t_red_prop *prop, bool is_in)
 {
-	if (!(node->left) || !(node->left->type == CMD))
+	if (!(node->left) || !(node->left->type == RED))
 		return	;
 	prop = node->left->prop;
 	if (prop->is_skip && prop->is_in == is_in)
@@ -66,6 +66,8 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	prop = (t_red_prop *)ast_node->prop;
 	if (!prop->is_skip)
 		set_skip_flag(ast_node, prop, prop->is_in);
+	if (prop->fd < 0)
+		return (prop->status);
 	if (!prop->is_skip)
 	{
 		if ((prop->is_in && dup2(prop->fd, STDIN_FILENO) < 0) || (!(prop->is_in)
