@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 19:07:10 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:44:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, t_pipe_prop *prop,
 //
 // For a pipe node, it always have 2 children.
 //
-// We create a pipe and setup 2 sub-processes to handle it.
+// We create a pipe if this is our first pipe.
+// We then reuse this pipe even we have multiple pipe nodes.
+// We setup 2 sub-processes to handle the left/right child.
 //
 // @param ast: the ast tree.
 // @param ast_node: the node to be executed.
@@ -81,19 +83,20 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 {
 	t_pipe_prop	*prop;
 	int			status;
+	int			fds[2];
 
 	//debug_print_ast(ast, ast_node, "Exec Pipe.");
 	prop = (t_pipe_prop *)ast_node->prop;
-	if (pipe(prop->fds) < 0)
+	if (!prop->is_piped && pipe(fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
 	perform_sub_proc(ast, ast_node, prop, LEFT);
-	close(prop->fds[1]);
+	if (!prop->is_piped)
+		close(prop->fds[1]);
 	perform_sub_proc(ast, ast_node, prop, RIGHT);
-	close(prop->fds[0]);
+	if (!prop->is_piped)
+		close(prop->fds[0]);
 	waitpid(prop->pids[LEFT], NULL, 0);
 	waitpid(prop->pids[RIGHT], &status, 0);
 	status = return_process_res(status);
-	prop->fds[1] = -1;
-	prop->fds[0] = -1;
 	return (status);
 }
