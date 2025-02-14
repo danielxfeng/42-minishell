@@ -6,7 +6,11 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/17 17:45:14 by Xifeng           ###   ########.fr       */
+=======
+/*   Updated: 2025/02/14 14:22:38 by Xifeng           ###   ########.fr       */
+>>>>>>> af3a2c6 (fixed the pipe.)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +39,7 @@ static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input,
 		src = fds[0];
 		dest = STDIN_FILENO;
 	}
-	if (dup2(src, dest) < 0)
+	if ((src > 0 || dest > 0) && dup2(src, dest) < 0)
 		exit_with_err(&ast, EXIT_CMD_ERR, "minishell: dup2");
 	close(fds[0]);
 	close(fds[1]);
@@ -89,15 +93,18 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 	int			status;
 	int			fds[2];
 
-	//debug_print_ast(ast, ast_node, "Exec Pipe.");
+	debug_print_ast(ast, ast_node, "Exec Pipe.");
+	fd[0] = -1;
+	fd[1] = -1;
 	prop = (t_pipe_prop *)ast_node->prop;
-	if (!prop->is_piped && pipe(fds) < 0)
+	if (!ast->is_piped && pipe(fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
+	ast->is_piped = true;
 	perform_sub_proc(ast, ast_node, LEFT, fds);
-	if (!prop->is_piped)
+	if (fd[1] > 0)
 		close(fds[1]);
 	perform_sub_proc(ast, ast_node, RIGHT, fds);
-	if (!prop->is_piped)
+	if (fd[0] > 0)
 		close(fds[0]);
 	waitpid(prop->pids[LEFT], NULL, 0);
 	waitpid(prop->pids[RIGHT], &status, 0);
