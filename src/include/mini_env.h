@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:14:52 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 11:56:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:48:06 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include "utils.h"
 
-# define INIT_CAPACITY 2
+# define INIT_CAPACITY 16
 
 // Represents a data structure of env item.
 typedef struct s_env_item
@@ -36,7 +36,7 @@ typedef struct s_env_item
 // `size` the size of env.
 typedef struct s_env
 {
-	t_env_item	*items;
+	t_env_item	**items;
 	int			size;
 	int			capacity;
 }			t_env;

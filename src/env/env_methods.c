@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:07:59 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 11:57:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:48:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	env_remove(t_env *env, char *key)
 	i = find_key(env, key);
 	if (i == env->size)
 		return ;
-	close_env_item(&(env->items[i]));
+	close_env_item(env->items[i]);
 	ft_memmove(env->items + i, env->items + i + 1, (env->size - i - 1) * sizeof(t_env_item));
 	env->items[env->size - 1].key = NULL;
 	env->items[env->size - 1].value = NULL;
@@ -86,7 +86,7 @@ char	**env_output(t_env *env)
 	i = 0;
 	while (i < env->size)
 	{
-		envp[i] = output_env_item(&(env->items[i]));
+		envp[i] = output_env_item(env->items[i]);
 		if (!envp[i])
 		{
 			j = 0;
@@ -114,24 +114,19 @@ char	**env_output(t_env *env)
 // @param env: the pointer to env.
 // @param item_str: the non-NULL string of item, like "KEY=value" or "KEY=".
 // @return false on error, returns true otherwise.
-bool	env_set(t_env *env, char *item_str)
+bool	*env_set(t_env *env, char *item_str)
 {
 	t_env_item item;
 	int		idx;
 
-	ft_bzero(&item, sizeof(t_env_item));
 	if (!set_item(&item, item_str))
 		return (false);
 	idx = find_key(env, item.key);
 	if (idx == env->size)
 	{
-		close_env_item(&item);
+		free(item.key);
+		free(item.value);
 		return (env_append(env, item_str));
-	}
-	if (!(item.value))
-	{
-		close_env_item(&item);
-		return (true);
 	}
 	free(env->items[idx].value);
 	env->items[idx].value = item.value;

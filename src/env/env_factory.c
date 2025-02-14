@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:39:39 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 11:44:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:48:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ t_env	*close_env(t_env **env)
         {
             i = 0;
             while (i < (*env)->size)
-                close_env_item(&((*env)->items[i++]));
-            free((*env)->items);
+                close_env_item((*env)->items[i++]);
             (*env)->items = NULL;
         }
         free(*env);
@@ -82,7 +81,7 @@ t_env	*create_env(char **envp)
     i = 0;
     while (i < size)
     {
-        if (!(set_item(&(env->items[i]), envp[i])))
+        if (set_item(&(env->items[i]), envp[i]))
             return (close_env(&env));
         ++i;
     }
