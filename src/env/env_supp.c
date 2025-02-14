@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:05:24 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:49:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:49:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void close_env_item(t_env_item *item)
         free(item->value);
         item->value = NULL;
     }
-    free(item);
 }
 
 // @brief append an item to env.
