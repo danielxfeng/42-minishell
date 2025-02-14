@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 19:27:36 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/14 06:51:14 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
 
 // @brief set the skip flag recurrsivly.
 //
@@ -49,9 +48,6 @@ void	set_skip_flag(t_ast_node *node, t_red_prop *prop, bool is_in)
 // 1 Perform a Pre-order travelsal to set the `is_skip` sign at first.
 // Because for each direction, only right most node is redirected.
 // 2 Perform the Pre-order travelsal to apply the redirection.
-// 3 For heredoc input, only un-skipped node creates tmp file
-// for avoiding the confilict when there are several heredoc inputs.
-//
 //
 // @param ast: the pointer to the ast tree.
 // @param ast_node: the `red` node.
