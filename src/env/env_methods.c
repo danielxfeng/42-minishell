@@ -6,57 +6,42 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:07:59 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 17:03:50 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/14 21:24:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
 #include "mini_env.h"
 
-bool	parse_pair(char *pair[2], char *item);
-void	close_kv(char **arr, int size);
-bool	env_append(t_env *env, char *key, char *value);
+bool	env_append(t_env *env, char *item);
 int		find_key(t_env *env, char *key);
-char	*env_strjoin(char *key, char *value);
+bool    set_item(t_env_item *item, char *item_str);
+char    *output_env_item(t_env_item *item);
+void    close_env_item(t_env_item *item);
 
 // @brief remove the key from env.
 //
 // Free your item by yourself!!
 // Example:
 // char *key = strdup("KEY");
-// if (!env_remove(env, key))
-//     close_env(env);
+// env_remove(env, key)
 // free(key);
 //
 // @param env: the pointer to env.
 // @param key: the non-NULL string of key, like "KEY".
 // @return false on error, returns true otherwise.
-bool	env_remove(t_env *env, char *key)
+void	env_remove(t_env *env, char *key)
 {
 	int	i;
 
 	i = find_key(env, key);
 	if (i == env->size)
-		return (true);
-	keys = ft_calloc(env->size, sizeof(char *));
-	if (!keys)
-		return (false);
-	values = ft_calloc(env->size, sizeof(char *));
-	if (!values)
-	{
-		free(keys);
-		return (false);
-	}
-	ft_memcmp(keys, env->keys, i);
-	ft_memcmp(values, env->values, i);
-	ft_memcmp(keys + i, env->keys[i + 1], env->size - i - 1);
-	ft_memcmp(values + i, env->values[i + 1], env->size - i - 1);
-	close_kv(env->keys, env->size);
-	close_kv(env->values, env->size);
+		return ;
+	close_env_item(env->items[i]);
+	ft_memmove(env->items + i, env->items + i + 1, (env->size - i - 1) * sizeof(t_env_item));
+	env->items[env->size - 1].key = NULL;
+	env->items[env->size - 1].value = NULL;
 	--(env->size);
-	env->keys = keys;
-	env->values = values;
-	return (true);
 }
 
 // @brief get the value from env by given key.
@@ -79,7 +64,7 @@ char	*env_get(t_env *env, char *key)
 	i = find_key(env, key);
 	if (i == env->size)
 		return (ft_strdup(""));
-	return (ft_strdup(env->values[i]));
+	return (ft_strdup(env->items[i].value));
 }
 
 // @brief get the output env as envp.
@@ -100,13 +85,14 @@ char	**env_output(t_env *env)
 	i = 0;
 	while (i < env->size)
 	{
-		envp[i] = env_strjoin(env->keys[i], env->values[i]);
+		envp[i] = output_env_item(env->items[i]);
 		if (!envp[i])
 		{
 			j = 0;
 			while (j < i)
 			{
 				free(envp[j++]);
+				free(envp);
 				return (NULL);
 			}
 		}
@@ -125,20 +111,24 @@ char	**env_output(t_env *env)
 // free(item);
 //
 // @param env: the pointer to env.
-// @param item: the non-NULL string of item, like "KEY=value" or "KEY=".
+// @param item_str: the non-NULL string of item, like "KEY=value" or "KEY=".
 // @return false on error, returns true otherwise.
-bool	*env_set(t_env *env, char *item)
+bool	*env_set(t_env *env, char *item_str)
 {
-	char	*pair[2];
+	t_env_item item;
 	int		idx;
 
-	if (!(parse_pair(pair, item))
+	if (!set_item(&item, item_str))
 		return (false);
-	idx = find_key(env, pair[0]);
+	idx = find_key(env, item.key);
 	if (idx == env->size)
-		return (env_append(env, pair[0], env[pair1]));
-	free(env->values[idx]);
-	env->valus[idx] = pair[1];
-	free(pair[0]);
+	{
+		free(item.key);
+		free(item.value);
+		return (env_append(env, item_str));
+	}
+	free(env->items[idx].value);
+	env->items[idx].value = item.value;
+	free(item.key);
 	return (true);
 }
