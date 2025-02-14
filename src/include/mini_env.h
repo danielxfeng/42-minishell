@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:14:52 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 16:55:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/14 19:47:47 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,29 @@
 
 # include "utils.h"
 
+# define INIT_CAPACITY 16
+
+// Represents a data structure of env item.
+typedef struct s_env_item
+{
+	char	*key;
+	char	*value;
+}	t_env_item;
+
 // Represents a data structure of env.
 //
 // Syscall setenv is not allowed in this project,
 // so that we need to maintain our own env for this project.
-// We use 2 string arraies to represent a env.
+// We use a vector to represent a env.
 //
-// `keys` the array of keys of env.
+// `items` the array of keys of env.
 // `values` the array of values of env.
 // `size` the size of env.
 typedef struct s_env
 {
-	char	**keys;
-	char	**values;
-	int		size;
+	t_env_item	**items;
+	int			size;
+	int			capacity;
 }			t_env;
 
 t_env	*create_env(char **envp);
