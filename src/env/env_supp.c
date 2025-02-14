@@ -6,48 +6,110 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:05:24 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 20:03:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/14 21:28:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
 #include "mini_env.h"
 
-bool    set_item(t_env_item *item, char *item_str);
-char    *output_env_item(t_env_item *item);
-char    *get_value_env_item(t_env_item *item);
-bool    is_matched_env_item(t_env_item *item, char *key);
-void    close_env_item(t_env_item *item);
+// @brief to parse the key, value from given env item.
+//
+// To parse the key, value from item, then save the value to pair.
+// Example:
+// `pair` {"KEY", "VALUE"}, `item` {"KEY=value"};
+// `pair` {"KEY", ""}, `item` {"KEY="};
+//
+// @param pair: the container for result.
+// @param item: the env item to parse.
+// @return false on error, otherwise returns true.
+bool    set_item(t_env_item *item, char *item_str)
+{
+    int	i;
+
+	i = 0;
+	while (item_str[i])
+	{
+		if (item_str[i] == '=')
+			break ;
+		++i;
+	}
+    if (i == ft_strlen(item_str))
+        --i;
+	item->key = ft_calloc(i + 1, sizeof(char));
+	if (!item->key)
+		return (false);
+	item->value = ft_calloc(ft_strlen(item_str) - i, sizeof(char));
+	if (!item->value)
+	{
+		free(item->key);
+		return (false);
+	}
+	ft_memcpy(item->key, item_str, i);
+	ft_memcpy(item->value, item_str + i + 1, ft_strlen(item_str) - i - 1);
+	return (true);
+}
+
+// @brief returns serilized the env item
+//
+// @param item: the env item to be output.
+// @return (key=value);
+char *output_env_item(t_env_item *item)
+{
+    int     key_len;
+    int     value_len;
+	char	*joined;
+
+    key_len = ft_strlen(item->key);
+    value_len = ft_strlen(item->value);
+	joined = ft_calloc((key_len + value_len + 2), sizeof(char));
+	if (!joined)
+		return (NULL);
+	ft_memcpy(joined, item->key, key_len);
+	joined[key_len] = '=';
+	ft_memcpy(joined + key_len + 1, item->value, value_len);
+	return (joined);
+}
+
+// @brief free an env item.
+//
+// @param item: an env item to free.
+void close_env_item(t_env_item *item)
+{
+    if (item->key)
+    {
+        free(item->key);
+        item->key = NULL;
+    }
+    if (item->value)
+    {
+        free(item->value);
+        item->value = NULL;
+    }
+    free(item);
+}
 
 // @brief append an item to env.
 //
 // @param env: the pointer to env.
 // @param item: the non-NULL string of item, like "KEY=value" or "KEY=".
 // @return false on error, returns true otherwise.
-bool	env_append(t_env *env, char *key, char *value)
+bool	env_append(t_env *env, char *item)
 {
+	t_env_item *items;
 
-	e
-
-	keys = ft_calloc(env->size + 2, sizeof(char *));
-	if (!keys)
-		return (false);
-	values = ft_calloc(env->size + 2, sizeof(char *));
-	if (!values)
+	if (env->size == env->capacity)
 	{
-		free(keys);
-		return (false);
+		env->capacity *= 2;
+		items = ft_calloc(env->capacity, sizeof(t_env_item));
+		if (!items)
+			return (false);
+		ft_memcpy(items, env->items, env->size * sizeof(t_env_item));
+		free(env->items);
+		env->items = items;	
 	}
-	ft_memcmp(keys, env->keys, env->size);
-	ft_memcmp(values, env->values, env->size);
-	keys[size] = key;
-	values[size] = value;
-	close_kv(env->keys, env->size);
-	close_kv(env->values, env->size);
 	++(env->size);
-	env->keys = keys;
-	env->values = values;
-	return (true);
+	return (set_item(&(env->items[env->size]), item));
 }
 
 // @brief helper function to find a key from env.
@@ -62,10 +124,9 @@ int	find_key(t_env *env, char *key)
 	i = 0;
 	while (i < env->size)
 	{
-		if (is_matched_env_item(env->items[i], key))
+		if (ms_strcmp(env->items[i].key, key))
 			break ;
 		i++;
 	}
 	return (i);
 }
-
