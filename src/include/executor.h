@@ -6,13 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 20:10:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/14 14:19:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
+# include "utils.h"
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/types.h>
@@ -50,6 +51,7 @@ typedef enum e_node_type
 // `tk_size: the size of tokens.
 // `fd_in`: the std_in before executing the AST execution.
 // `fd_out` the std_out before executing the AST execution.
+// `is_piped`: is there an existing pipe?
 //
 // The std_in/out may be redirected in sub-process, so we need the
 // original std_in/out, in case we need read/print to terminal.
@@ -60,6 +62,7 @@ typedef struct s_ast
 	int						tk_size;
 	int						fd_in;
 	int						fd_out;
+	bool					is_piped;
 	// leave ur stuff here @abdul
 	// env
 	// history
@@ -73,7 +76,7 @@ typedef struct s_ast
 // I failed to avoid this after several tries.
 //
 // Then we apply a mixed Pre-Post-order traversal to perform
-// the execution. 
+// the execution.
 //
 // `prop`: the specific properties depends on `t_node_type`.
 // `node_pre_handler`: the pointer to the function
@@ -134,11 +137,9 @@ typedef struct s_red_prop
 
 // Represents properties of PIPE.
 //
-// `is_piped`: is there an existing pipe? 
 // `pids`: pid of sub-process.
 typedef struct s_pipe_prop
 {
-	bool					is_piped;
 	pid_t					pids[2];
 }							t_pipe_prop;
 
@@ -203,9 +204,5 @@ int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 
 t_ast						*build_tree(char **tokens, int tk_size);
-
-// Utils
-
-int							ms_strcmp(char *s1, char *s2);
 
 #endif
