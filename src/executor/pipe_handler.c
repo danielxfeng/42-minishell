@@ -6,19 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2025/02/17 17:45:14 by Xifeng           ###   ########.fr       */
-=======
-/*   Updated: 2025/02/14 14:22:38 by Xifeng           ###   ########.fr       */
->>>>>>> af3a2c6 (fixed the pipe.)
-=======
-/*   Updated: 2025/02/15 15:56:27 by Xifeng           ###   ########.fr       */
->>>>>>> fd03d22 (fixed compile errors.)
-=======
-/*   Updated: 2025/02/15 18:45:39 by Xifeng           ###   ########.fr       */
->>>>>>> f0667db (don't reuse file descriptors.)
+/*   Updated: 2025/02/17 17:55:03 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +89,7 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 	int			status;
 	int			fds[2];
 
-	debug_print_ast(ast, ast_node, "Exec Pipe.");
-	fds[0] = -1;
-	fds[1] = -1;
+	//debug_print_ast(ast, ast_node, "Exec Pipe.");
 	prop = (t_pipe_prop *)ast_node->prop;
 	if (pipe(fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
