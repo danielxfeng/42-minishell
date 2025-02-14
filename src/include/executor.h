@@ -6,13 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:46:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:47:32 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
+# include "mini_env.h"
 # include "utils.h"
 # include <stdbool.h>
 # include <stdio.h>
@@ -52,6 +53,7 @@ typedef enum e_node_type
 // `fd_in`: the std_in before executing the AST execution.
 // `fd_out` the std_out before executing the AST execution.
 // `is_piped`: is there an existing pipe?
+// `env`: the pointer to env.
 //
 // The std_in/out may be redirected in sub-process, so we need the
 // original std_in/out, in case we need read/print to terminal.
@@ -63,8 +65,8 @@ typedef struct s_ast
 	int						fd_in;
 	int						fd_out;
 	bool					is_piped;
+	t_env					*env;
 	// leave ur stuff here @abdul
-	// env
 	// history
 	// maybe others
 }							t_ast;
@@ -146,7 +148,7 @@ typedef struct s_pipe_prop
 // AST
 // The constructors of AST.
 
-t_ast						*create_ast(char **tokens, int tk_size);
+t_ast						*create_ast(char **tokens, int tk_size, t_env *env);
 t_ast_node					*create_pipe_node(t_ast *ast);
 t_ast_node					*create_cmd_node(t_ast *ast, int start, int size);
 t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in,
@@ -184,6 +186,7 @@ void						print_red_node(t_ast *ast, t_ast_node *node,
 
 // Quit functions.
 
+void						close_the_world(t_ast **ast);
 void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,

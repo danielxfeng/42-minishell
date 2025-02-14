@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 10:32:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/14 17:36:14 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**get_path(void)
 	char	*path_str;
 	char	**path;
 
-	path_str = getenv("PATH");
+	path_str = env_get("PATH");
 	if (!path_str)
 		return (NULL);
 	path = ft_split(path_str, ':');

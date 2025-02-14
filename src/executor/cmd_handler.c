@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:43:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:47:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 {
 	t_cmd_prop	*prop;
 	int			status;
+	char		**envp;
 
 	//debug_print_ast(ast, ast_node, "Exec Cmd.");
 	prop = (t_cmd_prop *)ast_node->prop;
@@ -70,9 +71,12 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 	prop->pid = fork();
 	if (prop->pid < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: fork");
-	// TODO: add envp here.
+	envp = env_output(ast->env);
+	if (!envp)
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	if (prop->pid == 0)
-		execve(prop->full_cmd, prop->argv, NULL);
+		execve(prop->full_cmd, prop->argv, envp);
+	free(envp);
 	waitpid(prop->pid, &status, 0);
 	return (return_process_res(status));
 }
