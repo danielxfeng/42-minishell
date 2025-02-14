@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:21:16 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 12:52:14 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 21:19:16 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,14 @@ char	*get_token(const char *input, int *curr_pos)
 	saved_pos = *curr_pos;
 	while (input[*curr_pos] && !is_token_delimiter(input[*curr_pos]))
 	{
+		printf("debug> %c\n", input[*curr_pos]);
 		if (is_quote(input[*curr_pos]))
 			skip_quotes(input, curr_pos);
 		else if (input[*curr_pos])
 			(*curr_pos)++;
 	}
 	token = ft_substr(input, saved_pos, *curr_pos - saved_pos);
+	
 	if (!token)
 		quit(EXIT_FAILURE);
 	return (token);

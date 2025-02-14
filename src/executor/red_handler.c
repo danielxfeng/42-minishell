@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 14:03:58 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/12 19:07:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ static int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 // @return the status code.
 static int	open_file_helper(t_ast *ast, t_red_prop *prop)
 {
-	int		access_code;
+	//int		access_code;
 	int		open_code;
 	char	*file_name;
 
-	access_code = W_OK;
-	if (prop->is_in)
-		access_code = R_OK;
+	// access_code = W_OK;
+	// if (prop->is_in)
+	// 	access_code = R_OK;
 	open_code = O_RDONLY;
 	if (!(prop->is_in))
 	{
@@ -168,7 +168,7 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	int			res;
 
 	res = EXIT_OK;
-	debug_print_ast(ast, ast_node, "Exec Red.");
+	//debug_print_ast(ast, ast_node, "Exec Red.");
 	prop = (t_red_prop *)ast_node->prop;
 	if (!prop->is_skip)
 		res = open_file(ast, ast_node, prop, prop->is_in);
