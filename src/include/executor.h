@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:51:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:51:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef enum e_node_type
 // `tk_size: the size of tokens.
 // `fd_in`: the std_in before executing the AST execution.
 // `fd_out` the std_out before executing the AST execution.
-// `is_piped`: is there an existing pipe?
 // `env`: the pointer to env.
 //
 // The std_in/out may be redirected in sub-process, so we need the
@@ -64,7 +63,6 @@ typedef struct s_ast
 	int						tk_size;
 	int						fd_in;
 	int						fd_out;
-	bool					is_piped;
 	t_env					*env;
 	// leave ur stuff here @abdul
 	// history
