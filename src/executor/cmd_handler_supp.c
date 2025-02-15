@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 15:47:05 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 17:00:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ char	**get_path(t_ast *ast)
 	if (!path_str)
 		return (NULL);
 	path = ft_split(path_str, ':');
-	if (!path)
-		return (NULL);
+	free(path_str);
 	return (path);
 }
 
@@ -69,7 +68,7 @@ void	free_path(char ***path)
 {
 	int	i;
 
-	if (!path || *(*path))
+	if (!path || !(*path))
 		return ;
 	i = 0;
 	while ((*path)[i])

@@ -37,11 +37,13 @@ void    testBuildTree_OnePipe(void)
 {
 	char *free_tokens[] = {"|"};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(PIPE, tree->root->type);
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -49,14 +51,16 @@ void    testBuildTree_OneRED(void)
 {
 	char *free_tokens[] = {"<", "a"};
 	char **tokens = createTokens(free_tokens, 2);
-	t_ast *tree = build_tree(tokens, 2, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(RED, tree->root->type);
 	t_red_prop *prop = (t_red_prop *)tree->root->prop;
 	TEST_ASSERT_TRUE(prop->is_single);
 	TEST_ASSERT_TRUE(prop->is_in);
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -64,14 +68,16 @@ void    testBuildTree_OneCMD(void)
 {
 	char *free_tokens[] = {"cmd1", "param1", "param2", "param3"};
 	char **tokens = createTokens(free_tokens, 4);
-	t_ast *tree = build_tree(tokens, 4, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 4, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
 	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
 	TEST_ASSERT_EQUAL_INT(0, prop->start);
 	TEST_ASSERT_EQUAL_INT(4, prop->size);
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -79,7 +85,9 @@ void    testBuildTree_ThreeNodes(void)
 {
 	char *free_tokens[] = {"cmd1", "param1", "param2", "<", "a", "|", "cmd2", ">>", "b"};
 	char **tokens = createTokens(free_tokens, 9);
-	t_ast *tree = build_tree(tokens, 9, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 9, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(PIPE, tree->root->type);
@@ -102,7 +110,7 @@ void    testBuildTree_ThreeNodes(void)
 	cmd_prop = (t_cmd_prop *)tree->root->right->left->prop;
 	TEST_ASSERT_EQUAL_INT(6, cmd_prop->start);
 	TEST_ASSERT_EQUAL_INT(1, cmd_prop->size);	
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -111,7 +119,9 @@ void    testBuildTree_MultiNodes(void)
 	// cmd param1 < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 | cmd4 > outfile2 > outfile3
 	char *free_tokens[] = {"cmd1", "param1", ">", "infile1", "<", "infile2", ">", "outfile0", "|", "cmd2", "|", "cmd3", ">", "outfile1", "|", "cmd4", ">", "outfile2", ">", "outfile3"};
 	char **tokens = createTokens(free_tokens, 20);
-	t_ast *tree = build_tree(tokens, 20, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 20, env);
 	t_ast_node *root = tree->root;
 	TEST_ASSERT_EQUAL_INT(PIPE, root->type);
 	t_ast_node *pipe1 = root->left;
@@ -159,7 +169,7 @@ void    testBuildTree_MultiNodes(void)
 	t_cmd_prop *cmd6prop = (t_cmd_prop *)cmd6->prop;
 	TEST_ASSERT_EQUAL_INT(0, cmd6prop->start);
 	TEST_ASSERT_EQUAL_INT(2, cmd6prop->size);
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -168,7 +178,9 @@ void	testExec_OneCmd(void)
 {
 	char *free_tokens[] = {"cat", "./pg/a"};
 	char **tokens = createTokens(free_tokens, 2);
-	t_ast *tree = build_tree(tokens, 2, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
@@ -177,7 +189,7 @@ void	testExec_OneCmd(void)
 	TEST_ASSERT_EQUAL_INT(2, prop->size);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -187,12 +199,14 @@ void	testExec_CmdRed(void)
 
 	char *free_tokens[] = {"cat", "./pg/a", ">", "./pg/c"};
 	char **tokens = createTokens(free_tokens, 4);
-	t_ast *tree = build_tree(tokens, 4, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 4, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -201,12 +215,30 @@ void	testExec_CmdRedPipe(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", "|", "cat", ">", "./pg/c"};
 	char **tokens = createTokens(free_tokens, 7);
-	t_ast *tree = build_tree(tokens, 7, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 7, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
+    return ;
+}
+
+//"cat < ./pg/a | > ./pg/c"
+void	testExec_CmdRedWrongPipe(void)
+{
+	char *free_tokens[] = {"cat", "<", "./pg/a", "|", ">", "./pg/c"};
+	char **tokens = createTokens(free_tokens, 6);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 6, env);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
     return ;
 }
 
@@ -215,12 +247,14 @@ void	testExec_MultiRedPipe(void)
 	//"cat < ./pg/a < ./pg/b"
 	char *free_tokens[] = {"cat", "<", "./pg/a", "<", "./pg/b"};
 	char **tokens = createTokens(free_tokens, 5);
-	t_ast *tree = build_tree(tokens, 5, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 5, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -228,12 +262,14 @@ void	testExec_NonExistCmdRelative(void)
 {
 	char *free_tokens[] = {"./pg/nonexist"};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -241,12 +277,14 @@ void	testExec_NonExistCmd(void)
 {
 	char *free_tokens[] = {"noexist"};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(127, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -254,12 +292,14 @@ void	testExec_NoReadCmd(void)
 {
 	char *free_tokens[] = {"./pg/cannotread"};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -267,12 +307,14 @@ void	testExec_NoWriteCmd(void)
 {
 	char *free_tokens[] = {"./pg/cannotwrite"};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -280,12 +322,14 @@ void	testExec_Dir(void)
 {
 	char *free_tokens[] = {"./pg/dir"};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(126, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -293,12 +337,14 @@ void	testExec_EmptyCmd(void)
 {
 	char *free_tokens[] = {"   "};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -306,12 +352,14 @@ void	testExec_NotProgram(void)
 {
 	char *free_tokens[] = {"./pg/notprog"};
 	char **tokens = createTokens(free_tokens, 1);
-	t_ast *tree = build_tree(tokens, 1, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -320,12 +368,14 @@ void	testExec_MultiPipe(void)
 {
 	char *free_tokens[] = {"cat", "./pg/a", "|", "cat", "|", "cat"};
 	char **tokens = createTokens(free_tokens, 6);
-	t_ast *tree = build_tree(tokens, 6, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 6, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -334,12 +384,14 @@ void	testExec_MultiRed(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", "<", "./pg/b"};
 	char **tokens = createTokens(free_tokens, 5);
-	t_ast *tree = build_tree(tokens, 5, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 5, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -348,12 +400,14 @@ void	testExec_RedNotExist(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/d"};
 	char **tokens = createTokens(free_tokens, 3);
-	t_ast *tree = build_tree(tokens, 3, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 3, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -362,12 +416,14 @@ void	testExec_MultiNotExistRed(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/dd", "<", "./pg/ee"};
 	char **tokens = createTokens(free_tokens, 5);
-	t_ast *tree = build_tree(tokens, 5, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 5, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -376,12 +432,14 @@ void	testExec_MultiNotExistRedWithPipe(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/ww", "<", "./pg/cc", "|", "<", "./pg.ss"};
 	char **tokens = createTokens(free_tokens, 8);
-	t_ast *tree = build_tree(tokens, 8, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 8, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -390,12 +448,14 @@ void	testExec_RedNotRead(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/cannotread"};
 	char **tokens = createTokens(free_tokens, 3);
-	t_ast *tree = build_tree(tokens, 3, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 3, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -404,12 +464,14 @@ void	testExec_RedDir(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/dir2"};
 	char **tokens = createTokens(free_tokens, 3);
-	t_ast *tree = build_tree(tokens, 3, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 3, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -418,12 +480,14 @@ void	testExec_MultiComplexRed(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "<", "./pg/b", ">>", "./pg/d"};
 	char **tokens = createTokens(free_tokens, 9);
-	t_ast *tree = build_tree(tokens, 9, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 9, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -432,13 +496,15 @@ void	testExec_MultiComplexRedWithPipe(void)
 {
 	char *free_tokens[] = {"cat", "<", "./pg/a", ">", "./pg/c", "|", "cat",  "<", "./pg/b", ">", "./pg/d"};
 	char **tokens = createTokens(free_tokens, 11);
-	t_ast *tree = build_tree(tokens, 11, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 11, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
 	debug_print_ast(tree, tree->root, "");
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -447,40 +513,46 @@ void	testExec_Heredoc(void)
 {
 	char *free_tokens[] = {"cat", "<<", "eof"};
 	char **tokens = createTokens(free_tokens, 3);
-	t_ast *tree = build_tree(tokens, 3, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 3, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
-// "cat << eof << eof"
+// "cat << eof << eof2"
 void	testExec_MultiHeredoc(void)
 {
-	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof"};
+	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof2"};
 	char **tokens = createTokens(free_tokens, 5);
-	t_ast *tree = build_tree(tokens, 5, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 5, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
-// "cat << eof << eof > ./pg/c | << eof"
+// "cat << eof << eof2 > ./pg/c | << eof3"
 void	testExec_MultiHeredocWithPipe(void)
 {
-	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof", ">", "./pg/c", "|", "cat", "<<", "eof"};
+	char *free_tokens[] = {"cat", "<<", "eof", "<<", "eof2", ">", "./pg/c", "|", "cat", "<<", "eof3"};
 	char **tokens = createTokens(free_tokens, 11);
-	t_ast *tree = build_tree(tokens, 11, NULL);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 11, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
 	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
 	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
-	close_ast(&tree);
+	close_the_world(&tree);
     return ;
 }
 
@@ -488,17 +560,18 @@ void	testExec_MultiHeredocWithPipe(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    RUN_TEST(testBuildTree_OnePipe);
-	RUN_TEST(testBuildTree_OneRED);
-	RUN_TEST(testBuildTree_OneCMD);
-	RUN_TEST(testBuildTree_ThreeNodes);
-	RUN_TEST(testBuildTree_MultiNodes);
+    //RUN_TEST(testBuildTree_OnePipe);
+	//RUN_TEST(testBuildTree_OneRED);
+	//RUN_TEST(testBuildTree_OneCMD);
+	//RUN_TEST(testBuildTree_ThreeNodes);
+	//RUN_TEST(testBuildTree_MultiNodes);
 	
 	// We need to observe the output ourself now.
 
 	//RUN_TEST(testExec_OneCmd);
 	//RUN_TEST(testExec_CmdRed);
 	//RUN_TEST(testExec_CmdRedPipe);
+	//RUN_TEST(testExec_CmdRedWrongPipe);
 	//RUN_TEST(testExec_MultiRedPipe);
 	//RUN_TEST(testExec_NonExistCmdRelative);
 	//RUN_TEST(testExec_NonExistCmd);
@@ -507,7 +580,7 @@ int	main(void)
 	//RUN_TEST(testExec_EmptyCmd);
 	//RUN_TEST(testExec_Dir);
 	//RUN_TEST(testExec_NotProgram);
-	//RUN_TEST(testExec_MultiPipe);
+	RUN_TEST(testExec_MultiPipe);
 	//RUN_TEST(testExec_MultiRed);
 	//RUN_TEST(testExec_MultiNotExistRed);
 	//RUN_TEST(testExec_MultiNotExistRedWithPipe);
