@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 17:35:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 15:04:58 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ bool		is_empty_cmd(char *cmd);
 int			parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop);
 void		generate_argv(t_ast *ast, t_cmd_prop *prop);
 int			return_process_res(int status);
+void		close_envp(char ***envp);
 
 // @brief perform the preprocess here.
 //
@@ -76,7 +77,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	if (prop->pid == 0)
 		execve(prop->full_cmd, prop->argv, envp);
-	free(envp);
+	close_envp(&envp);
 	waitpid(prop->pid, &status, 0);
 	return (return_process_res(status));
 }
