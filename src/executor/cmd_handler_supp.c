@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 10:32:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 17:00:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ bool	is_empty_cmd(char *cmd)
 
 // @brief to parse the PATH from env.
 //
+// @param ast: the pointer to ast tree.
 // @return the array of path.
-char	**get_path(void)
+char	**get_path(t_ast *ast)
 {
 	char	*path_str;
 	char	**path;
 
-	path_str = getenv("PATH");
+	path_str = env_get(ast->env, "PATH");
 	if (!path_str)
 		return (NULL);
 	path = ft_split(path_str, ':');
-	if (!path)
-		return (NULL);
+	free(path_str);
 	return (path);
 }
 
@@ -68,7 +68,7 @@ void	free_path(char ***path)
 {
 	int	i;
 
-	if (!path || *(*path))
+	if (!path || !(*path))
 		return ;
 	i = 0;
 	while ((*path)[i])

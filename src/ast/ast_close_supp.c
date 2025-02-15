@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 12:48:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 15:33:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,27 @@ static void	close_fds_helper(t_ast *ast)
 // @return status code.
 int	close_fds(t_ast *ast)
 {
-	int	stdin_backup;
-	int	stdout_backup;
+	int	backup_fds[2];
 	int	status;
 
 	status = EXIT_OK;
-	stdin_backup = dup(STDIN_FILENO);
-	stdout_backup = dup(STDOUT_FILENO);
-	if (stdin_backup == -1 || stdout_backup == -1)
+	backup_fds[0] = dup(STDIN_FILENO);
+	backup_fds[1] = dup(STDOUT_FILENO);
+	if (backup_fds[0] == -1 || backup_fds[1] == -1)
 	{
 		status = EXIT_FAIL;
 		perror("minishell: dup");
 	}
-	if (status == EXIT_OK && (dup2(stdin_backup, STDIN_FILENO) == -1
-		|| dup2(stdout_backup, STDOUT_FILENO) == -1))
+	if (status == EXIT_OK && (dup2(backup_fds[0], STDIN_FILENO) == -1
+		|| dup2(backup_fds[1], STDOUT_FILENO) == -1))
 	{
 		status = EXIT_FAIL;
 		perror("minishell: dup2");
 	}
 	close_fds_helper(ast);
-	if (stdin_backup > 0)
-		close(stdin_backup);
-	if (stdout_backup > 0)
-		close(stdout_backup);
+	if (backup_fds[0] > 0)
+		close(backup_fds[0]);
+	if (backup_fds[1] > 0)
+		close(backup_fds[1]);
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 07:50:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 10:42:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 15:57:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <unistd.h>
 
 bool		is_relative_or_absolute_cmd(char *cmd);
-char		**get_path(void);
+char		**get_path(t_ast *ast);
 void		free_path(char ***path);
 char		*ms_strjoin(t_ast *ast, char *path, char *cmd);
 
@@ -33,7 +33,7 @@ static bool	parse_full_cmd(t_ast *ast, t_cmd_prop *prop)
 	char	*full_cmd;
 
 	i = 0;
-	path = get_path();
+	path = get_path(ast);
 	if (!path)
 		return (false);
 	while (path[i])
@@ -106,4 +106,20 @@ int	parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop)
 		return (check_cmd(ast, prop));
 	return (return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],
 			"command not found"));
+}
+
+// @brief close the envp.
+//
+// @param the pointer to envp.
+void	close_envp(char ***envp)
+{
+	int	i;
+
+	i = 0;
+	if (!envp || !(*envp))
+		return ;
+	while ((*envp)[i])
+		free((*envp)[i++]);
+	free(*envp);
+	*envp = NULL;
 }

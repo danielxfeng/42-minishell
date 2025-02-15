@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 16:49:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 18:45:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,15 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 	int			fds[2];
 
 	debug_print_ast(ast, ast_node, "Exec Pipe.");
+	fds[0] = -1;
+	fds[1] = -1;
 	prop = (t_pipe_prop *)ast_node->prop;
-	if (!prop->is_piped && pipe(fds) < 0)
+	if (pipe(fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
 	perform_sub_proc(ast, ast_node, LEFT, fds);
-	if (!prop->is_piped)
-		close(fds[1]);
+	close(fds[1]);
 	perform_sub_proc(ast, ast_node, RIGHT, fds);
-	if (!prop->is_piped)
-		close(fds[0]);
+	close(fds[0]);
 	waitpid(prop->pids[LEFT], NULL, 0);
 	waitpid(prop->pids[RIGHT], &status, 0);
 	status = return_process_res(status);

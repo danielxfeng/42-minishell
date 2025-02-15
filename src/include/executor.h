@@ -6,13 +6,15 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 20:10:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 18:42:30 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
+# include "mini_env.h"
+# include "utils.h"
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/types.h>
@@ -50,6 +52,7 @@ typedef enum e_node_type
 // `tk_size: the size of tokens.
 // `fd_in`: the std_in before executing the AST execution.
 // `fd_out` the std_out before executing the AST execution.
+// `env`: the pointer to env.
 //
 // The std_in/out may be redirected in sub-process, so we need the
 // original std_in/out, in case we need read/print to terminal.
@@ -60,8 +63,8 @@ typedef struct s_ast
 	int						tk_size;
 	int						fd_in;
 	int						fd_out;
+	t_env					*env;
 	// leave ur stuff here @abdul
-	// env
 	// history
 	// maybe others
 }							t_ast;
@@ -73,7 +76,7 @@ typedef struct s_ast
 // I failed to avoid this after several tries.
 //
 // Then we apply a mixed Pre-Post-order traversal to perform
-// the execution. 
+// the execution.
 //
 // `prop`: the specific properties depends on `t_node_type`.
 // `node_pre_handler`: the pointer to the function
@@ -134,18 +137,16 @@ typedef struct s_red_prop
 
 // Represents properties of PIPE.
 //
-// `is_piped`: is there an existing pipe? 
 // `pids`: pid of sub-process.
 typedef struct s_pipe_prop
 {
-	bool					is_piped;
 	pid_t					pids[2];
 }							t_pipe_prop;
 
 // AST
 // The constructors of AST.
 
-t_ast						*create_ast(char **tokens, int tk_size);
+t_ast						*create_ast(char **tokens, int tk_size, t_env *env);
 t_ast_node					*create_pipe_node(t_ast *ast);
 t_ast_node					*create_cmd_node(t_ast *ast, int start, int size);
 t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in,
@@ -183,6 +184,7 @@ void						print_red_node(t_ast *ast, t_ast_node *node,
 
 // Quit functions.
 
+int							close_the_world(t_ast **ast);
 void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,
@@ -202,10 +204,6 @@ int							cmd_unset(t_ast *ast, t_cmd_prop *prop);
 int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 
-t_ast						*build_tree(char **tokens, int tk_size);
-
-// Utils
-
-int							ms_strcmp(char *s1, char *s2);
+t_ast						*build_tree(char **tokens, int tk_size, t_env *env);
 
 #endif
