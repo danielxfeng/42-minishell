@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:05:24 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:49:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:49:56 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,6 @@ bool    set_item(t_env_item *item, char *item_str)
 	ft_memcpy(item->key, item_str, i);
 	ft_memcpy(item->value, item_str + i + 1, ft_strlen(item_str) - i - 1);
 	return (true);
-}
-
-// @brief returns serilized the env item
-//
-// @param item: the env item to be output.
-// @return (key=value);
-char *output_env_item(t_env_item *item)
-{
-    int     key_len;
-    int     value_len;
-	char	*joined;
-
-    key_len = ft_strlen(item->key);
-    value_len = ft_strlen(item->value);
-	joined = ft_calloc((key_len + value_len + 2), sizeof(char));
-	if (!joined)
-		return (NULL);
-	ft_memcpy(joined, item->key, key_len);
-	joined[key_len] = '=';
-	ft_memcpy(joined + key_len + 1, item->value, value_len);
-	return (joined);
 }
 
 // @brief free an env item.

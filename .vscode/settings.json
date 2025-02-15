@@ -25,11 +25,16 @@
     "executor.h": "c",
     "history.h": "c",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "mini_env.h": "c",
     "limits.h": "c"
 =======
     "mini_env.h": "c"
 >>>>>>> 20bbf18 (updated env to apply vector.)
+=======
+    "mini_env.h": "c",
+    "limits.h": "c"
+>>>>>>> 6448337 (removed env_output.)
   },
 "cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx",
 "C_Cpp.errorSquiggles": "disabled"
