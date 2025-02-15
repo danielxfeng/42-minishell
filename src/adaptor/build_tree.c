@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:46:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:50:50 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,11 +158,11 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 //
 // @param ast: the pointer to ast.
 // @param tokens: the array of tokens.
-t_ast	*build_tree(char **tokens, int tk_size)
+t_ast	*build_tree(char **tokens, int tk_size, t_env *env)
 {
 	t_ast	*tree;
 
-	tree = create_ast(tokens, tk_size);
+	tree = create_ast(tokens, tk_size, env);
 	tree->fd_in = dup(STDIN_FILENO);
 	tree->fd_out = dup(STDOUT_FILENO);
 	if (tree->fd_in == -1 || tree->fd_out == -1)

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 17:47:32 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:51:16 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ void						print_red_node(t_ast *ast, t_ast_node *node,
 
 // Quit functions.
 
-void						close_the_world(t_ast **ast);
+int							close_the_world(t_ast **ast);
 void						exit_with_err(t_ast **ast, int err_code, char *msg);
 void						exit_without_err(t_ast **ast);
 int							return_with_err(int err_no, int rtn_code,
@@ -206,6 +206,6 @@ int							cmd_unset(t_ast *ast, t_cmd_prop *prop);
 int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 
-t_ast						*build_tree(char **tokens, int tk_size);
+t_ast						*build_tree(char **tokens, int tk_size, t_env *env);
 
 #endif

@@ -7,10 +7,14 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2025/02/17 17:45:14 by Xifeng           ###   ########.fr       */
 =======
 /*   Updated: 2025/02/14 14:22:38 by Xifeng           ###   ########.fr       */
 >>>>>>> af3a2c6 (fixed the pipe.)
+=======
+/*   Updated: 2025/02/15 15:56:27 by Xifeng           ###   ########.fr       */
+>>>>>>> fd03d22 (fixed compile errors.)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +98,17 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 	int			fds[2];
 
 	debug_print_ast(ast, ast_node, "Exec Pipe.");
-	fd[0] = -1;
-	fd[1] = -1;
+	fds[0] = -1;
+	fds[1] = -1;
 	prop = (t_pipe_prop *)ast_node->prop;
 	if (!ast->is_piped && pipe(fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
 	ast->is_piped = true;
 	perform_sub_proc(ast, ast_node, LEFT, fds);
-	if (fd[1] > 0)
+	if (fds[1] > 0)
 		close(fds[1]);
 	perform_sub_proc(ast, ast_node, RIGHT, fds);
-	if (fd[0] > 0)
+	if (fds[0] > 0)
 		close(fds[0]);
 	waitpid(prop->pids[LEFT], NULL, 0);
 	waitpid(prop->pids[RIGHT], &status, 0);

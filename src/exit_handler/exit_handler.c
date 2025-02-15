@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 17:33:28 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 15:58:34 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,16 @@
 // @brief close everything.
 //
 // @param ast: the pointer of ast.
-void	close_the_world(t_ast **ast)
+// @return the status code.
+int	close_the_world(t_ast **ast)
 {
 	if (ast && *ast)
 	{
 		if ((*ast)->env)
-			close_env((*ast)->env);
-		close_ast(*ast);
+			close_env(&((*ast)->env));
+		return (close_ast(ast));
 	}
+	return (EXIT_OK);
 }
 
 // @brief exit the program with a possible error.
