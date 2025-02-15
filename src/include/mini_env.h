@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:14:52 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 21:32:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 09:29:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_env
 
 t_env	*create_env(char **envp);
 t_env	*close_env(t_env **env);
-char	**env_output(t_env *env);
 void	env_remove(t_env *env, char *key);
 char	*env_get(t_env *env, char *key);
 
