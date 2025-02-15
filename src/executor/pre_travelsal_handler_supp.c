@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 19:30:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 17:38:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 // @brief to run in a loop for reading lines from here_doc.
 //
@@ -103,8 +104,9 @@ int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 // @return the status code.
 int	open_file_helper(t_ast *ast, t_red_prop *prop)
 {
-	int		open_code;
-	char	*file_name;
+	int			open_code;
+	char		*file_name;
+	struct stat	buf;
 
 	open_code = O_RDONLY;
 	if (!(prop->is_in))
@@ -114,6 +116,12 @@ int	open_file_helper(t_ast *ast, t_red_prop *prop)
 			open_code = O_WRONLY | O_CREAT | O_APPEND;
 	}
 	file_name = ast->tokens[prop->idx];
+	stat(file_name, &buf);
+	if (S_ISDIR(buf.st_mode))
+	{
+		prop->status = EXIT_FAIL;
+		return (return_prt_err(EXIT_FAIL, "minishell", "-", "Is a directory"));
+	}
 	prop->fd = open(file_name, open_code, 0644);
 	if (prop->fd < 0)
 	{
