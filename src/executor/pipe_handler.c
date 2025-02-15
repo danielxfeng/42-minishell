@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 15:56:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/15 18:45:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input,
 		src = fds[0];
 		dest = STDIN_FILENO;
 	}
-	if ((src > 0 || dest > 0) && dup2(src, dest) < 0)
+	if (dup2(src, dest) < 0)
 		exit_with_err(&ast, EXIT_CMD_ERR, "minishell: dup2");
 	close(fds[0]);
 	close(fds[1]);
@@ -93,15 +93,12 @@ int	pipe_handler(t_ast *ast, t_ast_node *ast_node)
 	fds[0] = -1;
 	fds[1] = -1;
 	prop = (t_pipe_prop *)ast_node->prop;
-	if (!ast->is_piped && pipe(fds) < 0)
+	if (pipe(fds) < 0)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: pipe");
-	ast->is_piped = true;
 	perform_sub_proc(ast, ast_node, LEFT, fds);
-	if (fds[1] > 0)
-		close(fds[1]);
+	close(fds[1]);
 	perform_sub_proc(ast, ast_node, RIGHT, fds);
-	if (fds[0] > 0)
-		close(fds[0]);
+	close(fds[0]);
 	waitpid(prop->pids[LEFT], NULL, 0);
 	waitpid(prop->pids[RIGHT], &status, 0);
 	status = return_process_res(status);
