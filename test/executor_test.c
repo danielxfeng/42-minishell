@@ -556,6 +556,39 @@ void	testExec_MultiHeredocWithPipe(void)
     return ;
 }
 
+// "ssp"
+void	testExec_CmdNotInEnv(void)
+{
+	char *free_tokens[] = {"ssp"};
+	char **tokens = createTokens(free_tokens, 1);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(127, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;
+}
+
+// "prog 1 2 3"
+void	testExec_CmdInEnv(void)
+{
+	char *free_tokens[] = {"prog", "1", "2", "3"};
+	char **tokens = createTokens(free_tokens, 4);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 4, env);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;
+}
+
+
 // Main function to run the tests
 int	main(void)
 {
@@ -592,5 +625,7 @@ int	main(void)
 	//RUN_TEST(testExec_Heredoc);
 	//RUN_TEST(testExec_MultiHeredoc);
 	//RUN_TEST(testExec_MultiHeredocWithPipe);
+	//RUN_TEST(testExec_CmdNotInEnv);
+	//RUN_TEST(testExec_CmdInEnv);
 	return (UNITY_END());
 }
