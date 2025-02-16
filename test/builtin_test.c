@@ -463,6 +463,22 @@ void testExit_Default(void)
     return ;	
 }
 
+void testPipe(void)
+{
+	char *free_tokens[] = {"env", "|", "cat"};
+	char **tokens = createTokens(free_tokens, 3);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 3, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -496,5 +512,6 @@ int	main(void)
 	RUN_TEST(testExit_Default);
 	RUN_TEST(testExit_Default);
 	RUN_TEST(testExit_TooManyArguments);
+	RUN_TEST(testPipe);
 	return (UNITY_END());
 }
