@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:27:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 13:57:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:53:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,35 @@ int	ms_strcmp(char *s1, char *s2)
 		++i;
 	}
 	return (s1[i] - s2[i]);
+}
+
+// @brief a custom atoi function.
+//
+// @param n: the number in string format.
+// @param nb: the container of result number.
+// @return if it's a valid number.
+bool	ms_atoi(char *n, int *nb)
+{
+	bool	is_negative;
+
+	is_negative = false;
+	while (*n && *n == ' ')
+		++n;
+	if (*n == '+' || *n == '-')
+	{
+		if (*n == '-')
+			is_negative = true;	
+		++n;	
+	}
+	*nb = 0;
+	while (*n && *n >= '0' && *n <= '9')
+	{
+		*nb = *nb * 10 + *n - '0';
+		++n;
+	}
+	if (is_negative)
+		*nb = -(*nb);
+	if (*n == '\0')
+		return (true);
+	return (false);
 }

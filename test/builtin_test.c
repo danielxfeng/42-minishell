@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 // valgrind --leak-check=full --show-leak-kinds=all ./build/builtin_test
 
@@ -239,6 +240,229 @@ void	testExportTest_InvalidOpt(void)
     return ;
 }
 
+void	testEcho_Empty(void)
+{
+	char *free_tokens[] = {"echo"};
+	char **tokens = createTokens(free_tokens, 1);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
+
+	printf("empty line start\n");
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+	printf("empty line end\n");
+    return ;	
+}
+
+void	testEcho_Print(void)
+{
+	char *free_tokens[] = {"echo", "aaa", "$?", "bbb", "$?"};
+	char **tokens = createTokens(free_tokens, 5);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 5, env);
+	tree->prev_status = 34;
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void	testEcho_PrintWithN(void)
+{
+	char *free_tokens[] = {"echo", "-n", "aaa", "$?", "bbb", "$?"};
+	char **tokens = createTokens(free_tokens, 6);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 6, env);
+	tree->prev_status = 35;
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+	printf("!!!line end\n");
+    return ;	
+}
+
+void	testEcho_WrongOpt(void)
+{
+	char *free_tokens[] = {"echo", "-p", "aaa", "$?", "bbb", "$?"};
+	char **tokens = createTokens(free_tokens, 6);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 6, env);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(2, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testPwd(void)
+{
+	char *free_tokens[] = {"pwd"};
+	char **tokens = createTokens(free_tokens, 1);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testPwd_Opt(void)
+{
+	char *free_tokens[] = {"pwd", "-s"};
+	char **tokens = createTokens(free_tokens, 2);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(2, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testPwd_Arguments(void)
+{
+	char *free_tokens[] = {"pwd", "aa"};
+	char **tokens = createTokens(free_tokens, 2);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testCd(void)
+{
+	char *free_tokens[] = {"cd", "sdf"};
+	char **tokens = createTokens(free_tokens, 2);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testCd_Opt(void)
+{
+	char *free_tokens[] = {"cd", "-n"};
+	char **tokens = createTokens(free_tokens, 2);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(2, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+
+void testCd_Arguments(void)
+{
+	char *free_tokens[] = {"cd", "sd", "sdd"};
+	char **tokens = createTokens(free_tokens, 2);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testExit(void)
+{
+	char *free_tokens[] = {"exit", "29"};
+	char **tokens = createTokens(free_tokens, 2);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(29, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testExit_WrongNumber(void)
+{
+	char *free_tokens[] = {"exit", "29a"};
+	char **tokens = createTokens(free_tokens, 2);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 2, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(2, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testExit_TooManyArguments(void)
+{
+	char *free_tokens[] = {"exit", "2", "3"};
+	char **tokens = createTokens(free_tokens, 3);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 3, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(1, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
+void testExit_Default(void)
+{
+	char *free_tokens[] = {"exit"};
+	char **tokens = createTokens(free_tokens, 1);
+	char *envp[] = {"PATH=/usr/bin/:/home/xifeng/42-minishell/pg", NULL};
+	t_env *env = create_env(envp);
+	t_ast *tree = build_tree(tokens, 1, env);
+	
+
+	TEST_ASSERT_NOT_NULL(tree);
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	close_the_world(&tree);
+    return ;	
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -256,5 +480,21 @@ int	main(void)
 	RUN_TEST(testENVtset_InvalidOpt);
 	RUN_TEST(testUnsetTest_InvalidOpt);
 	RUN_TEST(testExportTest_InvalidOpt);
+	RUN_TEST(testEcho_Empty);
+	RUN_TEST(testEcho_Print);
+	RUN_TEST(testEcho_PrintWithN);
+	RUN_TEST(testEcho_WrongOpt);
+	RUN_TEST(testPwd);
+	RUN_TEST(testPwd_Opt);
+	RUN_TEST(testPwd_Arguments);
+	RUN_TEST(testCd);
+	RUN_TEST(testCd_Opt);
+	RUN_TEST(testCd_Arguments);
+	// To test this, should commmet the exit, also cannot test overflow.
+	RUN_TEST(testExit);
+	RUN_TEST(testExit_WrongNumber);
+	RUN_TEST(testExit_Default);
+	RUN_TEST(testExit_Default);
+	RUN_TEST(testExit_TooManyArguments);
 	return (UNITY_END());
 }
