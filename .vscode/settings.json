@@ -27,6 +27,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
     "mini_env.h": "c",
+<<<<<<< HEAD
     "limits.h": "c"
 =======
     "mini_env.h": "c"
@@ -35,6 +36,10 @@
     "mini_env.h": "c",
     "limits.h": "c"
 >>>>>>> 6448337 (removed env_output.)
+=======
+    "limits.h": "c",
+    "readline.h": "c"
+>>>>>>> e539f95 (untested shell by readline.)
   },
 "cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx",
 "C_Cpp.errorSquiggles": "disabled"
