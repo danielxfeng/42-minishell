@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 12:50:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:50:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,89 +16,127 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-// @brief `echo` with option `-n`
-int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
+int check_option(t_ast *ast, t_cmd_prop *prop);
+
+// @brief help `echo` to print out the parameters.
+//
+// @param ast: the pointer to ast tree.
+// @param prop: the property of ast node.
+// @param no_line_break: the flag of the line break sign in the end.
+static void	echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break)
 {
 	int	i;
-
-	bool line_break ;
-	line_break = false;
-	if (prop->size > 1 && (ms_strcmp(ast->tokens[prop->start + 1], "-n") == 0))
-		line_break = true;
+	
 	i = 1;
-	if (line_break)
-		++i;
+	if (no_line_break)
+		i = 2;
 	while (i < prop->size)
 	{
-		printf("%s", ast->tokens[prop->start + i]);
+		if (ms_strcmp("$?", ast->tokens[prop->start + i]) == 0)
+			printf("%d", ast->prev_status);
+		else
+			printf("%s", ast->tokens[prop->start + i]);
 		if (i + 1 < prop->size)
 			printf(" ");
 		++i;
 	}
-	if (!line_break)
+	if (!no_line_break)
 		printf("\n");
+}
+
+// @brief `echo` with option `-n`
+// check 'man' page for more information.
+// argc: prop->size;
+// argv: ast->tokens[prop->start];
+int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
+{
+	int status;
+	bool no_line_break;
+
+	if (prop->size == 1)
+	{
+		printf("\n");
+		return (EXIT_OK);
+	}
+	no_line_break = false;
+	if (prop->size >= 2 && ms_strcmp(ast->tokens[prop->start + 1], "-n") == 0)
+		no_line_break = true;
+	else
+	{
+		status = check_option(ast, prop);
+		if (status != EXIT_OK)
+			return (status);		
+	}
+	echo_helper(ast, prop, no_line_break);
 	return (EXIT_OK);
 }
 
 // @brief `cd` with only a relative or absolute path
+// check 'man' page for more information.
+// argc: prop->size;
+// argv: ast->tokens[prop->start];
 int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 {
-	char	*path;
-	char	dir[PATH_MAX + 1];
+	int		status;
 
-	if (prop->size != 1 && prop->size != 2)
-		return_prt_err(EXIT_FAIL, "minishell", "cd", "too many arguments");
+	status = check_option(ast, prop);
+	if (status != EXIT_OK)
+		return (status);
 	if (prop->size == 1)
-	{
-		path = getenv("HOME");
-		if (!path)
-		{
-			if (getcwd(dir, sizeof(dir)) == NULL)
-				return_prt_err(EXIT_FAIL, "minishell", "cd", NULL);
-			path = dir;
-		}
-	}
-	else
-		path = ast->tokens[prop->start + 1];
-	if (chdir(path) != 0)
-		return_prt_err(EXIT_FAIL, "minishell: cd", path, NULL);
+		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "only support a relative or absolute path."));
+	if (prop->size != 2)
+		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "too many arguments"));
+	if (chdir(ast->tokens[prop->start + 1]) != 0)
+		return (return_prt_err(EXIT_FAIL, "minishell: cd", ast->tokens[prop->start + 1], NULL));
 	return (EXIT_OK);
 }
 
 // @brief `pwd` with no options
+// check 'man' page for more information.
+// argc: prop->size;
+// argv: ast->tokens[prop->start];
 int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 {
-	char	dir[PATH_MAX + 1];
-
-	(void)ast;
-	(void)prop;
-	if (getcwd(dir, sizeof(dir)) == NULL)
-		return_prt_err(EXIT_FAIL, "minishell", "pwd", NULL);
-	printf("%s\n", dir);
+	char	*buf;
+	int		status;
+	
+	status = check_option(ast, prop);
+	if (status != EXIT_OK)
+		return (status);
+	buf = getcwd(NULL, 0);
+	if (!buf)
+		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, "minishell: getcwd"));
+	printf("%s\n", buf);
+	free(buf);
 	return (EXIT_OK);
 }
 
 // @brief `exit` with no options
+// check 'man' page for more information.
+// argc: prop->size;
+// argv: ast->tokens[prop->start];
 int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 {
 	int	status;
 
-	if (prop->size != 1 && prop->size != 2)
-		return_prt_err(EXIT_FAIL, "minishell", "exit", "too many arguments");
-	status = EXIT_OK;
-	if (prop->size == 2 && (ms_strcmp(ast->tokens[prop->start + 1], "0") != 0
-			&& ms_strcmp(ast->tokens[prop->start + 1], "+0") != 0
-			&& ms_strcmp(ast->tokens[prop->start + 1], "-0") != 0))
+	printf("exit\n");
+	if (prop->size > 2)
 	{
-		status = ft_atoi(ast->tokens[prop->start + 1]);
-		if (status == 0)
+		ft_putstr_fd("minishell: exit: too many arguments", 2);
+		status = EXIT_FAIL;	
+	}
+	else if (prop->size == 1)
+		status = EXIT_OK;
+	else if (prop->size == 2)
+	{
+		if (!ms_atoi(ast->tokens[prop->start + 1], &status))
 		{
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(ast->tokens[prop->start + 1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			status = EXIT_FAIL;
+			status = EXIT_INVALID_OPTION;	
 		}
 	}
-	exit_with_err(&ast, status, NULL);
+	//exit_with_err(&ast, status, NULL);
 	return (status);
 }

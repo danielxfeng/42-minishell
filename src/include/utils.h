@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:58:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 14:01:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 16:39:38 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define MS_UTILS
 
 int	ms_strcmp(char *s1, char *s2);
+bool	ms_atoi(char *n, int *nb);
 
 #endif
