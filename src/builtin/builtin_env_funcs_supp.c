@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 08:33:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 10:02:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 13:39:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,7 @@
 void	print_env_item_for_export(t_env_item *item)
 {
 	if (item->value)
-    {
-        if (item->value[0] == '"' && item->value[ft_strlen(item->value) - 1] == '"')
-            printf("declare -x %s=\"%s\"\n", item->key, item->value);
-        else
-            printf("declare -x %s=%s\n", item->key, item->value);        
-    }
+        printf("declare -x %s=\"%s\"\n", item->key, item->value);
 	else
         printf("declare -x %s\n", item->key);
 }
