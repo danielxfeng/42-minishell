@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 08:12:16 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 10:01:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 13:27:45 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	cmd_unset(t_ast *ast, t_cmd_prop *prop)
 		if (status != EXIT_OK)
 			return (status);
 		env_remove(ast->env, ast->tokens[prop->start + i]);
+		++i;
 	}
 	return (EXIT_OK);
 }

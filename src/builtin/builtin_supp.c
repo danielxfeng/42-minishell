@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:37:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 09:53:31 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 14:44:14 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int check_option(t_ast *ast, t_cmd_prop *prop)
     {
         ft_putstr_fd(ast->tokens[prop->start], 2);
         ft_putstr_fd(": invalid option -- \'", 2);
-        ft_putchar_fd(ast->tokens[prop->start + 1][0], 2);
+        ft_putchar_fd(ast->tokens[prop->start + 1][1], 2);
         ft_putstr_fd("\'\n", 2);
-        return (EXIT_CMD_ERR);
+        return (EXIT_INVALID_OPTION);
     }
     return (EXIT_OK);
 }
