@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 07:45:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 19:51:08 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:49:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ bool	is_builtin_func(char *cmd)
 	if (ms_strcmp(cmd, "pwd") == 0)
 		return (true);
 	if (ms_strcmp(cmd, "exit") == 0)
+		return (true);
+	if (ms_strcmp(cmd, "export") == 0)
+		return (true);
+	if (ms_strcmp(cmd, "unset") == 0)
+		return (true);
+	if (ms_strcmp(cmd, "env") == 0)
 		return (true);
 	return (false);
 }
@@ -49,6 +55,12 @@ int	exec_builtin_func(t_ast *ast, t_cmd_prop *prop)
 	if (ms_strcmp(cmd, "pwd") == 0)
 		return (cmd_pwd(ast, prop));
 	if (ms_strcmp(cmd, "exit") == 0)
-		return (cmd_pwd(ast, prop));
+		return (cmd_exit(ast, prop));
+	if (ms_strcmp(cmd, "export") == 0)
+		return (cmd_export(ast, prop));
+	if (ms_strcmp(cmd, "unset") == 0)
+		return (cmd_unset(ast, prop));
+	if (ms_strcmp(cmd, "env") == 0)
+		return (cmd_env(ast, prop));
 	return (EXIT_FAIL);
 }

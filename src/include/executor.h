@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 18:42:30 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 15:34:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define RIGHT 1
 # define EXIT_OK 0
 # define EXIT_FAIL 1
+# define EXIT_INVALID_OPTION 2
 # define EXIT_EXEC_ERR 126
 # define EXIT_CMD_ERR 127
 
@@ -52,6 +53,7 @@ typedef enum e_node_type
 // `tk_size: the size of tokens.
 // `fd_in`: the std_in before executing the AST execution.
 // `fd_out` the std_out before executing the AST execution.
+// `prev_status`: the status of last command;
 // `env`: the pointer to env.
 //
 // The std_in/out may be redirected in sub-process, so we need the
@@ -63,10 +65,8 @@ typedef struct s_ast
 	int						tk_size;
 	int						fd_in;
 	int						fd_out;
+	int						prev_status;
 	t_env					*env;
-	// leave ur stuff here @abdul
-	// history
-	// maybe others
 }							t_ast;
 
 // Represents a node of AST.

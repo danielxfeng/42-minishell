@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:39:39 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 11:44:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 14:08:49 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,23 @@
 #include <stdlib.h>
 
 bool    set_item(t_env_item *item, char *item_str);
-void    close_env_item(t_env_item *item);
+
+// @brief free an env item.
+//
+// @param item: an env item to free.
+void close_env_item(t_env_item *item)
+{
+    if (item->key)
+    {
+        free(item->key);
+        item->key = NULL;
+    }
+    if (item->value)
+    {
+        free(item->value);
+        item->value = NULL;
+    }
+}
 
 // @brief the destructor of env.
 //

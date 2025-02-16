@@ -6,13 +6,28 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:05:24 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 12:05:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 14:08:16 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
 #include "mini_env.h"
 #include <stdlib.h>
+
+// @brief help to set the env item.
+// 
+// @param i: the index of separator.
+// @param item_str: the env item string.
+// @param item: the env item to set.
+static void	set_item_helper(int i, char *item_str, t_env_item *item)
+{
+	if (((item_str[i + 1] == '\'' && item_str[ft_strlen(item_str) - 1] == '\'') ||
+	(item_str[i + 1] == '\"' && item_str[ft_strlen(item_str) - 1] == '\"')) 
+	&& (i != ft_strlen(item_str) - 2))
+		ft_memcpy(item->value, item_str + i + 2, ft_strlen(item_str) - i - 3);
+	else
+		ft_memcpy(item->value, item_str + i + 1, ft_strlen(item_str) - i - 1);
+}
 
 // @brief to parse the key, value from given env item.
 //
@@ -49,25 +64,8 @@ bool    set_item(t_env_item *item, char *item_str)
 		return (false);
 	}
 	if (i < ft_strlen(item_str) || item_str[i - 1] == '=')
-		ft_memcpy(item->value, item_str + i + 1, ft_strlen(item_str) - i - 1);
+		set_item_helper(i, item_str, item);
 	return (true);
-}
-
-// @brief free an env item.
-//
-// @param item: an env item to free.
-void close_env_item(t_env_item *item)
-{
-    if (item->key)
-    {
-        free(item->key);
-        item->key = NULL;
-    }
-    if (item->value)
-    {
-        free(item->value);
-        item->value = NULL;
-    }
 }
 
 // @brief append an item to env.

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 15:04:58 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 14:37:26 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,8 @@ void		close_envp(char ***envp);
 // @return status code.
 static int	preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 {
-	char	*cmd;
 	int		status;
 
-	cmd = ast->tokens[prop->start];
-	if (is_builtin_func(ast->tokens[prop->start]))
-		return (exec_builtin_func(ast, prop));
 	status = parse_full_cmd_and_check(ast, prop);
 	if (status != 0)
 		return (status);
@@ -66,6 +62,8 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 	prop = (t_cmd_prop *)ast_node->prop;
 	if (is_empty_cmd(ast->tokens[prop->start]))
 		return (EXIT_OK);
+	if (is_builtin_func(ast->tokens[prop->start]))
+		return (exec_builtin_func(ast, prop));
 	status = preprocess_cmd(ast, prop);
 	if (status != EXIT_OK)
 		return (status);
