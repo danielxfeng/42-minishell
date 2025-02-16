@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 18:42:30 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/16 09:36:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define RIGHT 1
 # define EXIT_OK 0
 # define EXIT_FAIL 1
+# define EXIT_INVALID_OPTION 2
 # define EXIT_EXEC_ERR 126
 # define EXIT_CMD_ERR 127
 
