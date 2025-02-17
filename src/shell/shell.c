@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 18:24:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 21:43:01 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int execute(t_env *env, char **tokens, int status)
         ++i;
     ast = build_tree(tokens, i, env);
     ast->prev_status = status;
-    tree->root->node_pre_handler(tree, tree->root);
-    status = tree->root->node_handler(tree, tree->root);
+    ast->root->node_pre_handler(ast, ast->root);
+    status = ast->root->node_handler(ast, ast->root);
     close_ast(&ast);
     return (status);
 }
