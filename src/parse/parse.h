@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 13:53:50 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 12:41:45 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/14 19:00:07 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ int		is_token_delimiter(char c);
 char	*get_token(const char *input, int *curr_pos);
 char	**tokenize(const char *cmd_line);
 int		is_quote(char c);
+char	*get_redir(const char *input, int *curr_pos);
 
 #endif

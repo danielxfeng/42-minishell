@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:21:16 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 21:19:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:28:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,31 @@
 /**
 * @todo a chatgpt code :( (will edit later)
 */
-char **tokenize(const char *cmd_line)
+char **tokenize(const char *input)
 {
-	char **tokens = malloc((MAX_TOKENS) * sizeof(char *));
-	if (!tokens)
-		quit(EXIT_FAILURE);
+    char **tokens;
+    int curr_pos = 0;
+    int i = 0;
 
-	int	pos = 0;
-	int	token_count = 0;
-
-	while (cmd_line[pos]) {
-		while (cmd_line[pos] == ' ')  // Skip spaces
-			pos++;
-
-		if (cmd_line[pos] == '\0')
-			break;
-
-		if (token_count >= MAX_TOKENS - 1)
-			break;  // Prevent overflow
-
-        tokens[token_count] = get_token(cmd_line, &pos);
-        token_count++;
+    tokens = ft_calloc(100, sizeof(char *));
+    if (!tokens)
+        quit(EXIT_FAILURE);
+    while (input[curr_pos])
+    {
+        skip_spaces(input, &curr_pos);
+        if (!input[curr_pos])
+            break;
+        if (is_token_delimiter(input[curr_pos]))
+        {
+            tokens[i++] = ft_substr(input, curr_pos, 1);
+            curr_pos++;
+        }
+        else if (input[curr_pos] == '>' || input[curr_pos] == '<')
+            tokens[i++] = get_redir(input, &curr_pos);
+        else
+            tokens[i++] = get_token(input, &curr_pos);
     }
-	
-    tokens[token_count] = NULL;  // Null-terminate the array
+    tokens[i] = NULL; // Null-terminate the array
     return tokens;
 }
 
@@ -64,7 +65,7 @@ char	*get_token(const char *input, int *curr_pos)
 	saved_pos = *curr_pos;
 	while (input[*curr_pos] && !is_token_delimiter(input[*curr_pos]))
 	{
-		printf("debug> %c\n", input[*curr_pos]);
+		//printf("debug> %c\n", input[*curr_pos]);
 		if (is_quote(input[*curr_pos]))
 			skip_quotes(input, curr_pos);
 		else if (input[*curr_pos])
@@ -86,4 +87,34 @@ int	is_quote(char c)
 	else
 		check = 0;
 	return (check);
+}
+
+
+char *get_redir(const char *input, int *curr_pos)
+{
+    char *redir;
+
+    if (!input[*curr_pos])
+        return NULL;
+
+    if (!ft_strncmp(&input[*curr_pos], ">>", 2))
+    {
+        redir = ft_strdup(">>");
+        *curr_pos += 2;
+    }
+    else if (!ft_strncmp(&input[*curr_pos], "<<", 2))
+    {
+        redir = ft_strdup("<<");
+        *curr_pos += 2;
+    }
+    else if (input[*curr_pos] == '>' || input[*curr_pos] == '<')
+    {
+        redir = ft_substr(input, *curr_pos, 1);
+        (*curr_pos)++;
+    }
+    else
+        return NULL;
+
+    skip_spaces(input, curr_pos);
+    return redir;
 }
