@@ -6,21 +6,10 @@
 #    By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/08 15:25:33 by Xifeng            #+#    #+#              #
-#    Updated: 2025/02/12 12:59:06 by Xifeng           ###   ########.fr        #
+#    Updated: 2025/02/17 21:09:55 by Xifeng           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# NAME := minishell
-# CC := cc
-# FLAG := -Wall -Wextra -Werror
-
-# LIBFT := $(LIBFT_DIR)/libft.a
-# LIBFT_PATH :=  ./lib/libft
-# SRC_PATH := src
-# HEADERS := -I ./inc -I $(LIBFT_DIR)/inc
-# LINK := -L$(LIBFT_DIR) -lft
-
-# SRC := $(shell find $(SRC_PATH) -type f -name "*.c")
 
 NAME := minishell
 CC := cc
@@ -34,7 +23,7 @@ LINK := -L$(LIBFT_DIR) -lft -lncurses -lreadline
 
 SRC_DIR := src
 #SRC := $(shell ls src/*.c)
-SRC := $(shell find $(SRC_DIR) -type f -name "*.c") #| grep -v -E 'ast|executor')
+SRC := $(shell find $(SRC_DIR) -type f -name "*.c")
 #SRC += src/main.c
 
 OBJ_DIR := obj

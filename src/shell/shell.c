@@ -6,13 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 18:24:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:14:12 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include "../main.h"
 
 // @brief start the executor.
 //

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 20:01:39 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 18:59:49 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:12:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_shell	shell;
 
 int	main(int ac, char **av, char **envp)
 {
-	return (minishell(ac, av, envp));
+	//return (minishell(ac, av, envp));
+	return shell(envp);
 }
 
 int	minishell(int ac, char **av, char **envp)
