@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 21:18:12 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 21:31:57 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char    **output_tokens(t_parser *parser)
     i = 0;
     while (i < parser->size)
     {
-        tokens[i] = ft_strdup(parser->tokens[i]->str);
+        tokens[i] = parser->tokens[i]->str;
         ++i;
     }
     close_parser(&parser, false);

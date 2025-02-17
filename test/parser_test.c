@@ -132,7 +132,6 @@ void    testOutputToken(void)
     free(tokens[1]);
     tokens[1] = NULL;
     free(tokens);
-    close_parser(&parser, true);
 }
 
 
