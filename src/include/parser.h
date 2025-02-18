@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 21:19:07 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 13:49:08 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 // Represents the type of tokens.
 typedef enum e_token_type
 {
+    SPACE,
     PIPE,
     CMD,
     RED,
@@ -28,7 +29,6 @@ typedef enum e_token_type
     DOLLAR,
     DQUOTE,
     SQUOTE,
-    SPACE,
 } t_token_type;
 
 // Represents the token.
@@ -67,12 +67,16 @@ typedef struct s_parser
 t_parser    *create_parser();
 void        close_parser(t_parser **parser, bool is_close_str);
 
-void        append_token(t_parser *parser, char *str, int start, int len);
+void        append_token(t_parser *parser);
 void        append_str_to_last_token(t_parser *parser, char *str);
 void        set_token(t_parser *parser, int idx, t_token_type type, int pipe_idx);
 void        switch_token(t_parser *parser, int i1, int i2);
 char        **output_tokens(t_parser *parser);
 
 void	    exit_with_err_parser(t_parser **parser, int err_code, char *msg);
+void	    return_with_err_parser(t_parser **parser, int err_code, char *msg);
+
+char	    *ms_strjoin_parser(char const *s1, char const *s2);
+char        *ms_substr(char *str, int start, int len);
 
 #endif

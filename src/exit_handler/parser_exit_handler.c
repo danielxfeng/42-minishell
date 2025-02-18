@@ -6,11 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:30:58 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 21:18:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 13:46:26 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parser.h"
+#include "../libs/libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,6 +24,20 @@ void	exit_with_err_parser(t_parser **parser, int err_code, char *msg)
 {
 	if (msg)
 		perror(msg);
+	close_parser(parser, true);
+	exit(err_code);
+}
+
+// @brief print out the error, clear the parser, and return.
+//
+// @param parser: the pointer to parser.
+// @param err_code: the return status code.
+// @param msg: the error msg to print.
+void	return_with_err_parser(t_parser **parser, int err_code, char *msg)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\'\n", 2);
 	close_parser(parser, true);
 	exit(err_code);
 }

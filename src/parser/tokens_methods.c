@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 21:31:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 13:52:28 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ t_token **create_tokens(t_parser *parser, int capacity);
 
 // @brief append a new token to parser.
 // Exits the program on error.
-// Will not set all the properties of token.
+// Will not set the properties of token.
 //
 // @param parser: the pointer of parser.
 // @param str: the full string of the cmd.
 // @param start: the start index of the token.
 // @param len: the length of the token.
-void    append_token(t_parser *parser, char *str, int start, int len)
+void    append_token(t_parser *parser)
 {
     t_token **tokens;
     t_token *token;
@@ -40,10 +40,6 @@ void    append_token(t_parser *parser, char *str, int start, int len)
     parser->tokens[parser->size] = ft_calloc(1, sizeof(t_token));
     if (!(parser->tokens[parser->size]))
         exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
-    parser->tokens[parser->size]->str = ft_calloc(len + 1, sizeof(char));
-    if (!parser->tokens[parser->size]->str)
-        exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
-    ft_memcpy(parser->tokens[parser->size]->str, str + start, len);
     ++(parser->size);
 }
 
@@ -66,14 +62,17 @@ void    set_token(t_parser *parser, int idx, t_token_type type, int pipe_idx)
 // Exits the program on error.
 //
 // @param parser: the pointer to parser.
-// @param str: the string to append.
+// @param str: the string to append. Will free it so make sure it's on heap.
 void    append_str_to_last_token(t_parser *parser, char *str)
 {
     t_token *token;
     char    *joined;
 
+    if (!str)
+        exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
     token = parser->tokens[parser->size - 1];
-    joined = ft_strjoin(token->str, str);
+    joined = ms_strjoin_parser(token->str, str);
+    free(str);
     if (!joined)
         exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
     free(token->str);
