@@ -24,7 +24,7 @@ void	tearDown(void)
 
 void    testParserCreate(void)
 {
-    t_parser *parser = create_parser();
+    t_parser *parser = create_parser(strdup(""));
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -34,7 +34,7 @@ void    testParserCreate(void)
 
 void    testTokenAppend(void)
 {
-    t_parser *parser = create_parser();
+    t_parser *parser = create_parser(strdup(""));
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -58,7 +58,7 @@ void    testTokenAppend(void)
 
 void    testTokenAppendStr(void)
 {
-    t_parser *parser = create_parser();
+    t_parser *parser = create_parser(strdup(""));
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -81,7 +81,7 @@ void    testTokenAppendStr(void)
 
 void    testSetToken(void)
 {
-    t_parser *parser = create_parser();
+    t_parser *parser = create_parser(strdup(""));
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -98,7 +98,7 @@ void    testSetToken(void)
 
 void    testSwitchToken(void)
 {
-    t_parser *parser = create_parser();
+    t_parser *parser = create_parser(strdup(""));
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -120,7 +120,7 @@ void    testSwitchToken(void)
 
 void    testOutputToken(void)
 {
-    t_parser *parser = create_parser();
+    t_parser *parser = create_parser(strdup(""));
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);

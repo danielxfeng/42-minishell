@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:19:43 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 21:18:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 16:40:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ void    close_parser(t_parser **parser, bool is_close_str)
     if (parser && *parser)
     {
         close_tokens(*parser, &((*parser)->tokens), is_close_str);
+        if ((*parser)->line)
+        {
+            free((*parser)->line);
+            (*parser)->line = NULL;
+        }
         free(*parser);
         *parser = NULL;  
     }
@@ -83,14 +88,18 @@ t_token **create_tokens(t_parser *parser, int capacity)
 // Exits the program on error.
 //
 // @return the pointer to parser.
-t_parser *create_parser()
+t_parser *create_parser(char *line)
 {
     t_parser *parser;
     t_token **tokens;
 
     parser = ft_calloc(1, sizeof(t_parser));
     if (!parser)
+    {
+        free(line);
         exit_with_err_parser(NULL, EXIT_FAILURE, "minishell: malloc");
+    }
+    parser->line = line;
     parser->capacity = INIT_CAPACITY;
     parser->tokens = create_tokens(parser, INIT_CAPACITY);
     return (parser);

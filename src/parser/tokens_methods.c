@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 13:52:28 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 16:17:37 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ t_token **create_tokens(t_parser *parser, int capacity);
 // Will not set the properties of token.
 //
 // @param parser: the pointer of parser.
-// @param str: the full string of the cmd.
-// @param start: the start index of the token.
-// @param len: the length of the token.
 void    append_token(t_parser *parser)
 {
     t_token **tokens;

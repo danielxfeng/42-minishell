@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 13:49:08 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 16:41:13 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,19 @@ typedef enum e_token_type
 // `str`: the string on heap.
 // `type`: the type of token;
 // `pipe_idx`: inside the n-th pipe.
+// `is_end`: is this a completed token?
 typedef struct s_token
 {
     char *str;
     t_token_type type;
     int pipe_idx;
+    bool    is_end;
 } t_token;
 
 // Represents a parser.
 //
 // `tokens`: the container of tokens(a very simple vector).
+// `line`: the command line.
 // `size`: the number of tokens in the vector.
 // `capacity`: the capacity of the `tokens`.
 // `pipe_count`: the number of pipes, we need to assure up to one command in a pipe.
@@ -55,6 +58,7 @@ typedef struct s_token
 typedef struct s_parser
 {
     t_token **tokens;
+    char    *line;
     int size;
     int capacity;
     int pipe_count;
@@ -63,9 +67,12 @@ typedef struct s_parser
     int i;
 } t_parser;
 
+// factory
 
-t_parser    *create_parser();
+t_parser    *create_parser(char *line);
 void        close_parser(t_parser **parser, bool is_close_str);
+
+// methods
 
 void        append_token(t_parser *parser);
 void        append_str_to_last_token(t_parser *parser, char *str);
@@ -73,8 +80,23 @@ void        set_token(t_parser *parser, int idx, t_token_type type, int pipe_idx
 void        switch_token(t_parser *parser, int i1, int i2);
 char        **output_tokens(t_parser *parser);
 
+// handlers
+void        parse(t_parser *parser);
+void        parser_handle_space(t_parser *parser);
+void        parser_handle_pipe(t_parser *parser);
+void        parser_handle_red(t_parser *parser);
+void        parser_handle_expander(t_parser *parser);
+void        parser_handle_double_quote(t_parser *parser);
+void        parser_handle_single_quote(t_parser *parser);
+void        parser_handle_end(t_parser *parser);
+void        parser_handle_normal(t_parser *parser);
+
+// exit fucntions
+
 void	    exit_with_err_parser(t_parser **parser, int err_code, char *msg);
 void	    return_with_err_parser(t_parser **parser, int err_code, char *msg);
+
+// utils
 
 char	    *ms_strjoin_parser(char const *s1, char const *s2);
 char        *ms_substr(char *str, int start, int len);
