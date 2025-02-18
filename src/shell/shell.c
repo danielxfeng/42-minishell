@@ -6,13 +6,16 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 21:43:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 22:38:48 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include "main.h"
+
+t_shell	shell;
 
 // @brief start the executor.
 //
@@ -39,11 +42,11 @@ int execute(t_env *env, char **tokens, int status)
 // @brief start the minishell.
 //
 // @param envp: the env.
-int shell(char **envp)
+int run_shell(char **envp)
 {
     int     status;
     char    *line;
-    char    **tokens;
+    //char    **tokens;
     t_env   *env;
     
     env = create_env(envp);
@@ -56,8 +59,17 @@ int shell(char **envp)
         add_history(line);
         // parser(line, tokens); @Abdul
         free(line);
-        status = execute(env, parser(line, tokens), status); 
+        //status = execute(env, parser(line, tokens), status); 
     }
     close_env(&env);
     return (status);
+}
+
+t_shell	shell;
+
+int	main(int ac, char **av, char **envp)
+{
+	(void)ac;
+	(void)av;
+	return (run_shell(envp));
 }
