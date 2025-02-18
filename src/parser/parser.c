@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 16:42:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:20:37 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void    parse(t_parser *parser)
 {
     char c;
     
-    append_token(parser);
     while(true)
     {
         c = parser->line[parser->i];
@@ -63,7 +62,10 @@ void    parse(t_parser *parser)
         else if (c == '\'')
             parser_handle_single_quote(parser);
         else if (c == '\0')
+        {
             parser_handle_end(parser);
+            return  ;   
+        }
         else
             parser_handle_normal(parser);
     }
