@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:30:58 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 13:46:26 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 18:55:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	exit_with_err_parser(t_parser **parser, int err_code, char *msg)
 {
 	if (msg)
 		perror(msg);
+	if (parser && *parser && (*parser)->env)
+	{
+		close_env(&(*parser)->env);
+		(*parser)->env = NULL;
+	}
 	close_parser(parser, true);
 	exit(err_code);
 }
