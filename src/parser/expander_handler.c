@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 21:08:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 21:19:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ static char    *env_get_helper(t_parser *parser)
 // 3. Gets from env.
 // 4. If we need to create a new one, we need to check the type: 
 //    `cmd`? `param`? `file`?
-// 5. Skip the spaces.
 //
 // @param parser: the pointer to parser.
 void    parser_handle_expander(t_parser *parser)
 {
     char    *value;
 
+    parser->token_start = parser->i;
     ++(parser->i);
     if (parser->tokens[parser->size - 1]->is_end)
     {
@@ -89,6 +89,7 @@ void    parser_handle_expander(t_parser *parser)
         set_token(parser, parser->size - 1, get_token_type(parser));
     }
     append_str_to_last_token(parser, env_get_helper(parser));
-    skip_space(parser);
+    if (parser->i == '|' || parser->i == '<' || parser->i == '>')
+        end_prev_token(parser);
     parser->token_start = parser->i;
 }

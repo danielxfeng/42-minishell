@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 21:07:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 21:16:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void    parser_handle_single_quote(t_parser *parser)
 // @param parser: the pointer to parser.
 void    parser_handle_end(t_parser *parser)
 {
-    return  ;
+    end_prev_token(parser);
 }
 
 // @brief to handle the normal char.
@@ -179,5 +179,13 @@ void    parser_handle_end(t_parser *parser)
 // @param parser: the pointer to parser.
 void    parser_handle_normal(t_parser *parser)
 {
-    return  ;
+    end_prev_token(parser);
+    append_token(parser);
+    set_token(parser, parser->size - 1, get_token_type(parser));
+    while (!(is_delimiter(parser->line[parser->i])))
+        ++(parser->i);
+    append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser-> i - parser->token_start));
+    if (parser->i == '|' || parser->i == '<' || parser->i == '>')
+        end_prev_token(parser);
+    parser->token_start = parser->i;
 }
