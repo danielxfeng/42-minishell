@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 18:28:38 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 14:18:58 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 {
 	int	status;
 
+	status = -1;
 	printf("exit\n");
 	if (prop->size > 2)
 	{

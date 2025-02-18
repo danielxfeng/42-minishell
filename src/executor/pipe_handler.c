@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 18:45:39 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 14:15:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input,
 	int	src;
 	int	dest;
 
+	(void)prop;
 	src = fds[1];
 	dest = STDOUT_FILENO;
 	if (is_pipe_input)
