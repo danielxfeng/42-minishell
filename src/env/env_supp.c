@@ -6,12 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:05:24 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 14:08:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 14:14:34 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
-#include "mini_env.h"
+#include "../include/mini_env.h"
 #include <stdlib.h>
 
 // @brief help to set the env item.
@@ -23,7 +23,7 @@ static void	set_item_helper(int i, char *item_str, t_env_item *item)
 {
 	if (((item_str[i + 1] == '\'' && item_str[ft_strlen(item_str) - 1] == '\'') ||
 	(item_str[i + 1] == '\"' && item_str[ft_strlen(item_str) - 1] == '\"')) 
-	&& (i != ft_strlen(item_str) - 2))
+	&& ((size_t)i != ft_strlen(item_str) - 2))
 		ft_memcpy(item->value, item_str + i + 2, ft_strlen(item_str) - i - 3);
 	else
 		ft_memcpy(item->value, item_str + i + 1, ft_strlen(item_str) - i - 1);
@@ -49,13 +49,13 @@ bool    set_item(t_env_item *item, char *item_str)
 		if (item_str[i++] == '=')
 			break ;
 	}
-	if (i < ft_strlen(item_str) || item_str[i - 1] == '=')
+	if ((size_t)i < ft_strlen(item_str) || item_str[i - 1] == '=')
 		--i;
 	item->key = ft_calloc(i + 1, sizeof(char));
 	if (!item->key)
 		return (false);
 	ft_memcpy(item->key, item_str, i);
-	if (i == ft_strlen(item_str) && item_str[i - 1] != '=')
+	if ((size_t)i == ft_strlen(item_str) && item_str[i - 1] != '=')
 		return (true);
 	item->value = ft_calloc(ft_strlen(item_str) - i, sizeof(char));
 	if (!item->value)
@@ -63,7 +63,7 @@ bool    set_item(t_env_item *item, char *item_str)
 		free(item->key);
 		return (false);
 	}
-	if (i < ft_strlen(item_str) || item_str[i - 1] == '=')
+	if ((size_t)i < ft_strlen(item_str) || item_str[i - 1] == '=')
 		set_item_helper(i, item_str, item);
 	return (true);
 }

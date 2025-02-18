@@ -28,15 +28,15 @@
  * @param envp environment pointer to be duplicated
  * 
  */
-void	init_minishell(t_shell *shell, char **envp)
-{
-	if (!isatty(STDERR_FILENO))
-		quit(EXIT_FAILURE);
-	ft_bzero(shell, sizeof(t_shell));
-	copy_env(&shell -> dup_envp, envp);
-	reset_oldpwd();
-	increment_shlvl();
-	init_termcaps(&shell -> termcaps);
-	signal(SIGINT, catch_sigint);
-	signal(SIGQUIT, catch_sigquit);
-}
+// void	init_minishell(t_shell *shell, char **envp)
+// {
+// 	if (!isatty(STDERR_FILENO))
+// 		quit(EXIT_FAILURE);
+// 	ft_bzero(shell, sizeof(t_shell));
+// 	copy_env(&shell -> dup_envp, envp);
+// 	reset_oldpwd();
+// 	increment_shlvl();
+// 	init_termcaps(&shell -> termcaps);
+// 	signal(SIGINT, catch_sigint);
+// 	signal(SIGQUIT, catch_sigquit);
+// }

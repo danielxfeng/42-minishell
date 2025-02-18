@@ -6,12 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:07:59 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 11:57:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 14:13:26 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
-#include "mini_env.h"
+#include "../include/mini_env.h"
 #include <stdlib.h>
 
 bool	env_append(t_env *env, char *item);

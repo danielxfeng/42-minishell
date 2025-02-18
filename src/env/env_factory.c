@@ -6,13 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:39:39 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 14:08:49 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 14:12:54 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
-#include "mini_env.h"
+#include "../include/mini_env.h"
 #include <stdlib.h>
+
 
 bool    set_item(t_env_item *item, char *item_str);
 

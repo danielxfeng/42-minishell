@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:56:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/11 01:02:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 22:32:13 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,8 @@ void	write_shell_error(char *err_msg);
 //ft_split_pro
 char	**ft_split_pro(char *str, char *charset);
 char	*ft_strncpy(char *dest, char *src, size_t n);
+
+//env_utils
+char	*ft_getenv(char *key);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 20:37:02 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 12:57:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/17 21:43:24 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # include "free/free.h"
 //# include "../lib/libft/inc/libft.h"
 # include "libs/libft/libft.h"
-# include "env/env.h"
 # include "constants.h"
 # include "input/input.h"
 # include "parse/parse.h"
