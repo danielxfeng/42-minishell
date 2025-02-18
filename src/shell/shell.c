@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/17 22:38:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 16:02:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,13 @@ int execute(t_env *env, char **tokens, int status)
     close_ast(&ast);
     return (status);
 }
-
+void print_tokens(char **tokens)
+{
+	printf("Extracted tokens:\n");
+    for (int i = 0; tokens[i] != NULL; i++) {
+        printf("Token %d: %s\n", i + 1, tokens[i]);
+    }
+}
 // @brief start the minishell.
 //
 // @param envp: the env.
@@ -53,11 +59,22 @@ int run_shell(char **envp)
     status = EXIT_OK;
     while (true)
     {
-        line = readline("minishell: ");
+        line = readline("msh> ");
         if (!line)
             exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
         add_history(line);
-        // parser(line, tokens); @Abdul
+		// parser(line, tokens); @Abdul
+		if (!is_input_valid((const char *)line))
+			continue ;
+		char **tokens = tokenize((const char *)line);
+		print_tokens(tokens);
+		int i = 0;
+		while (tokens[i])
+			++i;
+		t_ast *tree = build_tree(tokens, i, env);
+		tree->root->node_handler(tree, tree->root);
+		close_ast(&tree);
+        
         free(line);
         //status = execute(env, parser(line, tokens), status); 
     }
