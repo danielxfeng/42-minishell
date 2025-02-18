@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 20:34:56 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 21:05:28 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ void    parser_handle_red(t_parser *parser)
 
 static void get_env_key_end(t_parser *parser)
 {
+    if (parser->line[parser->i] == '?')
+    {
+        ++(parser->i);
+        return ;
+    }
     if (ft_isdigit(parser->line[parser->i]))
         return ;
     while ((parser->line[parser->i] >= 'a' && parser->line[parser->i] <= 'z') ||
@@ -152,6 +157,27 @@ static char *env_helper_for_expander(t_parser *parser)
     return (value);
 }
 
+static char    *env_get_helper(t_parser *parser)
+{
+    char *value;
+    
+    while(parser->tokens[parser->i] == '$')
+        ++(parser->i);
+    if (parser->i - parser->token_start > 1 || parser->tokens[parser->i] == '\0')
+    {
+        value = ft_calloc(parser->i - parser->token_start + 1, sizeof(char));
+        if (!value)
+            exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+        ft_memset(value, parser->lien + parser->token_start, parser->i - parser->token_start);
+        return (value);
+    }
+    return (env_get(parser->env, env_helper_for_expander(parser)));
+}
+
+// @brief help to calculate the token type by previous tokens.
+//
+// @param the pointer to parser.
+// @return the token type.
 t_token_type    get_token_type(t_parser *parser)
 {
     if (parser->size == 1)
@@ -185,10 +211,9 @@ void    parser_handle_expander(t_parser *parser)
         append_token(parser);
         set_token(parser, parser->size - 1, get_token_type(parser));
     }
-    append_str_to_last_token(parser, env_get(parser->env, env_helper_for_expander(parser)));
+    append_str_to_last_token(parser, env_get_helper(parser));
     skip_space(parser);
     parser->token_start = parser->i;
-    // todo: $$$$, and $$$$ return;
 }
 
 // @brief to handle the double_quote

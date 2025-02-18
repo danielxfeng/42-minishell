@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:14:52 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 11:56:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 20:47:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ typedef struct s_env_item
 // `items` the array of keys of env.
 // `values` the array of values of env.
 // `size` the size of env.
+// `prev_status`: the status code of previous command.
 typedef struct s_env
 {
 	t_env_item	*items;
 	int			size;
 	int			capacity;
+	int			prev_status;
 }			t_env;
 
 t_env	*create_env(char **envp);
