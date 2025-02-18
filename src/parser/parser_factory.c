@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:19:43 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 16:40:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 18:47:31 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_token **create_tokens(t_parser *parser, int capacity)
 // Exits the program on error.
 //
 // @return the pointer to parser.
-t_parser *create_parser(char *line)
+t_parser *create_parser(char *line, t_env *env)
 {
     t_parser *parser;
     t_token **tokens;
@@ -97,9 +97,11 @@ t_parser *create_parser(char *line)
     if (!parser)
     {
         free(line);
+        close_env(&env);
         exit_with_err_parser(NULL, EXIT_FAILURE, "minishell: malloc");
     }
     parser->line = line;
+    parser->env = env;
     parser->capacity = INIT_CAPACITY;
     parser->tokens = create_tokens(parser, INIT_CAPACITY);
     return (parser);

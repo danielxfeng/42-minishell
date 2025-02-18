@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 16:41:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 18:46:33 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSER_H
 
 # include <stdbool.h>
+# include "mini_env.h"
 
 # define INIT_CAPACITY 2
 
@@ -48,6 +49,7 @@ typedef struct s_token
 // Represents a parser.
 //
 // `tokens`: the container of tokens(a very simple vector).
+// `env`: the env.
 // `line`: the command line.
 // `size`: the number of tokens in the vector.
 // `capacity`: the capacity of the `tokens`.
@@ -58,6 +60,7 @@ typedef struct s_token
 typedef struct s_parser
 {
     t_token **tokens;
+    t_env   *env;
     char    *line;
     int size;
     int capacity;
@@ -69,7 +72,7 @@ typedef struct s_parser
 
 // factory
 
-t_parser    *create_parser(char *line);
+t_parser    *create_parser(char *line, t_env *env);
 void        close_parser(t_parser **parser, bool is_close_str);
 
 // methods
