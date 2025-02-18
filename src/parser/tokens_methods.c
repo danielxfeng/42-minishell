@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 16:17:37 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 19:57:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,23 @@ void    append_token(t_parser *parser)
 // @brief set the properties of token.
 //
 // @param parser: the pointer to parser.
-// @param idx: the index of the token in parser.
 // @param type: the type of token.
 // @param pipe_idx: the idx of pipe.
-void    set_token(t_parser *parser, int idx, t_token_type type, int pipe_idx)
+void    set_token(t_parser *parser, int idx, t_token_type type)
 {
     t_token *token;
     
+    if (type == PIPE)
+    {
+        ++(parser->pipe_count);
+        parser->has_cmd = false;
+    }
+    else if (type == CMD)
+        parser->has_cmd = true;
     token = parser->tokens[idx];
-    token->pipe_idx = pipe_idx;
+    token->pipe_idx = parser->pipe_count;
     token->type = type;
+
 }
 
 // @brief append the string to the last token in parser.

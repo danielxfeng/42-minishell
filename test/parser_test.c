@@ -88,11 +88,18 @@ void    testSetToken(void)
     char *str = "assddd";
     append_token(parser);
     append_str_to_last_token(parser, ms_substr(str, 1, 2));
-    set_token(parser, 0, CMD, 2);
+    set_token(parser, 0, CMD);
     TEST_ASSERT_EQUAL_INT(1, parser->size);
     TEST_ASSERT_EQUAL_STRING("ss", parser->tokens[0]->str);
     TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
-    TEST_ASSERT_EQUAL_INT(2, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    append_token(parser);
+    set_token(parser, 1, PIPE);
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[0]->type);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_FALSE(parser->has_cmd);
     close_parser(&parser, true);
 }
 

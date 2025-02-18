@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 18:41:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 20:34:56 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 void    skip_space(t_parser *parser);
 void    end_prev_token(t_parser *parser);
+bool	is_delimiter(char c);
 
 // @brief to handle the space
 //
@@ -79,7 +80,7 @@ void    parser_handle_pipe(t_parser *parser)
     append_token(parser);
     append_str_to_last_token(parser, ft_strdup("|"));
     ++(parser->pipe_count);
-    set_token(parser, parser->size - 1, PIPE, parser->pipe_count);
+    set_token(parser, parser->size - 1, PIPE);
     end_prev_token(parser);
     ++(parser->i);
     skip_space(parser);
@@ -101,7 +102,7 @@ void    parser_handle_red(t_parser *parser)
 {
     end_prev_token(parser);
     append_token(parser);
-    set_token(parser, parser->size - 1, RED, parser->pipe_count);
+    set_token(parser, parser->size - 1, RED);
     if (parser->line[parser->i + 1] == '\0')
         return (return_with_err_parser(&parser, 2, "`newline\'"));
     if (parser->line[parser->i + 1] == parser->line[parser->i])
@@ -123,6 +124,46 @@ void    parser_handle_red(t_parser *parser)
     parser->token_start = parser->i; 
 }
 
+static void get_env_key_end(t_parser *parser)
+{
+    if (ft_isdigit(parser->line[parser->i]))
+        return ;
+    while ((parser->line[parser->i] >= 'a' && parser->line[parser->i] <= 'z') ||
+    (parser->line[parser->i] >= 'A' && parser->line[parser->i] <= 'Z') ||
+    ft_isdigit(parser->line[parser->i]) || parser->line[parser->i] == '_')
+        ++(parser->i);
+}
+
+static char *env_helper_for_expander(t_parser *parser)
+{
+    char    *key;
+    char    *value;
+
+    if (parser->line[parser->i] >= '0' )
+    get_env_key_end(parser);
+    key = ft_calloc(parser->i - parser->token_start + 1);
+    if (!key)
+        exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+    ft_memset(key, parser->line + parser->token_start, parser->i - parser->token_start);
+    value = env_get(parser->env, key);
+    free(key);
+    if (!value)
+        exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+    return (value);
+}
+
+t_token_type    get_token_type(t_parser *parser)
+{
+    if (parser->size == 1)
+        return (CMD);
+    if (parser->tokens[parser->size - 2] == RED)
+        return (AFILE);
+    if (parser->has_cmd)
+        return (ARG);
+    else
+        return (CMD);
+}
+
 // @brief to handle the expander
 // 
 // 1. Tries to get a string, by doing a while loop to skip normal chars.
@@ -136,7 +177,18 @@ void    parser_handle_red(t_parser *parser)
 // @param parser: the pointer to parser.
 void    parser_handle_expander(t_parser *parser)
 {
-    return  ;
+    char    *value;
+
+    ++(parser->i);
+    if (parser->tokens[parser->size - 1]->is_end)
+    {
+        append_token(parser);
+        set_token(parser, parser->size - 1, get_token_type(parser));
+    }
+    append_str_to_last_token(parser, env_get(parser->env, env_helper_for_expander(parser)));
+    skip_space(parser);
+    parser->token_start = parser->i;
+    // todo: $$$$, and $$$$ return;
 }
 
 // @brief to handle the double_quote

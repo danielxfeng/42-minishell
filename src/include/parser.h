@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 18:46:33 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 19:58:37 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void        close_parser(t_parser **parser, bool is_close_str);
 
 void        append_token(t_parser *parser);
 void        append_str_to_last_token(t_parser *parser, char *str);
-void        set_token(t_parser *parser, int idx, t_token_type type, int pipe_idx);
+void        set_token(t_parser *parser, int idx, t_token_type type);
 void        switch_token(t_parser *parser, int i1, int i2);
 char        **output_tokens(t_parser *parser);
 
