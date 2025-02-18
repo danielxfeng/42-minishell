@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 17:54:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 21:06:30 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,20 @@ void    end_prev_token(t_parser *parser)
     len = parser->i - parser->token_start;
     append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, len));
     prev->is_end = true;
+}
+
+// @brief help to calculate the token type by previous tokens.
+//
+// @param the pointer to parser.
+// @return the token type.
+t_token_type    get_token_type(t_parser *parser)
+{
+    if (parser->size == 1)
+        return (CMD);
+    if (parser->tokens[parser->size - 2] == RED)
+        return (AFILE);
+    if (parser->has_cmd)
+        return (ARG);
+    else
+        return (CMD);
 }
