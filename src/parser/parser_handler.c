@@ -6,12 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 17:30:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 18:25:47 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parser.h"
 #include "../libs/libft/libft.h"
+#include "readline/readline.h"
+#include <stdio.h>
 
 void    skip_space(t_parser *parser);
 void    end_prev_token(t_parser *parser);
@@ -30,6 +32,29 @@ void    parser_handle_space(t_parser *parser)
     parser->token_start = parser->i;
 }
 
+// @brief help pipe handler to handle the followed linebreaker.
+// 
+// @param parser: the pointer to parser.
+static void new_input_line_for_pipe(t_parser *parser)
+{
+    char *input_line;
+    char *new_line;
+    
+    if (parser->line[parser->i] == '\0')
+    {
+        input_line = readline("> ");
+        if (!input_line)
+            exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+        new_line = ft_strjoin(parser->line, input_line);
+        free(input_line);
+        if (!new_line)
+            exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+        free(parser->line);
+        parser->line = new_line;
+        skip_space(parser);
+    }
+}
+
 // @brief to handle the pipe
 // 
 // 1. Checks if there is a unclosed token, "cmd||cmd" works.
@@ -38,11 +63,30 @@ void    parser_handle_space(t_parser *parser)
 // 3. Creates the new token, and assigns the properties.
 // 4. Updates the parser property.
 // 5. Skips the spaces.
+// 6. Check the right side, 
 //
 // @param parser: the pointer to parser.
 void    parser_handle_pipe(t_parser *parser)
 {
-    return  ;
+    t_token_type prev_type;
+    
+    if (parser->size == 0)
+        return (return_with_err_parser(&parser, 2, "|"));
+    end_prev_token(parser);
+    prev_type = parser->tokens[parser->size - 1]->type;
+    if (prev_type != CMD && prev_type != AFILE && prev_type != ARG)
+        return (return_with_err_parser(&parser, 2, "|"));
+    append_token(parser);
+    append_str_to_last_token(parser, ft_strdup("|"));
+    ++(parser->pipe_count);
+    set_token(parser, parser->size - 1, PIPE, parser->pipe_count);
+    end_prev_token(parser);
+    ++(parser->i);
+    skip_space(parser);
+    new_input_line_for_pipe(parser);
+    if (parser->line[parser->i] == '|')
+        return (return_with_err_parser(&parser, 2, "|"));
+    parser->token_start = parser->i;
 }
 
 // @brief to handle the redirector
@@ -55,7 +99,7 @@ void    parser_handle_pipe(t_parser *parser)
 // @param parser: the pointer to parser.
 void    parser_handle_red(t_parser *parser)
 {
-    return  ;
+    end_prev_token(parser);
 }
 
 // @brief to handle the expander

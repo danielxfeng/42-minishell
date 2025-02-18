@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 17:30:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:54:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void    end_prev_token(t_parser *parser)
     t_token *prev;
     int     len;
 
+    if (parser->size == 0)
+        return ;
     prev = parser->tokens[parser->size - 1];
     if (prev->is_end)
         return  ;
