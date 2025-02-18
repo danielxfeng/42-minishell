@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 21:19:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 21:28:07 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ void    parser_handle_expander(t_parser *parser)
         set_token(parser, parser->size - 1, get_token_type(parser));
     }
     append_str_to_last_token(parser, env_get_helper(parser));
-    if (parser->i == '|' || parser->i == '<' || parser->i == '>')
+    if (parser->i == '|' || parser->i == '<' || parser->i == '>' || || parser->i == ' ')
+    {
         end_prev_token(parser);
+        skip_space(parser);
+    }
     parser->token_start = parser->i;
 }

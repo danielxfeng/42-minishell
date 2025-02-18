@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 21:16:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 21:28:01 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,12 +150,28 @@ void    parser_handle_double_quote(t_parser *parser)
 //    `cmd`? `param`? `file`?
 // 3. Tries to get a string, by doing a while loop until 
 //    '\0', '\''.
-// 4. Skip the '\'', and spaces.
 // 
 // @param parser: the pointer to parser.
 void    parser_handle_single_quote(t_parser *parser)
 {
-    return  ;
+    parser->token_start = parser->i;
+    ++(parser->i);
+    if (parser->tokens[parser->size - 1]->is_end)
+    {
+        append_token(parser);
+        set_token(parser, parser->size - 1, get_token_type(parser));
+    }
+    while (parser->line[parser->i] && parser->line[parser->i] != '\'')
+        ++(parser->i);
+    if (!(parser->line[parser->i]))
+        exit_with_err_parser(&parser, EXIT_FAILURE, "\'");
+    append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser->i - parser->token_start));
+    if (parser->i == '|' || parser->i == '<' || parser->i == '>' || || parser->i == ' ')
+    {
+        end_prev_token(parser);
+        skip_space(parser);
+    }
+    parser->token_start = parser->i;
 }
 
 // @brief to handle the end of line.
@@ -185,7 +201,10 @@ void    parser_handle_normal(t_parser *parser)
     while (!(is_delimiter(parser->line[parser->i])))
         ++(parser->i);
     append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser-> i - parser->token_start));
-    if (parser->i == '|' || parser->i == '<' || parser->i == '>')
+    if (parser->i == '|' || parser->i == '<' || parser->i == '>' || || parser->i == ' ')
+    {
         end_prev_token(parser);
+        skip_space(parser);
+    }
     parser->token_start = parser->i;
 }
