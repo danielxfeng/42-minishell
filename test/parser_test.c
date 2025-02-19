@@ -25,7 +25,7 @@ void	tearDown(void)
 void    testParserCreate(void)
 {
     t_parser *parser = create_parser(strdup(""), NULL);
-    TEST_ASSERT_NOT_NULL(parser);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
 
@@ -35,7 +35,7 @@ void    testParserCreate(void)
 void    testTokenAppend(void)
 {
     t_parser *parser = create_parser(strdup(""), NULL);
-    TEST_ASSERT_NOT_NULL(parser);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
     char *str = "assddd";
@@ -59,7 +59,7 @@ void    testTokenAppend(void)
 void    testTokenAppendStr(void)
 {
     t_parser *parser = create_parser(strdup(""), NULL);
-    TEST_ASSERT_NOT_NULL(parser);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
     char *str = "assddd";
@@ -82,7 +82,7 @@ void    testTokenAppendStr(void)
 void    testSetToken(void)
 {
     t_parser *parser = create_parser(strdup(""), NULL);
-    TEST_ASSERT_NOT_NULL(parser);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
     char *str = "assddd";
@@ -106,7 +106,7 @@ void    testSetToken(void)
 void    testShiftToken(void)
 {
     t_parser *parser = create_parser(strdup(""), NULL);
-    TEST_ASSERT_NOT_NULL(parser);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
     char *str = "assddd";
@@ -135,7 +135,7 @@ void    testShiftToken(void)
 void    testOutputToken(void)
 {
     t_parser *parser = create_parser(strdup(""), NULL);
-    TEST_ASSERT_NOT_NULL(parser);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
     char *str = "assddd";
@@ -158,6 +158,338 @@ void    testOutputToken(void)
     free(tokens);
 }
 
+void    testParser_SingleCmd(void)
+{
+    t_parser *parser = create_parser(strdup("cmd"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_SingleCmdWithArgs(void)
+{
+    t_parser *parser = create_parser(strdup("cmd arg1 arg2"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(3, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg1", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg2", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[2]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_SingleCmdWithArgsAndSpace(void)
+{
+    t_parser *parser = create_parser(strdup("  cmd    arg1   arg2   "), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(3, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg1", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg2", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[2]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_SingleRedIn(void)
+{
+    t_parser *parser = create_parser(strdup("< infile"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_FALSE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("<", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("infile", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[1]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_SingleRedOut(void)
+{
+    t_parser *parser = create_parser(strdup("> outfile"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_FALSE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING(">", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("outfile", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[1]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_DoubleRedIn(void)
+{
+    t_parser *parser = create_parser(strdup("<< infile"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_FALSE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("<<", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("infile", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[1]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_DoubleRedOut(void)
+{
+    t_parser *parser = create_parser(strdup(">> outfile"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_FALSE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING(">>", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("outfile", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[1]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_DoubleRedOutNoSpace(void)
+{
+    t_parser *parser = create_parser(strdup(">>outfile"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_FALSE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING(">>", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("outfile", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[1]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_DoubleRedOutWithSpace(void)
+{
+    t_parser *parser = create_parser(strdup("    >>outfile    "), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_FALSE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING(">>", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("outfile", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[1]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_Pipe(void)
+{
+    t_parser *parser = create_parser(strdup("cmd1|cmd2"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(3, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd1", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("|", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd2", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[2]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_PipeWithSpace(void)
+{
+    t_parser *parser = create_parser(strdup("    cmd1      |  cmd2    "), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(3, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd1", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("|", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd2", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[2]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_PipeWithArgs(void)
+{
+    t_parser *parser = create_parser(strdup("    cmd1     |  cmd2   arg "), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(4, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd1", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("|", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd2", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[2]->type);
+    TEST_ASSERT_TRUE(parser->tokens[3]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[3]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg", parser->tokens[3]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[3]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_Combine(void)
+{
+    t_parser *parser = create_parser(strdup("    cmd1   arg arg1 < infile   |  cmd2  > outfile  "), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(9, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd1", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg1", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[2]->type);
+    TEST_ASSERT_TRUE(parser->tokens[3]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[3]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("<", parser->tokens[3]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[3]->type);
+    TEST_ASSERT_TRUE(parser->tokens[4]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[4]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("infile", parser->tokens[4]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[4]->type);
+    TEST_ASSERT_TRUE(parser->tokens[5]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[5]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("|", parser->tokens[5]->str);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[5]->type);
+    TEST_ASSERT_TRUE(parser->tokens[6]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[6]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd2", parser->tokens[6]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[6]->type);
+    TEST_ASSERT_TRUE(parser->tokens[7]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[7]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING(">", parser->tokens[7]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[7]->type);
+    TEST_ASSERT_TRUE(parser->tokens[8]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[8]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("outfile", parser->tokens[8]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[8]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_CombineNoSpace(void)
+{
+    t_parser *parser = create_parser(strdup("cmd1 arg arg1<infile|cmd2>outfile"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(9, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd1", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("arg1", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[2]->type);
+    TEST_ASSERT_TRUE(parser->tokens[3]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[3]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("<", parser->tokens[3]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[3]->type);
+    TEST_ASSERT_TRUE(parser->tokens[4]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[4]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("infile", parser->tokens[4]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[4]->type);
+    TEST_ASSERT_TRUE(parser->tokens[5]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[5]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("|", parser->tokens[5]->str);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[5]->type);
+    TEST_ASSERT_TRUE(parser->tokens[6]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[6]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd2", parser->tokens[6]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[6]->type);
+    TEST_ASSERT_TRUE(parser->tokens[7]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[7]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING(">", parser->tokens[7]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[7]->type);
+    TEST_ASSERT_TRUE(parser->tokens[8]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[8]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("outfile", parser->tokens[8]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[8]->type);
+    close_parser(&parser, true);
+}
+
+void    testParser_RedWithoutFile(void)
+{
+    t_parser *parser = create_parser(strdup("<"), NULL);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+}
+
+void    testParser_RedWithoutFileWithSpace(void)
+{
+    t_parser *parser = create_parser(strdup("  <   "), NULL);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+}
+
+void    testParser_PipeWithoutLeft(void)
+{
+    t_parser *parser = create_parser(strdup("  |cmd"), NULL);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+}
+
 
 // Main function to run the tests
 int	main(void)
@@ -169,5 +501,22 @@ int	main(void)
     RUN_TEST(testSetToken);
     RUN_TEST(testShiftToken);
     RUN_TEST(testOutputToken);
+    RUN_TEST(testParser_SingleCmd);
+    RUN_TEST(testParser_SingleCmdWithArgs);
+    RUN_TEST(testParser_SingleCmdWithArgsAndSpace);
+    RUN_TEST(testParser_SingleRedIn);
+    RUN_TEST(testParser_SingleRedOut);
+    RUN_TEST(testParser_DoubleRedIn);
+    RUN_TEST(testParser_DoubleRedOut);
+    RUN_TEST(testParser_DoubleRedOutNoSpace);
+    RUN_TEST(testParser_DoubleRedOutWithSpace);
+    RUN_TEST(testParser_Pipe);
+    RUN_TEST(testParser_PipeWithSpace);
+    RUN_TEST(testParser_PipeWithArgs);
+    RUN_TEST(testParser_Combine);
+    RUN_TEST(testParser_CombineNoSpace);
+    RUN_TEST(testParser_RedWithoutFile);
+    RUN_TEST(testParser_RedWithoutFileWithSpace);
+    RUN_TEST(testParser_PipeWithoutLeft);
 	return (UNITY_END());
 }

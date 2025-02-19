@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 13:48:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:08:30 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,22 @@ void        shift_token(t_parser *parser, int idx, int *position);
 char        **output_tokens(t_parser *parser);
 
 // handlers
-void        parse(t_parser *parser);
-void        parser_handle_space(t_parser *parser);
-void        parser_handle_pipe(t_parser *parser);
-void        parser_handle_red(t_parser *parser);
-void        parser_handle_expander(t_parser *parser);
-void        parser_handle_double_quote(t_parser *parser);
-void        parser_handle_single_quote(t_parser *parser);
-void        parser_handle_end(t_parser *parser);
-void        parser_handle_normal(t_parser *parser);
+
+int         parse(t_parser *parser);
+int         parser_handle_space(t_parser *parser);
+int         parser_handle_pipe(t_parser *parser);
+int         parser_handle_red(t_parser *parser);
+int         parser_handle_expander(t_parser *parser);
+int         parser_handle_double_quote(t_parser *parser);
+int         parser_handle_single_quote(t_parser *parser);
+int         parser_handle_end(t_parser *parser);
+int         parser_handle_normal(t_parser *parser);
 void        re_order_tokens(t_parser *parser);
 
 // exit fucntions
 
 void	    exit_with_err_parser(t_parser **parser, int err_code, char *msg);
-void	    return_with_err_parser(t_parser **parser, int err_code, char *msg);
+int         return_with_err_parser(t_parser **parser, int err_code, char *msg);
 
 // utils
 
