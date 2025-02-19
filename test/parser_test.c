@@ -814,7 +814,7 @@ void    testParser_Reorder(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    
+    /**
     RUN_TEST(testParserCreate);
     RUN_TEST(testTokenAppend);
     RUN_TEST(testTokenAppendStr);
