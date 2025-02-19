@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 17:30:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 18:56:31 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,20 @@ t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single)
 t_ast	*create_ast(char **tokens, int tk_size, t_env *env)
 {
 	t_ast	*ast;
+	int		i;
 
 	ast = ft_calloc(1, sizeof(t_ast));
 	if (!ast)
+	{
+		i = 0;
+		while (i < tk_size)
+			free(tokens[i++]);
+		free(tokens);
+		tokens = NULL;
+		close_env(&env);
+		env = NULL;
 		exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
+	}
 	ast->root = NULL;
 	ast->tokens = tokens;
 	ast->tk_size = tk_size;

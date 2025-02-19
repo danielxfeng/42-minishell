@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:07:59 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 14:13:26 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/18 20:49:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	*env_get(t_env *env, char *key)
 {
 	int	i;
 
+	if (ms_strcmp("?", key) == 0)
+		return (ft_itoa(env->prev_status));
 	i = find_key(env, key);
 	if (i == env->size || !(env->items[i].value))
 		return (ft_strdup(""));
