@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 18:48:28 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:04:18 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,11 @@ static void single_quote_helper(t_parser *parser)
 // 5. Skip the '\"', and spaces.
 // 
 // @param parser: the pointer to parser.
-void    parser_handle_double_quote(t_parser *parser)
+// @return status code.
+int    parser_handle_double_quote(t_parser *parser)
 {
     handle_quote_helper(parser, double_quote_helper);
+    return (EXIT_SUCCESS);
 }
 
 // @brief to handle the single_quote
@@ -95,7 +97,9 @@ void    parser_handle_double_quote(t_parser *parser)
 //    '\0', '\''.
 // 
 // @param parser: the pointer to parser.
-void    parser_handle_single_quote(t_parser *parser)
+// @return status code.
+int    parser_handle_single_quote(t_parser *parser)
 {
     handle_quote_helper(parser, single_quote_helper);
+    return (EXIT_SUCCESS);
 }

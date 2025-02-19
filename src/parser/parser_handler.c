@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 18:40:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:11:54 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../libs/libft/libft.h"
 #include "readline/readline.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void            skip_space(t_parser *parser);
 void            end_prev_token(t_parser *parser);
@@ -27,12 +28,14 @@ void            new_input_line_for_pipe(t_parser *parser);
 // So we just end the prev token, then we skip the duplicated spaces.
 // 
 // @param parser: the pointer to parser.
-void    parser_handle_space(t_parser *parser)
+// @return status code.
+int    parser_handle_space(t_parser *parser)
 {
     if (parser->i > 0)
         end_prev_token(parser);
     skip_space(parser);
     parser->token_start = parser->i;
+    return (EXIT_SUCCESS);
 }
 
 // @brief to handle the pipe
@@ -46,7 +49,8 @@ void    parser_handle_space(t_parser *parser)
 // 6. Check the right side, 
 //
 // @param parser: the pointer to parser.
-void    parser_handle_pipe(t_parser *parser)
+// @return status code;
+int    parser_handle_pipe(t_parser *parser)
 {
     t_token_type prev_type;
     
@@ -58,7 +62,6 @@ void    parser_handle_pipe(t_parser *parser)
         return (return_with_err_parser(&parser, 2, "|"));
     append_token(parser);
     append_str_to_last_token(parser, ft_strdup("|"));
-    ++(parser->pipe_count);
     set_token(parser, parser->size - 1, PIPE);
     end_prev_token(parser);
     ++(parser->i);
@@ -67,6 +70,7 @@ void    parser_handle_pipe(t_parser *parser)
     if (parser->line[parser->i] == '|')
         return (return_with_err_parser(&parser, 2, "|"));
     parser->token_start = parser->i;
+    return (EXIT_SUCCESS);
 }
 
 // @brief to handle the redirector
@@ -77,7 +81,8 @@ void    parser_handle_pipe(t_parser *parser)
 // 4. Skip the spaces.
 //
 // @param parser: the pointer to parser.
-void    parser_handle_red(t_parser *parser)
+// @return the status code.
+int    parser_handle_red(t_parser *parser)
 {
     end_prev_token(parser);
     append_token(parser);
@@ -94,6 +99,7 @@ void    parser_handle_red(t_parser *parser)
         append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 1));
         ++(parser->i);
     }
+    parser->token_start = parser->i;
     end_prev_token(parser);
     skip_space(parser);
     if (parser->line[parser->i] == '\0')
@@ -101,6 +107,7 @@ void    parser_handle_red(t_parser *parser)
     if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<' || parser->line[parser->i] == '>')
         return (return_with_err_parser(&parser, 2, parser->tokens[parser->size - 1]->str));    
     parser->token_start = parser->i; 
+    return (EXIT_SUCCESS);
 }
 
 // @brief to handle the end of line.
@@ -111,9 +118,11 @@ void    parser_handle_red(t_parser *parser)
 //   For '>', it is disallowed.
 //
 // @param parser: the pointer to parser.
-void    parser_handle_end(t_parser *parser)
+// @return status code.
+int    parser_handle_end(t_parser *parser)
 {
     end_prev_token(parser);
+    return (EXIT_SUCCESS);
 }
 
 // @brief to handle the normal char.
@@ -122,7 +131,8 @@ void    parser_handle_end(t_parser *parser)
 // if there is a 'cmd', 'file', 'params'.
 //
 // @param parser: the pointer to parser.
-void    parser_handle_normal(t_parser *parser)
+// @return status code.
+int    parser_handle_normal(t_parser *parser)
 {
     end_prev_token(parser);
     append_token(parser);
@@ -136,4 +146,5 @@ void    parser_handle_normal(t_parser *parser)
         skip_space(parser);
     }
     parser->token_start = parser->i;
+    return (EXIT_SUCCESS);
 }

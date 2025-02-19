@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 18:51:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 20:10:42 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ static char    *env_get_helper(t_parser *parser)
 //    `cmd`? `param`? `file`?
 //
 // @param parser: the pointer to parser.
-void    parser_handle_expander(t_parser *parser)
+// @return status code.
+int    parser_handle_expander(t_parser *parser)
 {
     char    *value;
 
@@ -107,4 +108,5 @@ void    parser_handle_expander(t_parser *parser)
         skip_space(parser);
     }
     parser->token_start = parser->i;
+    return (EXIT_SUCCESS);
 }
