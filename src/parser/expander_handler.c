@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:33:37 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:34:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,22 +67,21 @@ static char	*env_helper_for_expander(t_parser *parser)
 // @return the value of env.
 static char	*env_get_helper(t_parser *parser)
 {
-	char	*value;
-
-	while (parser->line[parser->i] == '$')
-		++(parser->i);
-	if (parser->i - parser->token_start > 1 || parser->line[parser->i] == '\0')
-	{
-		value = ft_calloc(parser->i - parser->token_start + 1, sizeof(char));
-		if (!value)
-			exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
-		ft_memcpy(value, parser->line + parser->token_start, parser->i
-			- parser->token_start);
-		return (value);
-	}
-	parser->token_start = parser->i;
-	value = env_helper_for_expander(parser);
-	return (value);
+    char *value;
+    
+    while(parser->line[parser->i] == '$')
+        ++(parser->i);
+    if (parser->i - parser->token_start > 1 || parser->line[parser->i] == '\0')
+    {
+        value = ft_calloc(parser->i - parser->token_start + 1, sizeof(char));
+        if (!value)
+            exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+        ft_memcpy(value, parser->line + parser->token_start, parser->i - parser->token_start);
+        return (value);
+    }
+    parser->token_start = parser->i;
+    value = env_helper_for_expander(parser);
+    return (value);
 }
 
 // @brief to handle the expander
@@ -102,7 +101,7 @@ int    parser_handle_expander(t_parser *parser)
 
     parser->token_start = parser->i;
     ++(parser->i);
-    if (parser->tokens[parser->size - 1]->is_end)
+    if (parser->size == 0 || parser->tokens[parser->size - 1]->is_end)
     {
         append_token(parser);
         set_token(parser, parser->size - 1, get_token_type(parser));
