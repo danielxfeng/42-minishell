@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:31:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:33:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,10 @@ static int	single_quote_helper(t_parser *parser)
 //
 // @param parser: the pointer to parser.
 // @return status code.
-int	parser_handle_double_quote(t_parser *parser)
+int    parser_handle_double_quote(t_parser *parser)
 {
-	return (handle_quote_helper(parser, double_quote_helper));
+    handle_quote_helper(parser, double_quote_helper);
+    return (EXIT_SUCCESS);
 }
 
 // @brief to handle the single_quote
@@ -118,7 +119,8 @@ int	parser_handle_double_quote(t_parser *parser)
 //
 // @param parser: the pointer to parser.
 // @return status code.
-int	parser_handle_single_quote(t_parser *parser)
+int    parser_handle_single_quote(t_parser *parser)
 {
-	return (handle_quote_helper(parser, single_quote_helper));
+    handle_quote_helper(parser, single_quote_helper);
+    return (EXIT_SUCCESS);
 }

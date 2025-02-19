@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:33:02 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:33:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,33 +44,33 @@ bool	is_delimiter(char c)
 //
 // @param parser: the pointer to parser.
 // @return status code.
-int	parse(t_parser *parser)
+int    parse(t_parser *parser)
 {
-	char	c;
-	int		status;
-
-	while (true)
-	{
-		c = parser->line[parser->i];
-		if (c == ' ')
-			status = parser_handle_space(parser);
-		else if (c == '|')
-			status = parser_handle_pipe(parser);
-		else if (c == '<' || c == '>')
-			status = parser_handle_red(parser);
-		else if (c == '$')
-			status = parser_handle_expander(parser);
-		else if (c == '\"')
-			status = parser_handle_double_quote(parser);
-		else if (c == '\'')
-			status = parser_handle_single_quote(parser);
-		else if (c == '\0')
-			return (parser_handle_end(parser));
-		else
-			status = parser_handle_normal(parser);
-		if (status != EXIT_SUCCESS)
-			return (status);
-	}
+    char c;
+    int status;
+    
+    while(true)
+    {
+        c = parser->line[parser->i];
+        if (c == ' ')
+		    status = parser_handle_space(parser);
+        else if (c == '|')
+            status =parser_handle_pipe(parser);
+        else if (c == '<' || c == '>')
+            status =parser_handle_red(parser);
+        else if (c == '$')
+            status =parser_handle_expander(parser);
+        else if (c == '\"')
+            status = parser_handle_double_quote(parser);
+        else if (c == '\'')
+            status = parser_handle_single_quote(parser);
+        else if (c == '\0')
+            return (parser_handle_end(parser)); 
+        else
+            status = parser_handle_normal(parser);
+        if (status != EXIT_SUCCESS)
+            return (status);
+    }
 }
 
 static void	re_order_helper(t_parser *parser, int i, int *latest)
