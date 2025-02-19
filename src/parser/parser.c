@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:33:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:34:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 // @return is the char is a delimiter.
 bool	is_delimiter(char c)
 {
-	//int	check;
-
 	if (c == ' ')
 		return (true);
 	if (c == '|')

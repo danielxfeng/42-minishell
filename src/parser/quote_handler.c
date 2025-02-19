@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:33:53 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:34:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,23 @@ void			set_working_token(t_parser *parser);
 static int	handle_quote_helper(t_parser *parser,
 		int (*q_handler)(t_parser *parser))
 {
-	int	status;
-
-	parser->token_start = parser->i;
-	++(parser->i);
-	parser->token_start = parser->i;
-	set_working_token(parser);
-	status = q_handler(parser);
-	if (status != EXIT_SUCCESS)
-		return (status);
-	append_str_to_last_token(parser, ms_substr(parser->line,
-			parser->token_start, parser->i - parser->token_start));
-	++(parser->i);
-	if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<'
-		|| parser->line[parser->i] == '>' || parser->line[parser->i] == ' ')
-	{
-		end_prev_token(parser);
-		skip_space(parser);
-	}
-	parser->token_start = parser->i;
-	return (EXIT_SUCCESS);
+    parser->token_start = parser->i;
+    ++(parser->i);
+    parser->token_start = parser->i;
+    if (parser->size == 0 || parser->tokens[parser->size - 1]->is_end)
+    {
+        append_token(parser);
+        set_token(parser, parser->size - 1, get_token_type(parser));
+    }
+    q_handler(parser);
+    append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser->i - parser->token_start));
+    ++(parser->i);
+    if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<' || parser->line[parser->i] == '>' || parser->line[parser->i] == ' ')
+    {
+        end_prev_token(parser);
+        skip_space(parser);
+    }
+    parser->token_start = parser->i;    
 }
 
 // @brief the logic of handle the double quote.
