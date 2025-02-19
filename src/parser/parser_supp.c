@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 21:06:30 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 09:20:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,27 @@ t_token_type    get_token_type(t_parser *parser)
         return (ARG);
     else
         return (CMD);
+}
+
+// @brief help pipe handler to handle the followed linebreaker.
+// 
+// @param parser: the pointer to parser.
+void new_input_line_for_pipe(t_parser *parser)
+{
+    char *input_line;
+    char *new_line;
+    
+    if (parser->line[parser->i] == '\0')
+    {
+        input_line = readline("> ");
+        if (!input_line)
+            exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+        new_line = ft_strjoin(parser->line, input_line);
+        free(input_line);
+        if (!new_line)
+            exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+        free(parser->line);
+        parser->line = new_line;
+        skip_space(parser);
+    }
 }

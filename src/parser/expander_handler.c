@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 21:28:07 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 09:25:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 void            skip_space(t_parser *parser);
 t_token_type    get_token_type(t_parser *parser);
 
+// @brief help the expander to parse the end of a env key.
+//
+// @param parser: the pointer to parser.
 static void get_env_key_end(t_parser *parser)
 {
     if (parser->line[parser->i] == '?')
@@ -32,6 +35,9 @@ static void get_env_key_end(t_parser *parser)
         ++(parser->i);
 }
 
+// @brief help the expander to handle the env.
+//
+// @param parser: the pointer to parser.
 static char *env_helper_for_expander(t_parser *parser)
 {
     char    *key;
@@ -50,6 +56,10 @@ static char *env_helper_for_expander(t_parser *parser)
     return (value);
 }
 
+// @brief help the expander to get value from env.
+//
+// @param parser: the pointer to parser.
+// @return the value of env.
 static char    *env_get_helper(t_parser *parser)
 {
     char *value;
