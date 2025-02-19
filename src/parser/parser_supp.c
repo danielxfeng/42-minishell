@@ -6,11 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 09:20:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 18:46:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parser.h"
+#include "../libs/libft/libft.h"
+#include <stdlib.h>
+#include <readline/readline.h>
 
 // @brief a helper function to skip the spaces.
 //
@@ -47,7 +50,7 @@ t_token_type    get_token_type(t_parser *parser)
 {
     if (parser->size == 1)
         return (CMD);
-    if (parser->tokens[parser->size - 2] == RED)
+    if (parser->tokens[parser->size - 2]->type == RED)
         return (AFILE);
     if (parser->has_cmd)
         return (ARG);
