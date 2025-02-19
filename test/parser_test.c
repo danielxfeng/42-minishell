@@ -484,17 +484,186 @@ void    testParser_RedWithoutFileWithSpace(void)
     TEST_ASSERT_EQUAL_INT(2, parse(parser));
 }
 
+void    testParser_RedWithoutFileWithAnotherRed(void)
+{
+    t_parser *parser = create_parser(strdup("  <   <"), NULL);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+}
+
+void    testParser_RedWithoutFileWithAnotherRedWithoutSpace(void)
+{
+    t_parser *parser = create_parser(strdup("<>"), NULL);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+}
+
 void    testParser_PipeWithoutLeft(void)
 {
     t_parser *parser = create_parser(strdup("  |cmd"), NULL);
     TEST_ASSERT_EQUAL_INT(2, parse(parser));
 }
 
+void    testParser_PipeDoublePipe(void)
+{
+    t_parser *parser = create_parser(strdup(" cmd | |"), NULL);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+}
+
+void    testParser_PipeDoublePipeWithoutSpace(void)
+{
+    t_parser *parser = create_parser(strdup(" cmd||"), NULL);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+}
+
+void    testParser_Expander(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("$AA"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("aa", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_ExpanderWithPrefix(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("AA$AA"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("AAaa", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_ExpanderNotExist(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("$dd"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_ExpanderNotExistWithPrefix(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("AA$dd"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("AA", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_ExpanderAsArg(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("cmd1 $AA "), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd1", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("aa", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[1]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_ExpanderAsFile(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("<$AA|cmd2"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(4, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("<", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("aa", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[1]->type);
+    TEST_ASSERT_TRUE(parser->tokens[2]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[2]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("|", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[2]->type);
+    TEST_ASSERT_TRUE(parser->tokens[3]->is_end);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[3]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("cmd2", parser->tokens[3]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[3]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_ExpanderMultiDollar(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("$$"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("$$", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_ExpanderStatusCode(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    env->prev_status = 99;
+    t_parser *parser = create_parser(strdup("$?"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("99", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
 
 // Main function to run the tests
 int	main(void)
 {
 	UNITY_BEGIN();
+    
     RUN_TEST(testParserCreate);
     RUN_TEST(testTokenAppend);
     RUN_TEST(testTokenAppendStr);
@@ -517,6 +686,19 @@ int	main(void)
     RUN_TEST(testParser_CombineNoSpace);
     RUN_TEST(testParser_RedWithoutFile);
     RUN_TEST(testParser_RedWithoutFileWithSpace);
+    RUN_TEST(testParser_RedWithoutFileWithAnotherRed);
+    RUN_TEST(testParser_RedWithoutFileWithAnotherRedWithoutSpace);
     RUN_TEST(testParser_PipeWithoutLeft);
+    RUN_TEST(testParser_PipeDoublePipe);
+    RUN_TEST(testParser_PipeDoublePipeWithoutSpace);
+    RUN_TEST(testParser_Expander);
+    RUN_TEST(testParser_ExpanderWithPrefix);
+    RUN_TEST(testParser_ExpanderNotExist);
+    RUN_TEST(testParser_ExpanderNotExistWithPrefix);
+    RUN_TEST(testParser_ExpanderAsArg);
+    RUN_TEST(testParser_ExpanderAsFile);
+
+    RUN_TEST(testParser_ExpanderMultiDollar);
+    //RUN_TEST(testParser_ExpanderStatusCode);
 	return (UNITY_END());
 }
