@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 19:57:44 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 09:40:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void    set_token(t_parser *parser, int idx, t_token_type type)
     token = parser->tokens[idx];
     token->pipe_idx = parser->pipe_count;
     token->type = type;
-
 }
 
 // @brief append the string to the last token in parser.
