@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 20:10:42 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 21:12:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ static char    *env_get_helper(t_parser *parser)
         ft_memcpy(value, parser->line + parser->token_start, parser->i - parser->token_start);
         return (value);
     }
-    return (env_get(parser->env, env_helper_for_expander(parser)));
+    parser->token_start = parser->i;
+    value = env_helper_for_expander(parser);
+    return (value);
 }
 
 // @brief to handle the expander
@@ -96,7 +98,7 @@ int    parser_handle_expander(t_parser *parser)
 
     parser->token_start = parser->i;
     ++(parser->i);
-    if (parser->tokens[parser->size - 1]->is_end)
+    if (parser->size == 0 || parser->tokens[parser->size - 1]->is_end)
     {
         append_token(parser);
         set_token(parser, parser->size - 1, get_token_type(parser));
