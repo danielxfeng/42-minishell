@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 09:40:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 13:45:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,22 @@ void    append_str_to_last_token(t_parser *parser, char *str)
     token->str = joined;
 }
 
-// @brief to switch the place of 2 tokens.
+// @brief shift 2 tokens.
 //
-// @param: i1, i2: the indexes of tokens to switch.
-void    switch_token(t_parser *parser, int i1, int i2)
+// Example:
+// Orginal: 0: token1, 1: token2, 2: token3, 3: token4
+// then, shift_token(parser, 3, 1);
+// Results: 0: token1, 1: token4, 2: token2, 3: token3
+//
+// @param: idx: indexes of tokens to switch.
+void    shift_token(t_parser *parser, int idx, int *position)
 {
     t_token *token;
 
-    token = parser->tokens[i1];
-    parser->tokens[i1] = parser->tokens[i2];
-    parser->tokens[i2] = token;
+    token = parser->tokens[idx];
+    ft_memmove(parser->tokens + *position + 1, parser->tokens + *position, (idx - *position) * sizeof(t_token *));
+    parser->tokens[*position] = token;
+    ++(*position);
 }
 
 // @brief output the tokens to a string array.

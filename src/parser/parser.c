@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 17:20:37 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 13:47:01 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,40 @@ void    parse(t_parser *parser)
         }
         else
             parser_handle_normal(parser);
+    }
+}
+
+// @brief re-order the tokens after parsing.
+// 
+// The executor's requirements:
+// - In one pipe block, the cmd `token` should be at first, then `arg` token. 
+//
+// @param parser: the pointer to parser.
+void    re_order_tokens(t_parser *parser)
+{
+    int     i;
+    int     pipe_count;
+    int     latest;
+    bool    red_flag;
+
+    pipe_count = 0;
+    i = 0;
+    latest = 0;
+    red_flag = false;
+    while (i++ < parser->size)
+    {
+        if (parser->tokens[i - 1]->pipe_idx > pipe_count)
+        {
+            ++pipe_count;
+            latest = 0;
+            red_flag = false;
+        }
+        if (!latest && (parser->tokens[i - 1]->type == RED))
+        {
+            latest = i;
+            red_flag = true;
+        }
+        if (red_flag && parser->tokens[i - 1]->type == ARG)
+            shift_token(parser, i - 1, *latest);
     }
 }
