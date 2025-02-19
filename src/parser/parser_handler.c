@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 09:21:07 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 18:40:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void    parser_handle_normal(t_parser *parser)
     while (!(is_delimiter(parser->line[parser->i])))
         ++(parser->i);
     append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser-> i - parser->token_start));
-    if (parser->i == '|' || parser->i == '<' || parser->i == '>' || || parser->i == ' ')
+    if (parser->i == '|' || parser->i == '<' || parser->i == '>' || parser->i == ' ')
     {
         end_prev_token(parser);
         skip_space(parser);

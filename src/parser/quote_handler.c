@@ -6,16 +6,17 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 12:43:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 18:48:28 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parser.h"
 #include "../libs/libft/libft.h"
-#include "readline/readline.h"
+#include <stdlib.h>
 
 void            end_prev_token(t_parser *parser);
 t_token_type    get_token_type(t_parser *parser);
+void            skip_space(t_parser *parser);
 
 // @brief help to handle the quotation mark.
 //

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 13:47:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 18:40:52 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ void    re_order_tokens(t_parser *parser)
             red_flag = true;
         }
         if (red_flag && parser->tokens[i - 1]->type == ARG)
-            shift_token(parser, i - 1, *latest);
+            shift_token(parser, i - 1, &latest);
     }
 }

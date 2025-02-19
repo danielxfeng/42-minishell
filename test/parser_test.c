@@ -24,7 +24,7 @@ void	tearDown(void)
 
 void    testParserCreate(void)
 {
-    t_parser *parser = create_parser(strdup(""));
+    t_parser *parser = create_parser(strdup(""), NULL);
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -34,7 +34,7 @@ void    testParserCreate(void)
 
 void    testTokenAppend(void)
 {
-    t_parser *parser = create_parser(strdup(""));
+    t_parser *parser = create_parser(strdup(""), NULL);
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -58,7 +58,7 @@ void    testTokenAppend(void)
 
 void    testTokenAppendStr(void)
 {
-    t_parser *parser = create_parser(strdup(""));
+    t_parser *parser = create_parser(strdup(""), NULL);
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -81,7 +81,7 @@ void    testTokenAppendStr(void)
 
 void    testSetToken(void)
 {
-    t_parser *parser = create_parser(strdup(""));
+    t_parser *parser = create_parser(strdup(""), NULL);
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -97,15 +97,15 @@ void    testSetToken(void)
     append_token(parser);
     set_token(parser, 1, PIPE);
     TEST_ASSERT_EQUAL_INT(2, parser->size);
-    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[0]->type);
-    TEST_ASSERT_EQUAL_INT(1, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[1]->type);
+    TEST_ASSERT_EQUAL_INT(1, parser->tokens[1]->pipe_idx);
     TEST_ASSERT_FALSE(parser->has_cmd);
     close_parser(&parser, true);
 }
 
-void    testSwitchToken(void)
+void    testShiftToken(void)
 {
-    t_parser *parser = create_parser(strdup(""));
+    t_parser *parser = create_parser(strdup(""), NULL);
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -119,15 +119,22 @@ void    testSwitchToken(void)
     TEST_ASSERT_EQUAL_INT(2, parser->size);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_EQUAL_STRING("sdd", parser->tokens[1]->str);
-    switch_token(parser, 0, 1);
-    TEST_ASSERT_EQUAL_STRING("ss", parser->tokens[1]->str);
-    TEST_ASSERT_EQUAL_STRING("sdd", parser->tokens[0]->str);
+    append_token(parser);
+    append_str_to_last_token(parser, ms_substr(str, 3, 1));
+    TEST_ASSERT_EQUAL_INT(3, parser->size);
+    TEST_ASSERT_EQUAL_INT(INIT_CAPACITY * 2, parser->capacity);
+    TEST_ASSERT_EQUAL_STRING("d", parser->tokens[2]->str);
+    int position = 1;
+    shift_token(parser, 2, &position);
+    TEST_ASSERT_EQUAL_STRING("d", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_STRING("sdd", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(2, position);
     close_parser(&parser, true);
 }
 
 void    testOutputToken(void)
 {
-    t_parser *parser = create_parser(strdup(""));
+    t_parser *parser = create_parser(strdup(""), NULL);
     TEST_ASSERT_NOT_NULL(parser);
     TEST_ASSERT_EQUAL_INT(INIT_CAPACITY, parser->capacity);
     TEST_ASSERT_NULL(parser->tokens[0]);
@@ -160,7 +167,7 @@ int	main(void)
     RUN_TEST(testTokenAppend);
     RUN_TEST(testTokenAppendStr);
     RUN_TEST(testSetToken);
-    RUN_TEST(testSwitchToken);
+    RUN_TEST(testShiftToken);
     RUN_TEST(testOutputToken);
 	return (UNITY_END());
 }
