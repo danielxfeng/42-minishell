@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 21:41:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/20 14:18:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void            end_prev_token(t_parser *parser);
 bool	        is_delimiter(char c);
 t_token_type    get_token_type(t_parser *parser);
 void            new_input_line_for_pipe(t_parser *parser);
+void            set_working_token(t_parser *parser);
 
 // @brief to handle the space.
 //
@@ -134,10 +135,7 @@ int    parser_handle_end(t_parser *parser)
 // @return status code.
 int    parser_handle_normal(t_parser *parser)
 {
-    end_prev_token(parser);
-    
-    append_token(parser);
-    set_token(parser, parser->size - 1, get_token_type(parser));
+    set_working_token(parser);
     while (!(is_delimiter(parser->line[parser->i])))
         ++(parser->i);
     append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser-> i - parser->token_start));
