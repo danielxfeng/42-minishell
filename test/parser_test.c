@@ -781,6 +781,35 @@ void    testParser_EmptyOne(void)
     close_parser(&parser, true);
 }
 
+void    testParser_Reorder(void)
+{
+    t_parser *parser = create_parser(strdup("< infile cmd1 | cmd2 > outfile arg < infile2"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    re_order_tokens(parser);
+    TEST_ASSERT_EQUAL_INT(10, parser->size);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_EQUAL_STRING("cmd1", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[1]->type);
+    TEST_ASSERT_EQUAL_STRING("<", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[2]->type);
+    TEST_ASSERT_EQUAL_STRING("infile", parser->tokens[2]->str);
+    TEST_ASSERT_EQUAL_INT(1, parser->pipe_count);
+    TEST_ASSERT_EQUAL_INT(PIPE, parser->tokens[3]->type);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[4]->type);
+    TEST_ASSERT_EQUAL_STRING("cmd2", parser->tokens[4]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[5]->type);
+    TEST_ASSERT_EQUAL_STRING("arg", parser->tokens[5]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[6]->type);
+    TEST_ASSERT_EQUAL_STRING(">", parser->tokens[6]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[7]->type);
+    TEST_ASSERT_EQUAL_STRING("outfile", parser->tokens[7]->str);
+    TEST_ASSERT_EQUAL_INT(RED, parser->tokens[8]->type);
+    TEST_ASSERT_EQUAL_STRING("<", parser->tokens[8]->str);
+    TEST_ASSERT_EQUAL_INT(AFILE, parser->tokens[9]->type);
+    TEST_ASSERT_EQUAL_STRING("infile2", parser->tokens[9]->str);
+    close_parser(&parser, true);
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -829,5 +858,6 @@ int	main(void)
     RUN_TEST(testParser_DoubleQuoteWithExpander);
     RUN_TEST(testParser_QuotesWithExpander);
     RUN_TEST(testParser_EmptyOne);
+    RUN_TEST(testParser_Reorder);
 	return (UNITY_END());
 }
