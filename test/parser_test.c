@@ -773,6 +773,14 @@ void    testParser_DoubleQuoteUnclosed(void)
     close_env(&env);
 }
 
+void    testParser_EmptyOne(void)
+{
+    t_parser *parser = create_parser(strdup(" "), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(0, parser->size);
+    close_parser(&parser, true);
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -820,5 +828,6 @@ int	main(void)
     RUN_TEST(testParser_DoubleQuoteUnclosed);
     RUN_TEST(testParser_DoubleQuoteWithExpander);
     RUN_TEST(testParser_QuotesWithExpander);
+    RUN_TEST(testParser_EmptyOne);
 	return (UNITY_END());
 }
