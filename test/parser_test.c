@@ -691,11 +691,19 @@ void    testParser_SingleQuoteWithPrefixPostFix(void)
     close_env(&env);
 }
 
+void    testParser_SingleQuoteUnclosed(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("aa\'sdf"), env);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+    close_env(&env);
+}
+
 // Main function to run the tests
 int	main(void)
 {
 	UNITY_BEGIN();
-    /**
     RUN_TEST(testParserCreate);
     RUN_TEST(testTokenAppend);
     RUN_TEST(testTokenAppendStr);
@@ -731,8 +739,8 @@ int	main(void)
     RUN_TEST(testParser_ExpanderAsFile);
     RUN_TEST(testParser_ExpanderMultiDollar);
     RUN_TEST(testParser_ExpanderStatusCode);
-    */
-    // RUN_TEST(testParser_SingleQuote);
+    RUN_TEST(testParser_SingleQuote);
     RUN_TEST(testParser_SingleQuoteWithPrefixPostFix);
+    RUN_TEST(testParser_SingleQuoteUnclosed);
 	return (UNITY_END());
 }
