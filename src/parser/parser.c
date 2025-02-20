@@ -6,20 +6,19 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 18:40:52 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/20 21:50:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parser.h"
 #include "../libs/libft/libft.h"
+#include <stdlib.h>
 
 // @brief Checks if the char is a token delimiter
 // @param: c the character tested
 // @return is the char is a delimiter.
 bool	is_delimiter(char c)
 {
-	int	check;
-
 	if (c == ' ')
 		return (true);
 	if (c == '|')
@@ -42,32 +41,33 @@ bool	is_delimiter(char c)
 // @brief the state machine parse the command line char by char.
 //
 // @param parser: the pointer to parser.
-void    parse(t_parser *parser)
+// @return status code.
+int    parse(t_parser *parser)
 {
     char c;
+    int status;
     
     while(true)
     {
         c = parser->line[parser->i];
         if (c == ' ')
-		    parser_handle_space(parser);
+		    status = parser_handle_space(parser);
         else if (c == '|')
-            parser_handle_pipe(parser);
+            status =parser_handle_pipe(parser);
         else if (c == '<' || c == '>')
-            parser_handle_red(parser);
+            status =parser_handle_red(parser);
         else if (c == '$')
-            parser_handle_expander(parser);
+            status =parser_handle_expander(parser);
         else if (c == '\"')
-            parser_handle_double_quote(parser);
+            status = parser_handle_double_quote(parser);
         else if (c == '\'')
-            parser_handle_single_quote(parser);
+            status = parser_handle_single_quote(parser);
         else if (c == '\0')
-        {
-            parser_handle_end(parser);
-            return  ;   
-        }
+            return (parser_handle_end(parser)); 
         else
-            parser_handle_normal(parser);
+            status = parser_handle_normal(parser);
+        if (status != EXIT_SUCCESS)
+            return (status);
     }
 }
 
@@ -98,10 +98,10 @@ void    re_order_tokens(t_parser *parser)
         }
         if (!latest && (parser->tokens[i - 1]->type == RED))
         {
-            latest = i;
+            latest = i - 1;
             red_flag = true;
         }
-        if (red_flag && parser->tokens[i - 1]->type == ARG)
+        if (red_flag && (parser->tokens[i - 1]->type == CMD || parser->tokens[i - 1]->type == ARG))
             shift_token(parser, i - 1, &latest);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:30:58 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 18:55:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/19 19:54:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ void	exit_with_err_parser(t_parser **parser, int err_code, char *msg)
 // @param parser: the pointer to parser.
 // @param err_code: the return status code.
 // @param msg: the error msg to print.
-void	return_with_err_parser(t_parser **parser, int err_code, char *msg)
+// @return: the error code.
+int	return_with_err_parser(t_parser **parser, int err_code, char *msg)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\'\n", 2);
 	close_parser(parser, true);
-	exit(err_code);
+	return(err_code);
 }
