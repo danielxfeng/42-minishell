@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:47:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:24:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,17 @@ void	set_working_token(t_parser *parser)
 		append_token(parser);
 		set_token(parser, parser->size - 1, get_token_type(parser));
 	}
+}
+
+// @brief help the quote, normal, expander token to decide the current working token.
+// if it's neccessary to create a new token, create and set it.
+//
+// @param parser: the pointer to parser.
+void    set_working_token(t_parser *parser)
+{
+    if (parser->size == 0 || parser->tokens[parser->size - 1]->is_end)
+    {
+        append_token(parser);
+        set_token(parser, parser->size - 1, get_token_type(parser));
+    }
 }
