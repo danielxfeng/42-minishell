@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:34:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:35:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,26 @@
 #include "../libs/libft/libft.h"
 #include <stdlib.h>
 
-void			end_prev_token(t_parser *parser);
-t_token_type	get_token_type(t_parser *parser);
-void			skip_space(t_parser *parser);
-void			set_working_token(t_parser *parser);
+void            end_prev_token(t_parser *parser);
+t_token_type    get_token_type(t_parser *parser);
+void            skip_space(t_parser *parser);
+void            set_working_token(t_parser *parser);
 
 // @brief help to handle the quotation mark.
 //
 // @param parser: the pointer to parser.
-// @param q_handler: the pointer to handler function of 
-//  single quote / double quote.
-// @return (the status);
-static int	handle_quote_helper(t_parser *parser,
-		int (*q_handler)(t_parser *parser))
+// @param q_handler: the pointer to handler function of single quote / double quote.
+// @return the status;
+static int handle_quote_helper(t_parser *parser, int (* q_handler)(t_parser *parser))
 {
+    int status;
     parser->token_start = parser->i;
     ++(parser->i);
     parser->token_start = parser->i;
-    if (parser->size == 0 || parser->tokens[parser->size - 1]->is_end)
-    {
-        append_token(parser);
-        set_token(parser, parser->size - 1, get_token_type(parser));
-    }
-    q_handler(parser);
+    set_working_token(parser);
+    status = q_handler(parser);
+    if (status != EXIT_SUCCESS)
+        return (status);
     append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser->i - parser->token_start));
     ++(parser->i);
     if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<' || parser->line[parser->i] == '>' || parser->line[parser->i] == ' ')
@@ -45,45 +42,36 @@ static int	handle_quote_helper(t_parser *parser,
         skip_space(parser);
     }
     parser->token_start = parser->i;    
+    return (EXIT_SUCCESS);
 }
 
 // @brief the logic of handle the double quote.
 //
 // @param parser: the pointer to parser.
-static int	double_quote_helper(t_parser *parser)
+static int double_quote_helper(t_parser *parser)
 {
-	while (parser->line[parser->i] && parser->line[parser->i] != '\"')
-	{
-		parser->token_start = parser->i;
-		while (parser->line[parser->i] && parser->line[parser->i] != '\"'
-			&& parser->line[parser->i] != '$')
-			++(parser->i);
-		if (parser->i > parser->token_start)
-		{
-			append_str_to_last_token(parser, ms_substr(parser->line,
-					parser->token_start, parser->i - parser->token_start));
-			parser->token_start = parser->i;
-		}
-		if (parser->line[parser->i] == '$')
-		{
-			parser_handle_expander(parser);
-		}
-	}
-	if (!(parser->line[parser->i]))
-		return (return_with_err_parser(&parser, 2, "\""));
-	return (EXIT_SUCCESS);
+    while (parser->line[parser->i] && parser->line[parser->i] != '\"')
+   {
+        while (parser->line[parser->i] && parser->line[parser->i] != '\"' && parser->line[parser->i] != '$')
+            ++(parser->i);
+        if (parser->line[parser->i] == '$')
+            parser_handle_expander(parser);
+   }
+   if (!(parser->line[parser->i]))
+        return (return_with_err_parser(&parser, 2, "\""));
+    return (EXIT_SUCCESS);
 }
 
 // @brief the logic of handle the single quote.
 //
 // @param parser: the pointer to parser.
-static int	single_quote_helper(t_parser *parser)
+static int single_quote_helper(t_parser *parser)
 {
-	while (parser->line[parser->i] && parser->line[parser->i] != '\'')
-		++(parser->i);
-	if (!(parser->line[parser->i]))
-		return (return_with_err_parser(&parser, 2, "\'"));
-	return (EXIT_SUCCESS);
+    while (parser->line[parser->i] && parser->line[parser->i] != '\'')
+        ++(parser->i);
+    if (!(parser->line[parser->i]))
+        return (return_with_err_parser(&parser, 2, "\'"));
+    return (EXIT_SUCCESS);
 }
 
 // @brief to handle the double_quote
@@ -101,8 +89,7 @@ static int	single_quote_helper(t_parser *parser)
 // @return status code.
 int    parser_handle_double_quote(t_parser *parser)
 {
-    handle_quote_helper(parser, double_quote_helper);
-    return (EXIT_SUCCESS);
+    return (handle_quote_helper(parser, double_quote_helper));
 }
 
 // @brief to handle the single_quote
@@ -118,6 +105,5 @@ int    parser_handle_double_quote(t_parser *parser)
 // @return status code.
 int    parser_handle_single_quote(t_parser *parser)
 {
-    handle_quote_helper(parser, single_quote_helper);
-    return (EXIT_SUCCESS);
+    return (handle_quote_helper(parser, single_quote_helper));
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:34:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:34:56 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void			skip_space(t_parser *parser);
-t_token_type	get_token_type(t_parser *parser);
-void			end_prev_token(t_parser *parser);
-void			set_working_token(t_parser *parser);
+void            skip_space(t_parser *parser);
+t_token_type    get_token_type(t_parser *parser);
+void            end_prev_token(t_parser *parser);
+void            set_working_token(t_parser *parser);
 
 // @brief help the expander to parse the end of a env key.
 //
@@ -101,11 +101,7 @@ int    parser_handle_expander(t_parser *parser)
 
     parser->token_start = parser->i;
     ++(parser->i);
-    if (parser->size == 0 || parser->tokens[parser->size - 1]->is_end)
-    {
-        append_token(parser);
-        set_token(parser, parser->size - 1, get_token_type(parser));
-    }
+    set_working_token(parser);
     append_str_to_last_token(parser, env_get_helper(parser));
     if (parser->i == '|' || parser->i == '<' || parser->i == '>' || parser->i == ' ')
     {

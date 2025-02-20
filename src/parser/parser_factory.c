@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:19:43 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:32:58 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:34:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,28 @@
 // @param is_close_str: is also free the string in parser or not?
 static void	close_tokens(t_parser *parser, t_token ***tokens, bool is_close_str)
 {
-	int	i;
-
-	if (tokens && *tokens)
-	{
-		i = 0;
-		while (i < parser->size)
-		{
-			if ((*tokens)[i])
-			{
-				if (is_close_str && (*tokens)[i]->str)
-				{
-					free((*tokens)[i]->str);
-					(*tokens)[i]->str = NULL;
-				}
-				free((*tokens)[i]);
-				(*tokens)[i] = NULL;
-			}
-			++i;
-		}
-		free(*tokens);
-		*tokens = NULL;
-	}
+    int i;
+    
+    if (tokens && *tokens)
+    {
+        i = 0;
+        while (i < parser->size)
+        {
+            if ((*tokens)[i])
+            {
+                if (is_close_str && (*tokens)[i]->str)
+                {
+                    free((*tokens)[i]->str);
+                    (*tokens)[i]->str = NULL;
+                }
+                free((*tokens)[i]);
+                (*tokens)[i] = NULL;
+            }
+            ++i;
+        }
+        free(*tokens);
+        *tokens = NULL;
+    }
 }
 
 // @brief destructor of parser.
@@ -53,8 +53,6 @@ static void	close_tokens(t_parser *parser, t_token ***tokens, bool is_close_str)
 // and set to false when you still need the string like in `output_tokens()`.
 void	close_parser(t_parser **parser, bool is_close_str)
 {
-    //int i = 0;
-
     if (parser && *parser)
     {
         close_tokens(*parser, &((*parser)->tokens), is_close_str);
@@ -90,8 +88,8 @@ t_token	**create_tokens(t_parser *parser, int capacity)
 // @return the pointer to parser.
 t_parser	*create_parser(char *line, t_env *env)
 {
-    t_parser *parser;
-    //t_token **tokens;
+    t_parser    *parser;
+    t_token     **tokens;
 
 	parser = ft_calloc(1, sizeof(t_parser));
 	if (!parser)
