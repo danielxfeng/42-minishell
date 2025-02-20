@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/20 14:26:36 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/20 16:05:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,21 @@ static int double_quote_helper(t_parser *parser)
 {
     while (parser->line[parser->i] && parser->line[parser->i] != '\"')
    {
+        parser->token_start = parser->i;
         while (parser->line[parser->i] && parser->line[parser->i] != '\"' && parser->line[parser->i] != '$')
             ++(parser->i);
+        if (parser->i > parser->token_start)
+        {
+            append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser->i - parser->token_start));
+            parser->token_start = parser->i;
+        }
+
         if (parser->line[parser->i] == '$')
+        {
             parser_handle_expander(parser);
+            //parser->token_start = parser->i;
+        }
+            
    }
    if (!(parser->line[parser->i]))
         return (return_with_err_parser(&parser, 2, "\""));

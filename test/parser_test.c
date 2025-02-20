@@ -700,6 +700,79 @@ void    testParser_SingleQuoteUnclosed(void)
     close_env(&env);
 }
 
+void    testParser_DoubleQuote(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("\"sdj<>>|sd \ndjskf\""), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("sdj<>>|sd \ndjskf", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_DoubleQuoteWithPrefixPostFix(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("aa\"sdj<>>|sd \ndjskf\"aa"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("aasdj<>>|sd \ndjskfaa", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_DoubleQuoteWithExpander(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("aa\"sdj<>>$AA $BB |sd \ndjskf\"aa"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("aasdj<>>aa bb |sd \ndjskfaa", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_QuotesWithExpander(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("aa\"sdj<>>$AA $BB |sd \ndjskf\"aa\"666\"'yy'zz"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("aasdj<>>aa bb |sd \ndjskfaa666yyzz", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_DoubleQuoteUnclosed(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("aa\"sdf"), env);
+    TEST_ASSERT_EQUAL_INT(2, parse(parser));
+    close_env(&env);
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -742,5 +815,10 @@ int	main(void)
     RUN_TEST(testParser_SingleQuote);
     RUN_TEST(testParser_SingleQuoteWithPrefixPostFix);
     RUN_TEST(testParser_SingleQuoteUnclosed);
+    RUN_TEST(testParser_DoubleQuote);
+    RUN_TEST(testParser_DoubleQuoteWithPrefixPostFix);
+    RUN_TEST(testParser_DoubleQuoteUnclosed);
+    RUN_TEST(testParser_DoubleQuoteWithExpander);
+    RUN_TEST(testParser_QuotesWithExpander);
 	return (UNITY_END());
 }
