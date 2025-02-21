@@ -39,18 +39,18 @@ typedef struct s_ast
 {
 	t_ast_node				*root;
 	char					**tokens;
-	int						tk_size;
-	int						fd_in;
-	int						fd_out;
+	int					tk_size;
+	int					fd_in;
+	int					fd_out;
 	t_env					*env;
-}							t_ast;
+}						t_ast;
 
 typedef struct s_ast_node
 {
 	t_node_type				type;
 	void					*prop;
-	int						(*node_pre_handler)(t_ast *ast, t_ast_node *node);
-	int						(*node_handler)(t_ast *ast, t_ast_node *node);
+	int					(*node_pre_handler)(t_ast *ast, t_ast_node *node);
+	int					(*node_handler)(t_ast *ast, t_ast_node *node);
 	void					(*node_closer)(t_ast_node *ast_node);
 	void					(*node_printer)(t_ast *ast, t_ast_node *n,
 							t_ast_node *c, int l);
