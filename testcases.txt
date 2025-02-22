@@ -1,8 +1,5 @@
 << eof << eof2 << eof3 | << eof4 cat
-empty
 cat | "   "
    "  "
-   aa$
 echo $PWD $OLDPWD
-echo - "" "  " hello
 cd

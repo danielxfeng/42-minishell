@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:27:08 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 20:16:09 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ static char	*env_get_helper(t_parser *parser)
 {
 	char	*value;
 
-	while (parser->line[parser->i] == '$')
-		++(parser->i);
 	if (parser->i - parser->token_start > 1 || parser->line[parser->i] == '\0')
 	{
 		value = ft_calloc(parser->i - parser->token_start + 1, sizeof(char));
@@ -83,6 +81,33 @@ static char	*env_get_helper(t_parser *parser)
 	parser->token_start = parser->i;
 	value = env_helper_for_expander(parser);
 	return (value);
+}
+
+// @brief check if we actually need to expand.
+// in these cases, we don't expand:
+// $?, $, $ , $$aa, $|, $>, $<
+//
+// @param parser: the pointer to parser.
+// @return if we need to expand. 
+static bool	need_expand(t_parser *parser)
+{
+	int	i;
+
+	i = parser->i;
+	if (parser->line[i] && parser->line[i] == '?')
+	{
+		append_str_to_last_token(parser, ft_itoa(parser->env->prev_status));
+		parser->i = i + 1;
+		return (false);
+	}
+	while (parser->line[i] == '$')
+		++i;
+	if (i == parser->i + 1 && parser->line[i] != ' ' && parser->line[i] != '\0'
+		&& parser->line[i] != '<' && parser->line[i] != '>' && parser->line[i] != '|')
+		return (true);
+	append_str_to_last_token(parser, ms_substr(parser->line, parser->i - 1, i - parser->i + 1));
+	parser->i = i;
+	return (false);
 }
 
 // @brief to handle the expander
@@ -101,7 +126,8 @@ int	parser_handle_expander(t_parser *parser)
 	parser->token_start = parser->i;
 	++(parser->i);
 	set_working_token(parser);
-	append_str_to_last_token(parser, env_get_helper(parser));
+	if (need_expand(parser))
+		append_str_to_last_token(parser, env_get_helper(parser));
 	if (parser->i == '|' || parser->i == '<' || parser->i == '>'
 		|| parser->i == ' ')
 	{
