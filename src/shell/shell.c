@@ -6,15 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/22 12:25:57 by Xifeng           ###   ########.fr       */
-=======
-/*   Updated: 2025/02/22 11:47:51 by Xifeng           ###   ########.fr       */
->>>>>>> 57d0d8f (norm.)
+/*   Updated: 2025/02/22 12:36:09 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/shell.h"
+#include "../include/executor.h"
+#include "../include/parser.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 
@@ -36,22 +33,11 @@ static void	parse_and_execute(t_env *env, char **line)
 	len = 0;
 	while (tokens[len])
 		++len;
-	ast = build_tree(output_tokens(parser), len, env);
-	ast->root->node_pre_handler(ast, ast->root);
-	env->prev_status = ast->root->node_handler(ast, ast->root);
-	close_ast(&ast);
-	return ;
-}
-
-// @brief set the prompt color by previous status.
-//
-// @param env: the pointer to env.
-// @return: the prompt.
-char	*get_prompt(t_env *env)
-{
-	if (env->prev_status == EXIT_OK)
-		return (PROMPT_RESET);
-	return (PROMPT_RED_BOLD);
+	ast = build_tree((output_tokens(parser), len, env);
+    ast->root->node_pre_handler(ast, ast->root);
+    env->prev_status = ast->root->node_handler(ast, ast->root);
+    close_ast(&ast);
+    return ;
 }
 
 // @brief the entrance of the program.
@@ -65,7 +51,7 @@ int	run_shell(char **envp)
 	env = create_env(envp);
 	while (true)
 	{
-		line = readline(get_prompt(env));
+		line = readline("msh> ");
 		if (!line)
 			exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
 		add_history(line);

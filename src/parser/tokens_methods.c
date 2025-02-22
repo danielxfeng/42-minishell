@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:33:08 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:35:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,15 +111,15 @@ char	**output_tokens(t_parser *parser)
 	int		i;
 	char	**tokens;
 
-	tokens = ft_calloc(parser->size + 1, sizeof(char *));
-	if (!tokens)
-		exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
-	i = 0;
-	while (i < parser->size)
-	{
-		tokens[i] = parser->tokens[i]->str;
-		++i;
-	}
-	close_parser(&parser, false);
-	return (tokens);
+    tokens = ft_calloc(parser->size + 1, sizeof(char *));
+    if (!tokens)
+        exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+    i = 0;
+    while (i < parser->size)
+    {
+        tokens[i] = parser->tokens[i]->str;
+        ++i;
+    }
+    close_parser(&parser, false);
+    return (tokens);
 }
