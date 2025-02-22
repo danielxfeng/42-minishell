@@ -6,11 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:24:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 18:50:48 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
+#include <stdbool.h>
 
 // @brief a special version of strjoin that supports a null s1.
 char	*ms_strjoin_parser(char const *s1, char const *s2)
@@ -46,4 +47,22 @@ char	*ms_substr(char *str, int start, int len)
 		return (NULL);
 	ft_memcpy(res, str + start, len);
 	return (res);
+}
+
+// @brief check if the given line only contains space.
+//
+// @param line: the incoming line.
+// @return if the given line contains space only.
+bool	is_empty_line(char *line)
+{
+	int		i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ')
+			return (false);
+		++i;
+	}
+	return (true);
 }
