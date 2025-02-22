@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:37:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:47:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	parse_and_execute(t_env *env, char *line)
 	int			len;
 	t_parser	*parser;
 	t_ast		*ast;
-	char**		tokens;
+	char		**tokens;
 
 	parser = create_parser(line, env);
 	env->prev_status = parse(parser);
