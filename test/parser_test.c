@@ -838,7 +838,6 @@ void    testParser_Reorder(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    /**
     RUN_TEST(testParserCreate);
     RUN_TEST(testTokenAppend);
     RUN_TEST(testTokenAppendStr);
@@ -872,9 +871,7 @@ int	main(void)
     RUN_TEST(testParser_ExpanderNotExistWithPrefix);
     RUN_TEST(testParser_ExpanderAsArg);
     RUN_TEST(testParser_ExpanderAsFile);
-    **/
     RUN_TEST(testParser_ExpanderMultiDollar);
-    /**
     RUN_TEST(testParser_ExpanderStatusCode);
     RUN_TEST(testParser_SingleQuote);
     RUN_TEST(testParser_SingleQuoteWithPrefixPostFix);
@@ -887,6 +884,5 @@ int	main(void)
     RUN_TEST(testParser_QuotesWithExpander);
     RUN_TEST(testParser_EmptyOne);
     RUN_TEST(testParser_Reorder);
-    */
 	return (UNITY_END());
 }
