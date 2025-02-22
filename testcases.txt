@@ -1,5 +1,3 @@
 << eof << eof2 << eof3 | << eof4 cat
-cat | "   "
-   "  "
 echo $PWD $OLDPWD
 cd
