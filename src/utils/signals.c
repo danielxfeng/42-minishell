@@ -6,11 +6,11 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:24:55 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:01:14 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:09:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+# include <signal.h>
 
 /**
  * @brief When user presses ctrl-c and ctrl-d a new line is added
