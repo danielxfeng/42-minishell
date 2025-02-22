@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:19:43 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 18:47:31 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/20 13:26:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void    close_tokens(t_parser *parser, t_token ***tokens, bool is_close_s
 // and set to false when you still need the string like in `output_tokens()`.
 void    close_parser(t_parser **parser, bool is_close_str)
 {
-    int i = 0;
+    //int i = 0;
 
     if (parser && *parser)
     {
@@ -91,7 +91,7 @@ t_token **create_tokens(t_parser *parser, int capacity)
 t_parser *create_parser(char *line, t_env *env)
 {
     t_parser *parser;
-    t_token **tokens;
+    //t_token **tokens;
 
     parser = ft_calloc(1, sizeof(t_parser));
     if (!parser)

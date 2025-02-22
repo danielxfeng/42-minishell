@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 13:45:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/20 13:26:50 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_token **create_tokens(t_parser *parser, int capacity);
 void    append_token(t_parser *parser)
 {
     t_token **tokens;
-    t_token *token;
+   // t_token *token;
     
     if (parser->size == parser->capacity)
     {
