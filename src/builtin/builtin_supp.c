@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:37:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 14:44:14 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:57:10 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@
 // @param ast: the pointer to ast tree.
 // @param prop: the property of node.
 // @return the status code.
-int check_option(t_ast *ast, t_cmd_prop *prop)
+int	check_option(t_ast *ast, t_cmd_prop *prop)
 {
-    if (prop->size < 2)
-        return (EXIT_OK);
-    if (ft_strlen(ast->tokens[prop->start + 1]) > 1 && ast->tokens[prop->start + 1][0] == '-')
-    {
-        ft_putstr_fd(ast->tokens[prop->start], 2);
-        ft_putstr_fd(": invalid option -- \'", 2);
-        ft_putchar_fd(ast->tokens[prop->start + 1][1], 2);
-        ft_putstr_fd("\'\n", 2);
-        return (EXIT_INVALID_OPTION);
-    }
-    return (EXIT_OK);
+	if (prop->size < 2)
+		return (EXIT_OK);
+	if (ft_strlen(ast->tokens[prop->start + 1]) > 1 && ast->tokens[prop->start
+		+ 1][0] == '-')
+	{
+		ft_putstr_fd(ast->tokens[prop->start], 2);
+		ft_putstr_fd(": invalid option -- \'", 2);
+		ft_putchar_fd(ast->tokens[prop->start + 1][1], 2);
+		ft_putstr_fd("\'\n", 2);
+		return (EXIT_INVALID_OPTION);
+	}
+	return (EXIT_OK);
 }

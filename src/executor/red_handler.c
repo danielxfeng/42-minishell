@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/14 06:51:14 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:57:49 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@
 //
 // In one sub-process, for each redirecton direction,
 // only rightmost `red` node will be redirected,
-// 
+//
 // @param node: the current node.
 // @param prop: the property of the node.
 // @param is_in: the direction of `red`, is it a < ? or > ?
 void	set_skip_flag(t_ast_node *node, t_red_prop *prop, bool is_in)
 {
 	if (!(node->left) || !(node->left->type == RED))
-		return	;
+		return ;
 	prop = node->left->prop;
 	if (prop->is_skip && prop->is_in == is_in)
-		return	;
+		return ;
 	if (prop->is_in == is_in)
 		prop->is_skip = true;
 	set_skip_flag(node->left, prop, is_in);

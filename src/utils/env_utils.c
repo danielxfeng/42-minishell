@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 22:31:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 14:02:09 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:00:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ char	*ft_getenv(char *key)
 		curr_envp = (char *)envp->content;
 		while (key[i] && curr_envp[i] && (key[i] == curr_envp[i]))
 			i++;
-		if (!key[i] && (curr_envp[i] == '='
-				|| curr_envp[i] == '\0'))
+		if (!key[i] && (curr_envp[i] == '=' || curr_envp[i] == '\0'))
 		{
 			value = ft_strdup(&(curr_envp[i + 1]));
 			if (!value)

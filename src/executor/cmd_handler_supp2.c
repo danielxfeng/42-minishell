@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 07:50:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 15:57:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:57:32 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ int	parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop)
 {
 	if (is_relative_or_absolute_cmd(ast->tokens[prop->start]))
 	{
-		prop->full_cmd = ft_strdup(ast->tokens[prop->start]);	
+		prop->full_cmd = ft_strdup(ast->tokens[prop->start]);
 		return (check_cmd(ast, prop));
-	}	
+	}
 	if (parse_full_cmd(ast, prop))
 		return (check_cmd(ast, prop));
 	return (return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],

@@ -6,24 +6,24 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:05:24 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 14:14:34 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:57:23 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libs/libft/libft.h"
 #include "../include/mini_env.h"
+#include "../libs/libft/libft.h"
 #include <stdlib.h>
 
 // @brief help to set the env item.
-// 
+//
 // @param i: the index of separator.
 // @param item_str: the env item string.
 // @param item: the env item to set.
 static void	set_item_helper(int i, char *item_str, t_env_item *item)
 {
-	if (((item_str[i + 1] == '\'' && item_str[ft_strlen(item_str) - 1] == '\'') ||
-	(item_str[i + 1] == '\"' && item_str[ft_strlen(item_str) - 1] == '\"')) 
-	&& ((size_t)i != ft_strlen(item_str) - 2))
+	if (((item_str[i + 1] == '\'' && item_str[ft_strlen(item_str) - 1] == '\'')
+			|| (item_str[i + 1] == '\"' && item_str[ft_strlen(item_str)
+				- 1] == '\"')) && ((size_t)i != ft_strlen(item_str) - 2))
 		ft_memcpy(item->value, item_str + i + 2, ft_strlen(item_str) - i - 3);
 	else
 		ft_memcpy(item->value, item_str + i + 1, ft_strlen(item_str) - i - 1);
@@ -39,9 +39,9 @@ static void	set_item_helper(int i, char *item_str, t_env_item *item)
 // @param pair: the container for result.
 // @param item: the env item to parse.
 // @return false on error, otherwise returns true.
-bool    set_item(t_env_item *item, char *item_str)
+bool	set_item(t_env_item *item, char *item_str)
 {
-    int	i;
+	int	i;
 
 	i = 0;
 	while (item_str[i])
@@ -75,7 +75,7 @@ bool    set_item(t_env_item *item, char *item_str)
 // @return false on error, returns true otherwise.
 bool	env_append(t_env *env, char *item)
 {
-	t_env_item *items;
+	t_env_item	*items;
 
 	if (env->size == env->capacity)
 	{
@@ -85,7 +85,7 @@ bool	env_append(t_env *env, char *item)
 			return (false);
 		ft_memcpy(items, env->items, env->size * sizeof(t_env_item));
 		free(env->items);
-		env->items = items;	
+		env->items = items;
 	}
 	++(env->size);
 	return (set_item(&(env->items[env->size - 1]), item));
@@ -114,18 +114,18 @@ int	find_key(t_env *env, char *key)
 //
 // @param item: the env item to be output.
 // @return (key=value);
-char *output_env_item(t_env_item *item)
+char	*output_env_item(t_env_item *item)
 {
-    int     key_len;
-    int     value_len;
+	int		key_len;
+	int		value_len;
 	char	*joined;
 	char	*value;
 
 	value = "";
 	if (item->value)
 		value = item->value;
-    key_len = ft_strlen(item->key);
-    value_len = ft_strlen(value);
+	key_len = ft_strlen(item->key);
+	value_len = ft_strlen(value);
 	joined = ft_calloc((key_len + value_len + 2), sizeof(char));
 	if (!joined)
 		return (NULL);
