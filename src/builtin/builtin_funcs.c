@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 20:38:53 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 21:08:49 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 
 int			check_option(t_ast *ast, t_cmd_prop *prop);
+int			cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir);
 
 // @brief help `echo` to print out the parameters.
 //
@@ -94,14 +95,7 @@ int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	if (prop->size == 1 && ms_strcmp("", dir) == 0)
 		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "HOME not set"));
-	if (chdir(dir) != 0)
-	{
-		free(dir);	
-		return (return_prt_err(EXIT_FAIL, "minishell: cd",
-				ast->tokens[prop->start + 1], NULL));
-	}
-	free(dir);
-	return (EXIT_OK);
+	return (cd_helper(ast, prop, dir));
 }
 
 // @brief `pwd` with no options

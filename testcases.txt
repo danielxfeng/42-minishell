@@ -1,2 +1,1 @@
 << eof << eof2 << eof3 | << eof4 cat
-echo $PWD $OLDPWD
