@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:37:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:39:19 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static void	echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break)
 // argv: ast->tokens[prop->start];
 int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 {
-	int	status;
+	int		status;
+	bool	no_line_break;
 
-	bool no_line_break ;
 	if (prop->size == 1)
 	{
 		printf("\n");
@@ -142,6 +142,6 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 			status = EXIT_INVALID_OPTION;
 		}
 	}
-	// exit_with_err(&ast, status, NULL);
+	exit_with_err(&ast, status, NULL);
 	return (status);
 }

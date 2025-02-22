@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:05:24 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:37:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:39:12 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	set_item_helper(int i, char *item_str, t_env_item *item)
 {
 	if (((item_str[i + 1] == '\'' && item_str[ft_strlen(item_str) - 1] == '\'')
 			|| (item_str[i + 1] == '\"' && item_str[ft_strlen(item_str)
-				- 1] == '\"')) && ((size_t)i != ft_strlen(item_str) - 2))
+					- 1] == '\"')) && ((size_t)i != ft_strlen(item_str) - 2))
 		ft_memcpy(item->value, item_str + i + 2, ft_strlen(item_str) - i - 3);
 	else
 		ft_memcpy(item->value, item_str + i + 1, ft_strlen(item_str) - i - 1);

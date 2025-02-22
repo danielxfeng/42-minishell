@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:36:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:38:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void			set_working_token(t_parser *parser);
 // @brief help to handle the quotation mark.
 //
 // @param parser: the pointer to parser.
-// @param q_handler: the pointer to handler function of single quote
-	/ double quote.
+// @param q_handler: the pointer to handler function of 
+//  single quote / double quote.
 // @return (the status);
 static int	handle_quote_helper(t_parser *parser,
 		int (*q_handler)(t_parser *parser))
@@ -70,7 +70,6 @@ static int	double_quote_helper(t_parser *parser)
 		if (parser->line[parser->i] == '$')
 		{
 			parser_handle_expander(parser);
-			// parser->token_start = parser->i;
 		}
 	}
 	if (!(parser->line[parser->i]))
