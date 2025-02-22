@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:57:43 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:42:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,20 @@ int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	return (EXIT_OK);
 }
 
+static int	get_open_code(t_red_prop *prop)
+{
+	int	open_code;
+
+	open_code = O_RDONLY;
+	if (!(prop->is_in))
+	{
+		open_code = O_WRONLY | O_CREAT | O_TRUNC;
+		if (!(prop->is_single))
+			open_code = O_WRONLY | O_CREAT | O_APPEND;
+	}
+	return (open_code);
+}
+
 // @brief help the `red` node to open the file.
 //
 // @param ast: the pointer to the tree.
@@ -108,13 +122,7 @@ int	open_file_helper(t_ast *ast, t_red_prop *prop)
 	char		*file_name;
 	struct stat	buf;
 
-	open_code = O_RDONLY;
-	if (!(prop->is_in))
-	{
-		open_code = O_WRONLY | O_CREAT | O_TRUNC;
-		if (!(prop->is_single))
-			open_code = O_WRONLY | O_CREAT | O_APPEND;
-	}
+	open_code = get_open_code(prop);
 	file_name = ast->tokens[prop->idx];
 	stat(file_name, &buf);
 	if (S_ISDIR(buf.st_mode))

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:05:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:06:54 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,13 @@ int	parse(t_parser *parser)
 	}
 }
 
+static void	re_order_helper(t_parser *parser, int i, int *latest)
+{
+	if (red_flag && (parser->tokens[i - 1]->type == CMD || parser->tokens[i
+				- 1]->type == ARG))
+		shift_token(parser, i - 1, &latest);
+}	
+
 // @brief re-order the tokens after parsing.
 //
 // The executor's requirements:
@@ -101,8 +108,6 @@ void	re_order_tokens(t_parser *parser)
 			latest = i - 1;
 			red_flag = true;
 		}
-		if (red_flag && (parser->tokens[i - 1]->type == CMD || parser->tokens[i
-				- 1]->type == ARG))
-			shift_token(parser, i - 1, &latest);
+		re_order_helper(parser, i, &latest);
 	}
 }

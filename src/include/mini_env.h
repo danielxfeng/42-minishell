@@ -6,12 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:14:52 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:58:20 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:21:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_ENV
-# define MINI_ENV
+#ifndef MINI_ENV_H
+# define MINI_ENV_H
 
 # include "utils.h"
 # include <stdbool.h>

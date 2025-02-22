@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 15:13:05 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:25:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,8 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 // 3. parsing all the cmd modes.
 //
 // Expamle:
-// cmd param1 < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 | cmd4 > outfile2 > outfile3
+// cmd param1 < infile1 < infile2 > outfile0 | cmd2 | cmd3 > outfile1 |
+// cmd4 > outfile2 > outfile3
 //                                         Pipe3
 //                              /                      /
 //                            Pipe2              Red(> outfile3)

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:17:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:47:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ static void	parse_and_execute(t_env *env, char **line)
 	len = 0;
 	while (tokens[len])
 		++len;
-	ast = build_tree((output_tokens(parser), len, env);
-    ast->root->node_pre_handler(ast, ast->root);
-    env->prev_status = ast->root->node_handler(ast, ast->root);
-    close_ast(&ast);
-    return ;
+	ast = build_tree(output_tokens(parser), len, env);
+	ast->root->node_pre_handler(ast, ast->root);
+	env->prev_status = ast->root->node_handler(ast, ast->root);
+	close_ast(&ast);
+	return ;
 }
 
 // @brief set the prompt color by previous status.
