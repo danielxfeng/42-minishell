@@ -704,14 +704,38 @@ void    testParser_DoubleQuote(void)
 {
     char *envp[] = {"AA=aa", "BB=bb", NULL};
 	t_env *env = create_env(envp);
-    t_parser *parser = create_parser(strdup("\"sdj<>>|sd \ndjskf\""), env);
+    t_parser *parser = create_parser(strdup("\"sdj<>>|sd \ndjskf\" aaa"), env);
     TEST_ASSERT_EQUAL_INT(0, parse(parser));
-    TEST_ASSERT_EQUAL_INT(1, parser->size);
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
     TEST_ASSERT_TRUE(parser->has_cmd);
     TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
     TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
     TEST_ASSERT_EQUAL_STRING("sdj<>>|sd \ndjskf", parser->tokens[0]->str);
     TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("aaa", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[1]->type);
+    close_parser(&parser, true);
+    close_env(&env);
+}
+
+void    testParser_DoubleQuoteWithMultiTokens(void)
+{
+    char *envp[] = {"AA=aa", "BB=bb", NULL};
+	t_env *env = create_env(envp);
+    t_parser *parser = create_parser(strdup("\"a\" b"), env);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    TEST_ASSERT_EQUAL_INT(2, parser->size);
+    TEST_ASSERT_TRUE(parser->has_cmd);
+    TEST_ASSERT_TRUE(parser->tokens[0]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[0]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("a", parser->tokens[0]->str);
+    TEST_ASSERT_EQUAL_INT(CMD, parser->tokens[0]->type);
+    TEST_ASSERT_TRUE(parser->tokens[1]->is_end);
+    TEST_ASSERT_EQUAL_INT(0, parser->tokens[1]->pipe_idx);
+    TEST_ASSERT_EQUAL_STRING("b", parser->tokens[1]->str);
+    TEST_ASSERT_EQUAL_INT(ARG, parser->tokens[1]->type);
     close_parser(&parser, true);
     close_env(&env);
 }
@@ -856,6 +880,7 @@ int	main(void)
     RUN_TEST(testParser_DoubleQuoteWithPrefixPostFix);
     RUN_TEST(testParser_DoubleQuoteUnclosed);
     RUN_TEST(testParser_DoubleQuoteWithExpander);
+    RUN_TEST(testParser_DoubleQuoteWithMultiTokens);
     RUN_TEST(testParser_QuotesWithExpander);
     RUN_TEST(testParser_EmptyOne);
     RUN_TEST(testParser_Reorder);

@@ -1,6 +1,4 @@
 << eof << eof2 << eof3 | << eof4 cat
-echo "abdul" > a | cat a
-echo 'abdul' > a | cat a
 empty
 cat | "   "
    "  "
@@ -8,4 +6,3 @@ cat | "   "
 echo $PWD $OLDPWD
 echo - "" "  " hello
 cd
-Inappropriate ioctl for device
