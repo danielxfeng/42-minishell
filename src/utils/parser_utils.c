@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 13:49:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:00:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ char	*ms_strjoin_parser(char const *s1, char const *s2)
 	size_t	len_s2;
 	char	*p;
 
-    if (!s1 || !*(s1))
-        return (ft_strdup(s2));
+	if (!s1 || !*(s1))
+		return (ft_strdup(s2));
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	p = ft_calloc(len_s1 + len_s2 + 1, sizeof(char));
@@ -37,12 +37,12 @@ char	*ms_strjoin_parser(char const *s1, char const *s2)
 // @param str: the string.
 // @param start: the start index.
 // @param len: the length of substring.
-char *ms_substr(char *str, int start, int len)
+char	*ms_substr(char *str, int start, int len)
 {
-	char *res;
+	char	*res;
 
 	res = ft_calloc(len + 1, sizeof(char));
-    if (!res)
-        return (NULL);
-    ft_memcpy(res, str + start, len);
+	if (!res)
+		return (NULL);
+	ft_memcpy(res, str + start, len);
 }

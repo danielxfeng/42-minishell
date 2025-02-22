@@ -6,31 +6,31 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/19 20:08:30 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:58:22 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# include <stdbool.h>
 # include "mini_env.h"
+# include <stdbool.h>
 
 # define INIT_CAPACITY 2
 
 // Represents the type of tokens.
 typedef enum e_token_type
 {
-    SPACE,
-    PIPE,
-    CMD,
-    RED,
-    AFILE,
-    ARG,
-    DOLLAR,
-    DQUOTE,
-    SQUOTE,
-} t_token_type;
+	SPACE,
+	PIPE,
+	CMD,
+	RED,
+	AFILE,
+	ARG,
+	DOLLAR,
+	DQUOTE,
+	SQUOTE,
+}					t_token_type;
 
 // Represents the token.
 //
@@ -40,11 +40,11 @@ typedef enum e_token_type
 // `is_end`: is this a completed token?
 typedef struct s_token
 {
-    char *str;
-    t_token_type type;
-    int pipe_idx;
-    bool    is_end;
-} t_token;
+	char			*str;
+	t_token_type	type;
+	int				pipe_idx;
+	bool			is_end;
+}					t_token;
 
 // Represents a parser.
 //
@@ -53,57 +53,61 @@ typedef struct s_token
 // `line`: the command line.
 // `size`: the number of tokens in the vector.
 // `capacity`: the capacity of the `tokens`.
-// `pipe_count`: the number of pipes, we need to assure up to one command in a pipe.
-// `has_command`: if there is a command in the pipe, we need to check there is up to one command in a pipe.
+// `pipe_count`: the number of pipes,
+	we need to assure up to one command in a pipe.
+// `has_command`: if there is a command in the pipe,
+	we need to check there is up to one command in a pipe.
 // `token_start`: the start index of this token.
 // `i`: the iterator of the parser.
 typedef struct s_parser
 {
-    t_token **tokens;
-    t_env   *env;
-    char    *line;
-    int size;
-    int capacity;
-    int pipe_count;
-    bool has_cmd;
-    int token_start;
-    int i;
-} t_parser;
+	t_token			**tokens;
+	t_env			*env;
+	char			*line;
+	int				size;
+	int				capacity;
+	int				pipe_count;
+	bool			has_cmd;
+	int				token_start;
+	int				i;
+}					t_parser;
 
 // factory
 
-t_parser    *create_parser(char *line, t_env *env);
-void        close_parser(t_parser **parser, bool is_close_str);
+t_parser			*create_parser(char *line, t_env *env);
+void				close_parser(t_parser **parser, bool is_close_str);
 
 // methods
 
-void        append_token(t_parser *parser);
-void        append_str_to_last_token(t_parser *parser, char *str);
-void        set_token(t_parser *parser, int idx, t_token_type type);
-void        shift_token(t_parser *parser, int idx, int *position);
-char        **output_tokens(t_parser *parser);
+void				append_token(t_parser *parser);
+void				append_str_to_last_token(t_parser *parser, char *str);
+void				set_token(t_parser *parser, int idx, t_token_type type);
+void				shift_token(t_parser *parser, int idx, int *position);
+char				**output_tokens(t_parser *parser);
 
 // handlers
 
-int         parse(t_parser *parser);
-int         parser_handle_space(t_parser *parser);
-int         parser_handle_pipe(t_parser *parser);
-int         parser_handle_red(t_parser *parser);
-int         parser_handle_expander(t_parser *parser);
-int         parser_handle_double_quote(t_parser *parser);
-int         parser_handle_single_quote(t_parser *parser);
-int         parser_handle_end(t_parser *parser);
-int         parser_handle_normal(t_parser *parser);
-void        re_order_tokens(t_parser *parser);
+int					parse(t_parser *parser);
+int					parser_handle_space(t_parser *parser);
+int					parser_handle_pipe(t_parser *parser);
+int					parser_handle_red(t_parser *parser);
+int					parser_handle_expander(t_parser *parser);
+int					parser_handle_double_quote(t_parser *parser);
+int					parser_handle_single_quote(t_parser *parser);
+int					parser_handle_end(t_parser *parser);
+int					parser_handle_normal(t_parser *parser);
+void				re_order_tokens(t_parser *parser);
 
 // exit fucntions
 
-void	    exit_with_err_parser(t_parser **parser, int err_code, char *msg);
-int         return_with_err_parser(t_parser **parser, int err_code, char *msg);
+void				exit_with_err_parser(t_parser **parser, int err_code,
+						char *msg);
+int					return_with_err_parser(t_parser **parser, int err_code,
+						char *msg);
 
 // utils
 
-char	    *ms_strjoin_parser(char const *s1, char const *s2);
-char        *ms_substr(char *str, int start, int len);
+char				*ms_strjoin_parser(char const *s1, char const *s2);
+char				*ms_substr(char *str, int start, int len);
 
 #endif

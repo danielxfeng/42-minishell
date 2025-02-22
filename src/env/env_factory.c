@@ -6,32 +6,31 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 07:39:39 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 14:12:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:57:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libs/libft/libft.h"
 #include "../include/mini_env.h"
+#include "../libs/libft/libft.h"
 #include <stdlib.h>
 
-
-bool    set_item(t_env_item *item, char *item_str);
+bool		set_item(t_env_item *item, char *item_str);
 
 // @brief free an env item.
 //
 // @param item: an env item to free.
-void close_env_item(t_env_item *item)
+void	close_env_item(t_env_item *item)
 {
-    if (item->key)
-    {
-        free(item->key);
-        item->key = NULL;
-    }
-    if (item->value)
-    {
-        free(item->value);
-        item->value = NULL;
-    }
+	if (item->key)
+	{
+		free(item->key);
+		item->key = NULL;
+	}
+	if (item->value)
+	{
+		free(item->value);
+		item->value = NULL;
+	}
 }
 
 // @brief the destructor of env.
@@ -40,20 +39,20 @@ void close_env_item(t_env_item *item)
 // @return NULL.
 t_env	*close_env(t_env **env)
 {
-    int i;
+	int	i;
 
 	if (env && *env)
 	{
 		if ((*env)->items)
-        {
-            i = 0;
-            while (i < (*env)->size)
-                close_env_item(&((*env)->items[i++]));
-            free((*env)->items);
-            (*env)->items = NULL;
-        }
-        free(*env);
-        *env = NULL;
+		{
+			i = 0;
+			while (i < (*env)->size)
+				close_env_item(&((*env)->items[i++]));
+			free((*env)->items);
+			(*env)->items = NULL;
+		}
+		free(*env);
+		*env = NULL;
 	}
 	return (NULL);
 }
@@ -62,16 +61,16 @@ t_env	*close_env(t_env **env)
 //
 // @param envp: the incoming envp.
 // @return the size of envp, returns 0 when envp is NULL.
-static int  get_size(char **envp)
+static int	get_size(char **envp)
 {
-    int i;
-    
-    i = 0;
-    if (!envp)
-        return (0);
-    while (envp[i])
+	int	i;
+
+	i = 0;
+	if (!envp)
+		return (0);
+	while (envp[i])
 		++i;
-    return (i);
+	return (i);
 }
 
 // @brief create an instance of env.
@@ -89,19 +88,19 @@ t_env	*create_env(char **envp)
 	if (!env)
 		return (NULL);
 	size = get_size(envp);
-    env->size = size;
-    env->capacity = size;
-    if (env->capacity < INIT_CAPACITY)
-        env->capacity = INIT_CAPACITY;
-    env->items = ft_calloc(env->capacity, sizeof(t_env_item));
-    if (!env->items)
-        return (close_env(&env));
-    i = 0;
-    while (i < size)
-    {
-        if (!(set_item(&(env->items[i]), envp[i])))
-            return (close_env(&env));
-        ++i;
-    }
+	env->size = size;
+	env->capacity = size;
+	if (env->capacity < INIT_CAPACITY)
+		env->capacity = INIT_CAPACITY;
+	env->items = ft_calloc(env->capacity, sizeof(t_env_item));
+	if (!env->items)
+		return (close_env(&env));
+	i = 0;
+	while (i < size)
+	{
+		if (!(set_item(&(env->items[i]), envp[i])))
+			return (close_env(&env));
+		++i;
+	}
 	return (env);
 }

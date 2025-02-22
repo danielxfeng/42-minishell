@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 12:14:39 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:56:50 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	close_pipe_node(t_ast_node *node)
 void	close_cmd_node(t_ast_node *node)
 {
 	t_cmd_prop	*prop;
-	//int			i;
 
+	// int			i;
 	prop = (t_cmd_prop *)node->prop;
 	if (prop)
 	{
