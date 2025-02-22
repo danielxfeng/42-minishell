@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:59:50 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:46:18 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	parser_handle_red(t_parser *parser)
 	if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<'
 		|| parser->line[parser->i] == '>')
 		return (return_with_err_parser(&parser, 2, parser->tokens[parser->size
-				- 1]->str));
+					- 1]->str));
 	parser->token_start = parser->i;
 	return (EXIT_SUCCESS);
 }

@@ -6,12 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:58:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:58:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:24:50 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_UTILS
-# define MS_UTILS
+#ifndef UTILS_H
+# define UTILS_H
 
 int		ms_strcmp(char *s1, char *s2);
 bool	ms_atoi(char *n, int *nb);
