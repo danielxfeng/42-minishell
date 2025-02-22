@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:48:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:30:31 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 	int		status;
 	bool	no_line_break;
 
+	bool no_line_break ;
 	if (prop->size == 1)
 	{
 		printf("\n");
