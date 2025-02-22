@@ -342,8 +342,8 @@ void	testExec_EmptyCmd(void)
 	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(EXIT_OK, tree->root->node_pre_handler(tree, tree->root));
-	TEST_ASSERT_EQUAL_INT(0, tree->root->node_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(0, tree->root->node_pre_handler(tree, tree->root));
+	TEST_ASSERT_EQUAL_INT(127, tree->root->node_handler(tree, tree->root));
 	close_the_world(&tree);
     return ;
 }
