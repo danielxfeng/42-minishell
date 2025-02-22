@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:47:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 15:15:22 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	parse_and_execute(t_env *env, char *line)
 	len = 0;
 	while (tokens[len])
 		++len;
-	ast = build_tree(output_tokens(parser), len, env);
+	ast = build_tree(tokens, len, env);
 	ast->root->node_pre_handler(ast, ast->root);
 	env->prev_status = ast->root->node_handler(ast, ast->root);
 	close_ast(&ast);
@@ -53,6 +53,22 @@ char	*get_prompt(t_env *env)
 	return (PROMPT_RED_BOLD);
 }
 
+bool	is_empty_line(char *line)
+{
+	int		i;
+	bool	is_empty;
+
+	is_empty = true;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ')
+			return (false);
+		++i;
+	}
+	return (true);
+}
+
 // @brief the entrance of the program.
 //
 // @param envp: the env.
@@ -67,12 +83,14 @@ int	run_shell(char **envp)
 	signal(SIGQUIT, catch_sigquit);
 	while (true)
 	{
-		line = readline(get_prompt(env));
+		line = readline("minishell> ");
 		if (!line)
 		{
 			close_env(&env);
 			exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
 		}
+		if (is_empty_line(line))
+			continue;
 		add_history(line);
 		parse_and_execute(env, line);
 	}
