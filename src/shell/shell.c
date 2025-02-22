@@ -6,12 +6,11 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:53:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:17:15 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/executor.h"
-#include "../include/parser.h"
+#include "../include/shell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 
@@ -40,6 +39,17 @@ static void	parse_and_execute(t_env *env, char **line)
     return ;
 }
 
+// @brief set the prompt color by previous status.
+//
+// @param env: the pointer to env.
+// @return: the prompt.
+char	*get_prompt(t_env *env)
+{
+	if (env->prev_status == EXIT_OK)
+		return (PROMPT_RESET);
+	return (PROMPT_RED_BOLD);
+}
+
 // @brief the entrance of the program.
 //
 // @param envp: the env.
@@ -51,7 +61,7 @@ int	run_shell(char **envp)
 	env = create_env(envp);
 	while (true)
 	{
-		line = readline("msh> ");
+		line = readline(get_prompt(env));
 		if (!line)
 			exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
 		add_history(line);
