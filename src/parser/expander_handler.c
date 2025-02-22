@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:34:56 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:36:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void            skip_space(t_parser *parser);
-t_token_type    get_token_type(t_parser *parser);
-void            end_prev_token(t_parser *parser);
-void            set_working_token(t_parser *parser);
+void			skip_space(t_parser *parser);
+t_token_type	get_token_type(t_parser *parser);
+void			end_prev_token(t_parser *parser);
+void			set_working_token(t_parser *parser);
 
 // @brief help the expander to parse the end of a env key.
 //
@@ -67,21 +67,22 @@ static char	*env_helper_for_expander(t_parser *parser)
 // @return the value of env.
 static char	*env_get_helper(t_parser *parser)
 {
-    char *value;
-    
-    while(parser->line[parser->i] == '$')
-        ++(parser->i);
-    if (parser->i - parser->token_start > 1 || parser->line[parser->i] == '\0')
-    {
-        value = ft_calloc(parser->i - parser->token_start + 1, sizeof(char));
-        if (!value)
-            exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
-        ft_memcpy(value, parser->line + parser->token_start, parser->i - parser->token_start);
-        return (value);
-    }
-    parser->token_start = parser->i;
-    value = env_helper_for_expander(parser);
-    return (value);
+	char	*value;
+
+	while (parser->line[parser->i] == '$')
+		++(parser->i);
+	if (parser->i - parser->token_start > 1 || parser->line[parser->i] == '\0')
+	{
+		value = ft_calloc(parser->i - parser->token_start + 1, sizeof(char));
+		if (!value)
+			exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+		ft_memcpy(value, parser->line + parser->token_start, parser->i
+			- parser->token_start);
+		return (value);
+	}
+	parser->token_start = parser->i;
+	value = env_helper_for_expander(parser);
+	return (value);
 }
 
 // @brief to handle the expander
@@ -95,19 +96,20 @@ static char	*env_get_helper(t_parser *parser)
 //
 // @param parser: the pointer to parser.
 // @return status code.
-int    parser_handle_expander(t_parser *parser)
+int	parser_handle_expander(t_parser *parser)
 {
-    //char    *value;
+	char	*value;
 
-    parser->token_start = parser->i;
-    ++(parser->i);
-    set_working_token(parser);
-    append_str_to_last_token(parser, env_get_helper(parser));
-    if (parser->i == '|' || parser->i == '<' || parser->i == '>' || parser->i == ' ')
-    {
-        end_prev_token(parser);
-        skip_space(parser);
-    }
-    parser->token_start = parser->i;
-    return (EXIT_SUCCESS);
+	parser->token_start = parser->i;
+	++(parser->i);
+	set_working_token(parser);
+	append_str_to_last_token(parser, env_get_helper(parser));
+	if (parser->i == '|' || parser->i == '<' || parser->i == '>'
+		|| parser->i == ' ')
+	{
+		end_prev_token(parser);
+		skip_space(parser);
+	}
+	parser->token_start = parser->i;
+	return (EXIT_SUCCESS);
 }

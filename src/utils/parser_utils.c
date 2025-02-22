@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:33:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:37:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ char	*ms_substr(char *str, int start, int len)
 	char	*res;
 
 	res = ft_calloc(len + 1, sizeof(char));
-    if (!res)
-        return (NULL);
-    ft_memcpy(res, str + start, len);
-	return (res);
+	if (!res)
+		return (NULL);
+	ft_memcpy(res, str + start, len);
 }

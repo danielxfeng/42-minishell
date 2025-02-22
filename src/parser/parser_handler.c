@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:35:02 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:36:37 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void            skip_space(t_parser *parser);
-void            end_prev_token(t_parser *parser);
-bool	        is_delimiter(char c);
-t_token_type    get_token_type(t_parser *parser);
-void            new_input_line_for_pipe(t_parser *parser);
-void            set_working_token(t_parser *parser);
+void			skip_space(t_parser *parser);
+void			end_prev_token(t_parser *parser);
+bool			is_delimiter(char c);
+t_token_type	get_token_type(t_parser *parser);
+void			new_input_line_for_pipe(t_parser *parser);
+void			set_working_token(t_parser *parser);
 
 // @brief to handle the space.
 //
@@ -30,13 +30,13 @@ void            set_working_token(t_parser *parser);
 //
 // @param parser: the pointer to parser.
 // @return status code.
-int    parser_handle_space(t_parser *parser)
+int	parser_handle_space(t_parser *parser)
 {
-    if (parser->i > 0)
-        end_prev_token(parser);
-    skip_space(parser);
-    parser->token_start = parser->i;
-    return (EXIT_SUCCESS);
+	if (parser->i > 0)
+		end_prev_token(parser);
+	skip_space(parser);
+	parser->token_start = parser->i;
+	return (EXIT_SUCCESS);
 }
 
 // @brief to handle the pipe
@@ -50,28 +50,28 @@ int    parser_handle_space(t_parser *parser)
 // 6. Check the right side,
 //
 // @param parser: the pointer to parser.
-// @return status code;
-int    parser_handle_pipe(t_parser *parser)
+// @return (status code);
+int	parser_handle_pipe(t_parser *parser)
 {
-    t_token_type prev_type;
-    
-    if (parser->size == 0)
-        return (return_with_err_parser(&parser, 2, "|"));
-    end_prev_token(parser);
-    prev_type = parser->tokens[parser->size - 1]->type;
-    if (prev_type != CMD && prev_type != AFILE && prev_type != ARG)
-        return (return_with_err_parser(&parser, 2, "|"));
-    append_token(parser);
-    append_str_to_last_token(parser, ft_strdup("|"));
-    set_token(parser, parser->size - 1, PIPE);
-    end_prev_token(parser);
-    ++(parser->i);
-    skip_space(parser);
-    new_input_line_for_pipe(parser);
-    if (parser->line[parser->i] == '|')
-        return (return_with_err_parser(&parser, 2, "|"));
-    parser->token_start = parser->i;
-    return (EXIT_SUCCESS);
+	t_token_type	prev_type;
+
+	if (parser->size == 0)
+		return (return_with_err_parser(&parser, 2, "|"));
+	end_prev_token(parser);
+	prev_type = parser->tokens[parser->size - 1]->type;
+	if (prev_type != CMD && prev_type != AFILE && prev_type != ARG)
+		return (return_with_err_parser(&parser, 2, "|"));
+	append_token(parser);
+	append_str_to_last_token(parser, ft_strdup("|"));
+	set_token(parser, parser->size - 1, PIPE);
+	end_prev_token(parser);
+	++(parser->i);
+	skip_space(parser);
+	new_input_line_for_pipe(parser);
+	if (parser->line[parser->i] == '|')
+		return (return_with_err_parser(&parser, 2, "|"));
+	parser->token_start = parser->i;
+	return (EXIT_SUCCESS);
 }
 
 // @brief to handle the redirector
@@ -83,32 +83,34 @@ int    parser_handle_pipe(t_parser *parser)
 //
 // @param parser: the pointer to parser.
 // @return the status code.
-int    parser_handle_red(t_parser *parser)
+int	parser_handle_red(t_parser *parser)
 {
-    end_prev_token(parser);
-    append_token(parser);
-    set_token(parser, parser->size - 1, RED);
-    if (parser->line[parser->i + 1] == '\0')
-        return (return_with_err_parser(&parser, 2, "`newline\'"));
-    if (parser->line[parser->i + 1] == parser->line[parser->i])
-    {
-        append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 2));
-        parser->i += 2;
-    }
-    else
-    {
-        append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 1));
-        ++(parser->i);
-    }
-    parser->token_start = parser->i;
-    end_prev_token(parser);
-    skip_space(parser);
-    if (parser->line[parser->i] == '\0')
-        return (return_with_err_parser(&parser, 2, "`newline\'"));
-    if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<' || parser->line[parser->i] == '>')
-        return (return_with_err_parser(&parser, 2, parser->tokens[parser->size - 1]->str));    
-    parser->token_start = parser->i; 
-    return (EXIT_SUCCESS);
+	end_prev_token(parser);
+	append_token(parser);
+	set_token(parser, parser->size - 1, RED);
+	if (parser->line[parser->i + 1] == '\0')
+		return (return_with_err_parser(&parser, 2, "`newline\'"));
+	if (parser->line[parser->i + 1] == parser->line[parser->i])
+	{
+		append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 2));
+		parser->i += 2;
+	}
+	else
+	{
+		append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 1));
+		++(parser->i);
+	}
+	parser->token_start = parser->i;
+	end_prev_token(parser);
+	skip_space(parser);
+	if (parser->line[parser->i] == '\0')
+		return (return_with_err_parser(&parser, 2, "`newline\'"));
+	if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<'
+		|| parser->line[parser->i] == '>')
+		return (return_with_err_parser(&parser, 2, parser->tokens[parser->size
+				- 1]->str));
+	parser->token_start = parser->i;
+	return (EXIT_SUCCESS);
 }
 
 // @brief to handle the end of line.
@@ -120,10 +122,10 @@ int    parser_handle_red(t_parser *parser)
 //
 // @param parser: the pointer to parser.
 // @return status code.
-int    parser_handle_end(t_parser *parser)
+int	parser_handle_end(t_parser *parser)
 {
-    end_prev_token(parser);
-    return (EXIT_SUCCESS);
+	end_prev_token(parser);
+	return (EXIT_SUCCESS);
 }
 
 // @brief to handle the normal char.
@@ -133,17 +135,19 @@ int    parser_handle_end(t_parser *parser)
 //
 // @param parser: the pointer to parser.
 // @return status code.
-int    parser_handle_normal(t_parser *parser)
+int	parser_handle_normal(t_parser *parser)
 {
-    set_working_token(parser);
-    while (!(is_delimiter(parser->line[parser->i])))
-        ++(parser->i);
-    append_str_to_last_token(parser, ms_substr(parser->line, parser->token_start, parser-> i - parser->token_start));
-    if (parser->i == '|' || parser->i == '<' || parser->i == '>' || parser->i == ' ')
-    {
-        end_prev_token(parser);
-        skip_space(parser);
-    }
-    parser->token_start = parser->i;
-    return (EXIT_SUCCESS);
+	set_working_token(parser);
+	while (!(is_delimiter(parser->line[parser->i])))
+		++(parser->i);
+	append_str_to_last_token(parser, ms_substr(parser->line,
+			parser->token_start, parser->i - parser->token_start));
+	if (parser->i == '|' || parser->i == '<' || parser->i == '>'
+		|| parser->i == ' ')
+	{
+		end_prev_token(parser);
+		skip_space(parser);
+	}
+	parser->token_start = parser->i;
+	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:35:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:36:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,21 @@ t_token	**create_tokens(t_parser *parser, int capacity);
 // @param parser: the pointer of parser.
 void	append_token(t_parser *parser)
 {
-    t_token **tokens;
-   // t_token *token;
-    
-    if (parser->size == parser->capacity)
-    {
-        tokens = create_tokens(parser, parser->capacity * 2);
-        ft_memcpy(tokens, parser->tokens, parser->size * sizeof(t_token *));
-        free(parser->tokens);
-        parser->tokens = tokens;
-        parser->capacity *= 2;
-    }
-    parser->tokens[parser->size] = ft_calloc(1, sizeof(t_token));
-    if (!(parser->tokens[parser->size]))
-        exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
-    ++(parser->size);
+	t_token	**tokens;
+	t_token	*token;
+
+	if (parser->size == parser->capacity)
+	{
+		tokens = create_tokens(parser, parser->capacity * 2);
+		ft_memcpy(tokens, parser->tokens, parser->size * sizeof(t_token *));
+		free(parser->tokens);
+		parser->tokens = tokens;
+		parser->capacity *= 2;
+	}
+	parser->tokens[parser->size] = ft_calloc(1, sizeof(t_token));
+	if (!(parser->tokens[parser->size]))
+		exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+	++(parser->size);
 }
 
 // @brief set the properties of token.
@@ -111,15 +111,15 @@ char	**output_tokens(t_parser *parser)
 	int		i;
 	char	**tokens;
 
-    tokens = ft_calloc(parser->size + 1, sizeof(char *));
-    if (!tokens)
-        exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
-    i = 0;
-    while (i < parser->size)
-    {
-        tokens[i] = parser->tokens[i]->str;
-        ++i;
-    }
-    close_parser(&parser, false);
-    return (tokens);
+	tokens = ft_calloc(parser->size + 1, sizeof(char *));
+	if (!tokens)
+		exit_with_err_parser(&parser, EXIT_FAILURE, "minishell: malloc");
+	i = 0;
+	while (i < parser->size)
+	{
+		tokens[i] = parser->tokens[i]->str;
+		++i;
+	}
+	close_parser(&parser, false);
+	return (tokens);
 }

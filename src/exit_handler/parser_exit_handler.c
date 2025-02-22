@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:30:58 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:34:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:37:01 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ int	return_with_err_parser(t_parser **parser, int err_code, char *msg)
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\'\n", 2);
 	close_parser(parser, true);
-	return(err_code);
+	return (err_code);
 }

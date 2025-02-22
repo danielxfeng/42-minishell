@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:34:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:36:52 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ typedef struct s_token
 // `size`: the number of tokens in the vector.
 // `capacity`: the capacity of the `tokens`.
 // `pipe_count`: the number of pipes,
-//  we need to assure up to one command in a pipe.
+	we need to assure up to one command in a pipe.
 // `has_command`: if there is a command in the pipe,
-//	we need to check there is up to one command in a pipe.
+	we need to check there is up to one command in a pipe.
 // `token_start`: the start index of this token.
 // `i`: the iterator of the parser.
 typedef struct s_parser
@@ -87,21 +87,23 @@ char				**output_tokens(t_parser *parser);
 
 // handlers
 
-int         parse(t_parser *parser);
-int         parser_handle_space(t_parser *parser);
-int         parser_handle_pipe(t_parser *parser);
-int         parser_handle_red(t_parser *parser);
-int         parser_handle_expander(t_parser *parser);
-int         parser_handle_double_quote(t_parser *parser);
-int         parser_handle_single_quote(t_parser *parser);
-int         parser_handle_end(t_parser *parser);
-int         parser_handle_normal(t_parser *parser);
-void        re_order_tokens(t_parser *parser);
+int					parse(t_parser *parser);
+int					parser_handle_space(t_parser *parser);
+int					parser_handle_pipe(t_parser *parser);
+int					parser_handle_red(t_parser *parser);
+int					parser_handle_expander(t_parser *parser);
+int					parser_handle_double_quote(t_parser *parser);
+int					parser_handle_single_quote(t_parser *parser);
+int					parser_handle_end(t_parser *parser);
+int					parser_handle_normal(t_parser *parser);
+void				re_order_tokens(t_parser *parser);
 
 // exit fucntions
 
-void	    exit_with_err_parser(t_parser **parser, int err_code, char *msg);
-int         return_with_err_parser(t_parser **parser, int err_code, char *msg);
+void				exit_with_err_parser(t_parser **parser, int err_code,
+						char *msg);
+int					return_with_err_parser(t_parser **parser, int err_code,
+						char *msg);
 
 // utils
 

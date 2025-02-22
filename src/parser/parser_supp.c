@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 12:35:08 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 12:36:34 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	new_input_line_for_pipe(t_parser *parser)
 	}
 }
 
-// @brief help the quote, normal, expander token 
-// to decide the current working token.
+// @brief help the quote, normal,
+	expander token to decide the current working token.
 // if it's neccessary to create a new token, create and set it.
 //
 // @param parser: the pointer to parser.
