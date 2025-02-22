@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 15:15:22 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 18:50:23 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
+#include <errno.h>
 
 // @brief run the parser and executor.
 //
@@ -53,22 +54,6 @@ char	*get_prompt(t_env *env)
 	return (PROMPT_RED_BOLD);
 }
 
-bool	is_empty_line(char *line)
-{
-	int		i;
-	bool	is_empty;
-
-	is_empty = true;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ')
-			return (false);
-		++i;
-	}
-	return (true);
-}
-
 // @brief the entrance of the program.
 //
 // @param envp: the env.
@@ -81,14 +66,14 @@ int	run_shell(char **envp)
 	env = create_env(envp);
 	signal(SIGINT, catch_sigint);
 	signal(SIGQUIT, catch_sigquit);
+	status = EXIT_OK;
 	while (true)
 	{
 		line = readline("minishell> ");
-		if (!line)
-		{
-			close_env(&env);
-			exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
-		}
+		if (!line && errno == ENOMEM)
+			exit_with_err_shell(&env, "minishell: readline");
+		else if (!line)
+			return (close_and_return(&env, status));
 		if (is_empty_line(line))
 			continue;
 		add_history(line);

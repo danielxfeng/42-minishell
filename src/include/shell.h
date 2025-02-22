@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 11:07:22 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 14:43:33 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 18:50:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,9 @@
 
 void	catch_sigint(int signum);
 void	catch_sigquit(int signum);
+
+void    exit_with_err_shell(t_env **env, char *msg);
+int     close_and_return(t_env **env, int status);
+bool	is_empty_line(char *line);
 
 #endif
