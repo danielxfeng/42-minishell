@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 18:56:31 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:43:29 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_ast_node	*create_pipe_node(t_ast *ast)
 		free(node);
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	}
-	node->type = PIPE;
+	node->type = E_PIPE;
 	node->prop = prop;
 	node->node_pre_handler = pre_pipe_handler;
 	node->node_handler = pipe_handler;
@@ -55,7 +55,7 @@ t_ast_node	*create_cmd_node(t_ast *ast, int start, int size)
 	}
 	prop->start = start;
 	prop->size = size;
-	node->type = CMD;
+	node->type = E_CMD;
 	node->prop = prop;
 	node->node_pre_handler = pre_cmd_handler;
 	node->node_handler = cmd_handler;
@@ -83,7 +83,7 @@ t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single)
 	prop->is_in = is_in;
 	prop->is_single = is_single;
 	prop->fd = -1;
-	node->type = RED;
+	node->type = E_RED;
 	node->prop = prop;
 	node->node_pre_handler = pre_red_handler;
 	node->node_handler = red_handler;

@@ -26,7 +26,9 @@
     "history.h": "c",
     "mini_env.h": "c",
     "limits.h": "c",
-    "readline.h": "c"
+    "readline.h": "c",
+    "parser.h": "c",
+    "ctype.h": "c"
   },
 "cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx",
 "C_Cpp.errorSquiggles": "disabled"

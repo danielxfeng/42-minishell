@@ -42,7 +42,7 @@ void    testBuildTree_OnePipe(void)
 	t_ast *tree = build_tree(tokens, 1, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(PIPE, tree->root->type);
+	TEST_ASSERT_EQUAL_INT(E_PIPE, tree->root->type);
 	close_the_world(&tree);
     return ;
 }
@@ -56,7 +56,7 @@ void    testBuildTree_OneRED(void)
 	t_ast *tree = build_tree(tokens, 2, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(RED, tree->root->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, tree->root->type);
 	t_red_prop *prop = (t_red_prop *)tree->root->prop;
 	TEST_ASSERT_TRUE(prop->is_single);
 	TEST_ASSERT_TRUE(prop->is_in);
@@ -73,7 +73,7 @@ void    testBuildTree_OneCMD(void)
 	t_ast *tree = build_tree(tokens, 4, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, tree->root->type);
 	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
 	TEST_ASSERT_EQUAL_INT(0, prop->start);
 	TEST_ASSERT_EQUAL_INT(4, prop->size);
@@ -90,23 +90,23 @@ void    testBuildTree_ThreeNodes(void)
 	t_ast *tree = build_tree(tokens, 9, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(PIPE, tree->root->type);
-	TEST_ASSERT_EQUAL_INT(RED, tree->root->left->type);
+	TEST_ASSERT_EQUAL_INT(E_PIPE, tree->root->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, tree->root->left->type);
 	t_red_prop *red_prop = (t_red_prop *)tree->root->left->prop;
 	TEST_ASSERT_TRUE(red_prop->is_single);
 	TEST_ASSERT_TRUE(red_prop->is_in);
 	TEST_ASSERT_EQUAL_INT(4, red_prop->idx);
-	TEST_ASSERT_EQUAL_INT(RED, tree->root->right->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, tree->root->right->type);
 	red_prop = (t_red_prop *)tree->root->right->prop;
 	TEST_ASSERT_FALSE(red_prop->is_single);
 	TEST_ASSERT_FALSE(red_prop->is_in);
-	TEST_ASSERT_EQUAL_INT(RED, tree->root->left->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, tree->root->left->type);
 	TEST_ASSERT_EQUAL_INT(8, red_prop->idx);
-	TEST_ASSERT_EQUAL_INT(CMD, tree->root->left->left->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, tree->root->left->left->type);
 	t_cmd_prop *cmd_prop = (t_cmd_prop *)tree->root->left->left->prop;
 	TEST_ASSERT_EQUAL_INT(0, cmd_prop->start);
 	TEST_ASSERT_EQUAL_INT(3, cmd_prop->size);	
-	TEST_ASSERT_EQUAL_INT(CMD, tree->root->right->left->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, tree->root->right->left->type);
 	cmd_prop = (t_cmd_prop *)tree->root->right->left->prop;
 	TEST_ASSERT_EQUAL_INT(6, cmd_prop->start);
 	TEST_ASSERT_EQUAL_INT(1, cmd_prop->size);	
@@ -123,49 +123,49 @@ void    testBuildTree_MultiNodes(void)
 	t_env *env = create_env(envp);
 	t_ast *tree = build_tree(tokens, 20, env);
 	t_ast_node *root = tree->root;
-	TEST_ASSERT_EQUAL_INT(PIPE, root->type);
+	TEST_ASSERT_EQUAL_INT(E_PIPE, root->type);
 	t_ast_node *pipe1 = root->left;
-	TEST_ASSERT_EQUAL_INT(PIPE, pipe1->type);
+	TEST_ASSERT_EQUAL_INT(E_PIPE, pipe1->type);
 	t_ast_node *pipe2 = pipe1->left;
-	TEST_ASSERT_EQUAL_INT(PIPE, pipe2->type);
+	TEST_ASSERT_EQUAL_INT(E_PIPE, pipe2->type);
 	t_ast_node *red1 = root->right;
-	TEST_ASSERT_EQUAL_INT(RED, red1->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, red1->type);
 	t_red_prop *red1prop = (t_red_prop *)red1->prop;
 	TEST_ASSERT_EQUAL_INT(19, red1prop->idx);
 	t_ast_node *red21 = pipe1->right;
-	TEST_ASSERT_EQUAL_INT(RED, red21->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, red21->type);
 	t_red_prop *red21prop = (t_red_prop *)red21->prop;
 	TEST_ASSERT_EQUAL_INT(13, red21prop->idx);
 	t_ast_node *red22 = red1->left;
-	TEST_ASSERT_EQUAL_INT(RED, red22->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, red22->type);
 	t_red_prop *red22prop = (t_red_prop *)red22->prop;
 	TEST_ASSERT_EQUAL_INT(17, red22prop->idx);
 	t_ast_node *red3 = pipe2->left;
-	TEST_ASSERT_EQUAL_INT(RED, red3->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, red3->type);
 	t_red_prop *red3prop = (t_red_prop *)red3->prop;
 	TEST_ASSERT_EQUAL_INT(7, red3prop->idx);
 	t_ast_node *cmd31 = pipe2->right;
-	TEST_ASSERT_EQUAL_INT(CMD, cmd31->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, cmd31->type);
 	t_cmd_prop *cmd31prop = (t_cmd_prop *)cmd31->prop;
 	TEST_ASSERT_EQUAL_INT(9, cmd31prop->start);
 	t_ast_node *cmd32 = red21->left;
-	TEST_ASSERT_EQUAL_INT(CMD, cmd32->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, cmd32->type);
 	t_cmd_prop *cmd32prop = (t_cmd_prop *)cmd32->prop;
 	TEST_ASSERT_EQUAL_INT(11, cmd32prop->start);
 	t_ast_node *cmd33 = red22->left;
-	TEST_ASSERT_EQUAL_INT(CMD, cmd33->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, cmd33->type);
 	t_cmd_prop *cmd33prop = (t_cmd_prop *)cmd33->prop;
 	TEST_ASSERT_EQUAL_INT(15, cmd33prop->start);
 	t_ast_node *red4 = red3->left;
-	TEST_ASSERT_EQUAL_INT(RED, red4->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, red4->type);
 	t_red_prop *red4prop = (t_red_prop *)red4->prop;
 	TEST_ASSERT_EQUAL_INT(5, red4prop->idx);
 	t_ast_node *red5 = red4->left;
-	TEST_ASSERT_EQUAL_INT(RED, red5->type);
+	TEST_ASSERT_EQUAL_INT(E_RED, red5->type);
 	t_red_prop *red5prop = (t_red_prop *)red5->prop;
 	TEST_ASSERT_EQUAL_INT(3, red5prop->idx);
 	t_ast_node *cmd6 = red5->left;
-	TEST_ASSERT_EQUAL_INT(CMD, cmd6->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, cmd6->type);
 	t_cmd_prop *cmd6prop = (t_cmd_prop *)cmd6->prop;
 	TEST_ASSERT_EQUAL_INT(0, cmd6prop->start);
 	TEST_ASSERT_EQUAL_INT(2, cmd6prop->size);
@@ -183,7 +183,7 @@ void	testExec_OneCmd(void)
 	t_ast *tree = build_tree(tokens, 2, env);
 
 	TEST_ASSERT_NOT_NULL(tree);
-	TEST_ASSERT_EQUAL_INT(CMD, tree->root->type);
+	TEST_ASSERT_EQUAL_INT(E_CMD, tree->root->type);
 	t_cmd_prop *prop = (t_cmd_prop *)tree->root->prop;
 	TEST_ASSERT_EQUAL_INT(0, prop->start);
 	TEST_ASSERT_EQUAL_INT(2, prop->size);

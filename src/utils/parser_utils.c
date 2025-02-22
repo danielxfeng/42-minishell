@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:00:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:24:22 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ char	*ms_substr(char *str, int start, int len)
 	if (!res)
 		return (NULL);
 	ft_memcpy(res, str + start, len);
+	return (res);
 }

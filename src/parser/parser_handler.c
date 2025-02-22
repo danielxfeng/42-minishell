@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:46:18 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:58:03 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,11 @@ int	parser_handle_red(t_parser *parser)
 	if (parser->line[parser->i + 1] == parser->line[parser->i])
 	{
 		append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 2));
-		parser->i += 2;
-	}
-	else
-	{
-		append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 1));
 		++(parser->i);
 	}
+	else
+		append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 1));
+	++(parser->i);
 	parser->token_start = parser->i;
 	end_prev_token(parser);
 	skip_space(parser);

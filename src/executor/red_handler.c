@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:57:49 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:42:48 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 // @param is_in: the direction of `red`, is it a < ? or > ?
 void	set_skip_flag(t_ast_node *node, t_red_prop *prop, bool is_in)
 {
-	if (!(node->left) || !(node->left->type == RED))
+	if (!(node->left) || !(node->left->type == E_RED))
 		return ;
 	prop = node->left->prop;
 	if (prop->is_skip && prop->is_in == is_in)
