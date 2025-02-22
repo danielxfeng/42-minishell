@@ -28,9 +28,16 @@ void    test_SingleCmd(void)
     run_shell(env);
 }
 
+void	test_Runshell(void)
+{
+	char *env[] = {"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin", NULL};
+	run_shell(env);
+}
+
 int	main(void)
 {
 	UNITY_BEGIN();
-    RUN_TEST(test_SingleCmd);
+    //RUN_TEST(test_SingleCmd);
+	RUN_TEST(test_Runshell);
 	return (UNITY_END());
 }
