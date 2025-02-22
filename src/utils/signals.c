@@ -6,11 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:24:55 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:25:30 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:26:30 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
+#include <stdio.h>
+#include "../libs/libft/libft.h"
 
 /**
  * @brief When user presses ctrl-c and ctrl-d a new line is added
@@ -20,7 +22,7 @@
 void	catch_sigint(int signum)
 {
 	(void)signum;
-	ft_putstr("\n");
+	printf("\n");
 }
 
 /**

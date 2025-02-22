@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:19:43 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:59:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:28:33 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ t_token	**create_tokens(t_parser *parser, int capacity)
 t_parser	*create_parser(char *line, t_env *env)
 {
 	t_parser	*parser;
-	t_token		**tokens;
 
 	parser = ft_calloc(1, sizeof(t_parser));
 	if (!parser)

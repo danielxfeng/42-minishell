@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:59:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:27:08 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ static char	*env_get_helper(t_parser *parser)
 // @return status code.
 int	parser_handle_expander(t_parser *parser)
 {
-	char	*value;
-
 	parser->token_start = parser->i;
 	++(parser->i);
 	set_working_token(parser);

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:25:02 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 13:41:14 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ typedef struct s_ast_node	t_ast_node;
 // Enum: type of AST nodes.
 typedef enum e_node_type
 {
-	PIPE,
-	RED,
-	CMD
+	E_PIPE,
+	E_RED,
+	E_CMD
 }							t_node_type;
 
 // Represents the Abstract Syntax Tree as well as
