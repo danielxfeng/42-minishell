@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:48:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 20:38:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,30 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 // argv: ast->tokens[prop->start];
 int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 {
-	int	status;
+	int		status;
+	char	*dir;
 
 	status = check_option(ast, prop);
 	if (status != EXIT_OK)
 		return (status);
-	if (prop->size == 1)
-		return (return_prt_err(EXIT_FAIL, "minishell", "cd",
-				"only support a relative or absolute path."));
-	if (prop->size != 2)
+	if (prop->size > 2)
 		return (return_prt_err(EXIT_FAIL, "minishell", "cd",
 				"too many arguments"));
-	if (chdir(ast->tokens[prop->start + 1]) != 0)
+	if (prop->size == 1)
+		dir = env_get(ast->env, "HOME");
+	else
+		dir = ft_strdup(ast->tokens[prop->start + 1]);
+	if (!dir)
+		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
+	if (prop->size == 1 && ms_strcmp("", dir) == 0)
+		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "HOME not set"));
+	if (chdir(dir) != 0)
+	{
+		free(dir);	
 		return (return_prt_err(EXIT_FAIL, "minishell: cd",
 				ast->tokens[prop->start + 1], NULL));
+	}
+	free(dir);
 	return (EXIT_OK);
 }
 
