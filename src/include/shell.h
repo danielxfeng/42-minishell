@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 19:38:56 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/12 12:46:17 by Xifeng           ###   ########.fr       */
+/*   Created: 2025/02/22 11:07:22 by Xifeng            #+#    #+#             */
+/*   Updated: 2025/02/22 11:21:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#ifndef SHELL_H
+# define SHELL_H
 
-/**
-* @brief Displays minishell prompt with colour
+# include "../include/executor.h"
+# include "../include/parser.h"
 
-* - Color of the prompt will the depend on the last exit_status
+# define PROMPT_RED_BOLD "\033[1;31mmsl > "
+# define PROMPT_RESET "\033[0mmsl > "
 
-* - Set back the color to white
-*/
-void	ft_prompt(void)
-{
-	if (shell.exit_status == EXIT_SUCCESS)
-		ft_putstr(GREEN);
-	else
-		ft_putstr(RED_BOLD);
-	ft_putstr("minishell → ");
-	ft_putstr(RESET);
-}
+#endif

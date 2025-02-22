@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:23:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/13 19:13:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:57:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int	pre_red_handler(t_ast *ast, t_ast_node *node)
 	if (prop->is_in && !(prop->is_single))
 		res = here_doc_handler(ast, prop);
 	else
-		res= open_file_helper(ast, prop);
+		res = open_file_helper(ast, prop);
 	return (res);
 }

@@ -53,11 +53,6 @@ dkms.conf
 
 # Build
 build/*
-src/libft/.bonus
-minilibx-linux
-src/so_long/so_lang
-test/so_long/so_long
-src/so_long/so_long
 main
-test/pipe_x/test.out.txt
 pg/cannotread
+to_remove/

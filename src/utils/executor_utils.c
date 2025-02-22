@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:27:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 17:53:15 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:00:14 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ bool	ms_atoi(char *n, int *nb)
 	if (*n == '+' || *n == '-')
 	{
 		if (*n == '-')
-			is_negative = true;	
-		++n;	
+			is_negative = true;
+		++n;
 	}
 	*nb = 0;
 	while (*n && *n >= '0' && *n <= '9')

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 14:18:58 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 11:48:54 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int check_option(t_ast *ast, t_cmd_prop *prop);
+int			check_option(t_ast *ast, t_cmd_prop *prop);
 
 // @brief help `echo` to print out the parameters.
 //
@@ -26,7 +26,7 @@ int check_option(t_ast *ast, t_cmd_prop *prop);
 static void	echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break)
 {
 	int	i;
-	
+
 	i = 1;
 	if (no_line_break)
 		i = 2;
@@ -50,8 +50,8 @@ static void	echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break)
 // argv: ast->tokens[prop->start];
 int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 {
-	int status;
-	bool no_line_break;
+	int		status;
+	bool	no_line_break;
 
 	if (prop->size == 1)
 	{
@@ -65,7 +65,7 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 	{
 		status = check_option(ast, prop);
 		if (status != EXIT_OK)
-			return (status);		
+			return (status);
 	}
 	echo_helper(ast, prop, no_line_break);
 	return (EXIT_OK);
@@ -77,17 +77,20 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 // argv: ast->tokens[prop->start];
 int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 {
-	int		status;
+	int	status;
 
 	status = check_option(ast, prop);
 	if (status != EXIT_OK)
 		return (status);
 	if (prop->size == 1)
-		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "only support a relative or absolute path."));
+		return (return_prt_err(EXIT_FAIL, "minishell", "cd",
+				"only support a relative or absolute path."));
 	if (prop->size != 2)
-		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "too many arguments"));
+		return (return_prt_err(EXIT_FAIL, "minishell", "cd",
+				"too many arguments"));
 	if (chdir(ast->tokens[prop->start + 1]) != 0)
-		return (return_prt_err(EXIT_FAIL, "minishell: cd", ast->tokens[prop->start + 1], NULL));
+		return (return_prt_err(EXIT_FAIL, "minishell: cd",
+				ast->tokens[prop->start + 1], NULL));
 	return (EXIT_OK);
 }
 
@@ -99,13 +102,14 @@ int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 {
 	char	*buf;
 	int		status;
-	
+
 	status = check_option(ast, prop);
 	if (status != EXIT_OK)
 		return (status);
 	buf = getcwd(NULL, 0);
 	if (!buf)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL, "minishell: getcwd"));
+		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL,
+				"minishell: getcwd"));
 	printf("%s\n", buf);
 	free(buf);
 	return (EXIT_OK);
@@ -124,7 +128,7 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 	if (prop->size > 2)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		status = EXIT_FAIL;	
+		status = EXIT_FAIL;
 	}
 	else if (prop->size == 1)
 		status = EXIT_OK;
@@ -135,9 +139,9 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(ast->tokens[prop->start + 1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			status = EXIT_INVALID_OPTION;	
+			status = EXIT_INVALID_OPTION;
 		}
 	}
-	//exit_with_err(&ast, status, NULL);
+	exit_with_err(&ast, status, NULL);
 	return (status);
 }

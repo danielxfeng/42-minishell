@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 08:12:16 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/16 13:27:45 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:57:05 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 void	print_env_item_for_export(t_env_item *item);
 void	print_env_item_for_env(t_env_item *item);
-void    print_env(t_env *env, void (*print_func)(t_env_item *));
+void	print_env(t_env *env, void (*print_func)(t_env_item *));
 int		check_identifier(char *s);
-int 	check_option(t_ast *ast, t_cmd_prop *prop);
+int		check_option(t_ast *ast, t_cmd_prop *prop);
 
 // @brief `export` with no options
 // check 'man' page for more information.
@@ -82,7 +82,7 @@ int	cmd_unset(t_ast *ast, t_cmd_prop *prop)
 int	cmd_env(t_ast *ast, t_cmd_prop *prop)
 {
 	int	status;
-	
+
 	status = check_option(ast, prop);
 	if (status != EXIT_OK)
 		return (status);
