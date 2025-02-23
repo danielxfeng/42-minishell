@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 21:39:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:12:34 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	parse(t_parser *parser)
 		else if (c == '<' || c == '>')
 			status = parser_handle_red(parser);
 		else if (c == '$')
-			status = parser_handle_expander(parser);
+			status = parser_handle_expander(parser, false);
 		else if (c == '\"')
 			status = parser_handle_double_quote(parser);
 		else if (c == '\'')

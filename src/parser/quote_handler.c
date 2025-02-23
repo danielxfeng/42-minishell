@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 19:39:38 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:14:18 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ static int	double_quote_helper(t_parser *parser)
 			parser->token_start = parser->i;
 		}
 		if (parser->line[parser->i] == '$')
-		{
-			parser_handle_expander(parser);
-		}
+			parser_handle_expander(parser, true);
 	}
 	if (!(parser->line[parser->i]))
 		return (return_with_err_parser(&parser, 2, "\""));

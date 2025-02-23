@@ -842,6 +842,14 @@ void    testParser_Reorder(void)
     close_parser(&parser, true);
 }
 
+void    testParser_Bug2(void)
+{
+    t_parser *parser = create_parser(strdup("echo \"$\""), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    char **tokens = output_tokens(parser);
+    TEST_ASSERT_EQUAL_STRING("$", tokens[1]);
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -893,5 +901,6 @@ int	main(void)
     RUN_TEST(testParser_EmptyOne);
     RUN_TEST(testParser_Reorder);
     RUN_TEST(testParser_Bug1);
+    RUN_TEST(testParser_Bug2);
 	return (UNITY_END());
 }
