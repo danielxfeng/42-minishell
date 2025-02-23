@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 11:06:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:45:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	shift_token(t_parser *parser, int idx, int *position)
 }
 
 // @brief output the tokens to a string array.
-// And then close the parser.
 //
 // @param: parser: the pointer to parser.
 // @return the string array of tokens.
@@ -120,6 +119,5 @@ char	**output_tokens(t_parser *parser)
 		tokens[i] = parser->tokens[i]->str;
 		++i;
 	}
-	close_parser(&parser, false);
 	return (tokens);
 }

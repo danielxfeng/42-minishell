@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/15 17:00:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 17:57:30 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,27 @@ bool	is_relative_or_absolute_cmd(char *cmd)
 }
 
 // @brief is this a empty command?
+// This function has side effect.
+// Will perform the empty cmd.
 //
 // @param the command to be checked.
+// @param status: the status code.
 // @return is the command empty?
-bool	is_empty_cmd(char *cmd)
+bool	is_empty_cmd(t_ast *ast, t_cmd_prop *prop, char *cmd, int *status)
 {
 	int	i;
 
+	if (!cmd[0])
+	{
+		if (prop->size > 1)
+		{
+			++(prop->start);
+			--(prop->size);
+			return (false);
+		}
+		*status = EXIT_OK;
+		return (true);
+	}
 	i = 0;
 	while (cmd[i])
 	{
@@ -41,6 +55,9 @@ bool	is_empty_cmd(char *cmd)
 			return (false);
 		++i;
 	}
+	return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start], 
+		"command not found");
+	*status = EXIT_CMD_ERR;
 	return (true);
 }
 

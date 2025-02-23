@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 12:55:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:45:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void			skip_space(t_parser *parser);
 void			end_prev_token(t_parser *parser);
 bool			is_delimiter(char c);
 t_token_type	get_token_type(t_parser *parser);
-void			new_input_line_for_pipe(t_parser *parser);
 void			set_working_token(t_parser *parser);
 
 // @brief to handle the space.
@@ -90,7 +89,7 @@ int	parser_handle_red(t_parser *parser)
 	append_token(parser);
 	set_token(parser, parser->size - 1, RED);
 	if (parser->line[parser->i + 1] == '\0')
-		return (return_with_err_parser(&parser, 2, "`newline\'"));
+		return (return_with_err_parser(&parser, 2, "newline"));
 	if (parser->line[parser->i + 1] == parser->line[parser->i])
 	{
 		append_str_to_last_token(parser, ms_substr(parser->line, parser->i, 2));
@@ -103,7 +102,7 @@ int	parser_handle_red(t_parser *parser)
 	end_prev_token(parser);
 	skip_space(parser);
 	if (parser->line[parser->i] == '\0')
-		return (return_with_err_parser(&parser, 2, "`newline\'"));
+		return (return_with_err_parser(&parser, 2, "newline"));
 	if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<'
 		|| parser->line[parser->i] == '>')
 		return (return_with_err_parser(&parser, 2, parser->tokens[parser->size

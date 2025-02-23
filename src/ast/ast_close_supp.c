@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:56:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 16:30:43 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	close_tokens(t_ast *ast)
 // @param ast: pointer to ast tree.
 static void	close_fds_helper(t_ast *ast)
 {
-	if (ast->fd_in > 0)
+	if (ast->fd_in > -1)
 		close(ast->fd_in);
-	if (ast->fd_out > 0)
+	if (ast->fd_out > -1)
 		close(ast->fd_out);
 }
 
@@ -50,7 +50,7 @@ int	close_fds(t_ast *ast)
 {
 	int	backup_fds[2];
 	int	status;
-
+	
 	status = EXIT_OK;
 	backup_fds[0] = dup(STDIN_FILENO);
 	backup_fds[1] = dup(STDOUT_FILENO);
@@ -59,8 +59,8 @@ int	close_fds(t_ast *ast)
 		status = EXIT_FAIL;
 		perror("minishell: dup");
 	}
-	if (status == EXIT_OK && (dup2(backup_fds[0], STDIN_FILENO) == -1
-			|| dup2(backup_fds[1], STDOUT_FILENO) == -1))
+	if (status == EXIT_OK && (dup2(ast->fd_in, STDIN_FILENO) == -1
+			|| dup2(ast->fd_out, STDOUT_FILENO) == -1))
 	{
 		status = EXIT_FAIL;
 		perror("minishell: dup2");
