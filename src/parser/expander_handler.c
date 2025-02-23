@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 20:16:09 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:00:12 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ static bool	need_expand(t_parser *parser)
 	}
 	while (parser->line[i] == '$')
 		++i;
-	if (i == parser->i + 1 && parser->line[i] != ' ' && parser->line[i] != '\0'
-		&& parser->line[i] != '<' && parser->line[i] != '>' && parser->line[i] != '|')
+	if (i == parser->i || (parser->line[i] != ' ' && parser->line[i] != '\0'
+		&& parser->line[i] != '<' && parser->line[i] != '>' && parser->line[i] != '|'))
 		return (true);
 	append_str_to_last_token(parser, ms_substr(parser->line, parser->i - 1, i - parser->i + 1));
 	parser->i = i;
@@ -128,12 +128,6 @@ int	parser_handle_expander(t_parser *parser)
 	set_working_token(parser);
 	if (need_expand(parser))
 		append_str_to_last_token(parser, env_get_helper(parser));
-	if (parser->i == '|' || parser->i == '<' || parser->i == '>'
-		|| parser->i == ' ')
-	{
-		end_prev_token(parser);
-		skip_space(parser);
-	}
 	parser->token_start = parser->i;
 	return (EXIT_SUCCESS);
 }
