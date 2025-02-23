@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 11:04:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 17:52:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-bool		is_empty_cmd(char *cmd);
+bool		is_empty_cmd(t_ast *ast, t_cmd_prop *prop, char *cmd, int *status);
 int			parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop);
 void		generate_argv(t_ast *ast, t_cmd_prop *prop);
 int			return_process_res(int status);
@@ -60,9 +60,8 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 
 	debug_print_ast(ast, ast_node, "Exec Cmd.");
 	prop = (t_cmd_prop *)ast_node->prop;
-	if (is_empty_cmd(ast->tokens[prop->start]))
-		return (return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],
-				"command not found"));
+	if (is_empty_cmd(ast, prop, ast->tokens[prop->start], &status))
+		return (status);
 	if (is_builtin_func(ast->tokens[prop->start]))
 		return (exec_builtin_func(ast, prop));
 	status = preprocess_cmd(ast, prop);
