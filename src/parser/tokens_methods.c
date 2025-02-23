@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 20:27:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 21:53:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:06:13 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ char	**output_tokens(t_parser *parser)
 	i = 0;
 	while (i < parser->size)
 	{
-		// printf("token %d: %s, type %d, idx %d\n", i, parser->tokens[i]->str, parser->tokens[i]->type, parser->tokens[i]->pipe_idx);
 		tokens[i] = parser->tokens[i]->str;
 		++i;
 	}

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:37:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 21:19:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:07:31 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*env_set_helper(t_ast *ast, char *key, char **dir)
 {
 	char	*buf;
 	char	*env_item;
-	
+
 	buf = getcwd(NULL, 0);
 	if (!buf)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: getcwd");
@@ -63,11 +63,11 @@ static char	*env_set_helper(t_ast *ast, char *key, char **dir)
 int	cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir)
 {
 	char	*env_item;
-	
+
 	env_item = env_set_helper(ast, "OLDPWD=", &dir);
 	if (chdir(dir) != 0)
 	{
-		free(dir);	
+		free(dir);
 		return (return_prt_err(EXIT_FAIL, "minishell: cd",
 				ast->tokens[prop->start + 1], NULL));
 	}

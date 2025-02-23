@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 11:00:12 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:05:19 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static char	*env_get_helper(t_parser *parser)
 // $?, $, $ , $$aa, $|, $>, $<
 //
 // @param parser: the pointer to parser.
-// @return if we need to expand. 
+// @return if we need to expand.
 static bool	need_expand(t_parser *parser)
 {
 	int	i;
@@ -103,9 +103,11 @@ static bool	need_expand(t_parser *parser)
 	while (parser->line[i] == '$')
 		++i;
 	if (i == parser->i || (parser->line[i] != ' ' && parser->line[i] != '\0'
-		&& parser->line[i] != '<' && parser->line[i] != '>' && parser->line[i] != '|'))
+			&& parser->line[i] != '<' && parser->line[i] != '>'
+			&& parser->line[i] != '|'))
 		return (true);
-	append_str_to_last_token(parser, ms_substr(parser->line, parser->i - 1, i - parser->i + 1));
+	append_str_to_last_token(parser, ms_substr(parser->line, parser->i - 1, i
+			- parser->i + 1));
 	parser->i = i;
 	return (false);
 }

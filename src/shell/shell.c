@@ -6,15 +6,15 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 18:50:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:09:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/shell.h"
+#include <errno.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
-#include <errno.h>
 
 // @brief run the parser and executor.
 //
@@ -27,6 +27,7 @@ static void	parse_and_execute(t_env *env, char *line)
 	t_ast		*ast;
 	char		**tokens;
 
+	add_history(line);
 	parser = create_parser(line, env);
 	env->prev_status = parse(parser);
 	if (env->prev_status != EXIT_OK)
@@ -75,8 +76,10 @@ int	run_shell(char **envp)
 		else if (!line)
 			return (close_and_return(&env, status));
 		if (is_empty_line(line))
-			continue;
-		add_history(line);
+		{
+			free(line);
+			continue ;
+		}
 		parse_and_execute(env, line);
 	}
 	status = env->prev_status;
