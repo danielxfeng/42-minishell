@@ -805,6 +805,14 @@ void    testParser_EmptyOne(void)
     close_parser(&parser, true);
 }
 
+void    testParser_Bug1(void)
+{
+    t_parser *parser = create_parser(strdup("<< eof << eof2 << eof3 | << eof4 cat"), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    char **tokens = output_tokens(parser);
+    TEST_ASSERT_EQUAL_STRING("eof4", tokens[8]);
+}
+
 void    testParser_Reorder(void)
 {
     t_parser *parser = create_parser(strdup("< infile cmd1 | cmd2 > outfile arg < infile2"), NULL);
@@ -838,7 +846,6 @@ void    testParser_Reorder(void)
 int	main(void)
 {
 	UNITY_BEGIN();
-    /**
     RUN_TEST(testParserCreate);
     RUN_TEST(testTokenAppend);
     RUN_TEST(testTokenAppendStr);
@@ -872,9 +879,7 @@ int	main(void)
     RUN_TEST(testParser_ExpanderNotExistWithPrefix);
     RUN_TEST(testParser_ExpanderAsArg);
     RUN_TEST(testParser_ExpanderAsFile);
-    **/
     RUN_TEST(testParser_ExpanderMultiDollar);
-    /**
     RUN_TEST(testParser_ExpanderStatusCode);
     RUN_TEST(testParser_SingleQuote);
     RUN_TEST(testParser_SingleQuoteWithPrefixPostFix);
@@ -887,6 +892,6 @@ int	main(void)
     RUN_TEST(testParser_QuotesWithExpander);
     RUN_TEST(testParser_EmptyOne);
     RUN_TEST(testParser_Reorder);
-    */
+    RUN_TEST(testParser_Bug1);
 	return (UNITY_END());
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 20:22:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:04:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 	prop = (t_cmd_prop *)ast_node->prop;
 	if (is_empty_cmd(ast->tokens[prop->start]))
 		return (return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],
-			"command not found"));
+				"command not found"));
 	if (is_builtin_func(ast->tokens[prop->start]))
 		return (exec_builtin_func(ast, prop));
 	status = preprocess_cmd(ast, prop);

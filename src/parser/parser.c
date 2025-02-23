@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:28:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/22 21:39:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ int	parse(t_parser *parser)
 	}
 }
 
+// @brief help to re-order the tokens.
+//
+// @param parser: the pointer to parser.
+// @param i: the idx of the token.
+// @param latest: the latest idx.
+// @param red_flag: if there is a red token in pipe block.
 static void	re_order_helper(t_parser *parser, int i, int *latest, bool red_flag)
 {
 	if (red_flag && (parser->tokens[i - 1]->type == CMD || parser->tokens[i
