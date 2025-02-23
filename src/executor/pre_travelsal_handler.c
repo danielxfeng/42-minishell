@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:23:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 10:57:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 22:06:35 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,22 @@ int	pre_cmd_handler(t_ast *ast, t_ast_node *node)
 int	pre_red_handler(t_ast *ast, t_ast_node *node)
 {
 	int			res;
+	bool		has_res_from_child;
 	t_red_prop	*prop;
 
+	has_res_from_child = false;
 	prop = (t_red_prop *)node->prop;
-	if (node->left)
-		node->left->node_pre_handler(ast, node->left);
+	res = EXIT_OK;
+	if (node->left && node->left->type == E_RED)
+	{
+		has_res_from_child = true;
+		prop->status = node->left->node_pre_handler(ast, node->left);
+	}
 	if (prop->is_in && !(prop->is_single))
 		res = here_doc_handler(ast, prop);
-	else
+	else if (prop->status == EXIT_OK)
 		res = open_file_helper(ast, prop);
-	return (res);
+	if (!has_res_from_child || (has_res_from_child && prop->status == EXIT_OK))
+		prop->status = res;
+	return (prop->status);
 }

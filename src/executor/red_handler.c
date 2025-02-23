@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:42:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 21:17:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	red_handler(t_ast *ast, t_ast_node *ast_node)
 	res = EXIT_OK;
 	debug_print_ast(ast, ast_node, "Exec Red.");
 	prop = (t_red_prop *)ast_node->prop;
+	if (prop->status != EXIT_OK)
+		return (prop->status);
 	if (!prop->is_skip)
 		set_skip_flag(ast_node, prop, prop->is_in);
 	if (prop->fd < 0)
