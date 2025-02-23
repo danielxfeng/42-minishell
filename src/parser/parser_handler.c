@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 11:07:42 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:55:40 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ int	parser_handle_pipe(t_parser *parser)
 	end_prev_token(parser);
 	++(parser->i);
 	skip_space(parser);
-	new_input_line_for_pipe(parser);
+	if (parser->line[parser->i] == '\0')
+		return (return_with_err_parser(&parser, 2, "|"));
 	if (parser->line[parser->i] == '|')
 		return (return_with_err_parser(&parser, 2, "|"));
 	parser->token_start = parser->i;

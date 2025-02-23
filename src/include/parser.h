@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:25:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:15:16 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int					parse(t_parser *parser);
 int					parser_handle_space(t_parser *parser);
 int					parser_handle_pipe(t_parser *parser);
 int					parser_handle_red(t_parser *parser);
-int					parser_handle_expander(t_parser *parser);
+int					parser_handle_expander(t_parser *parser,
+						bool is_inside_double_quote);
 int					parser_handle_double_quote(t_parser *parser);
 int					parser_handle_single_quote(t_parser *parser);
 int					parser_handle_end(t_parser *parser);

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/18 14:15:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 13:59:07 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	handle_sub_fds(t_ast *ast, t_pipe_prop *prop, bool is_pipe_input,
 static void	perform_sub_proc(t_ast *ast, t_ast_node *node, int direction,
 		int *pipe_fds)
 {
+	int			status;
 	t_ast_node	*child;
 	t_pipe_prop	*prop;
 
@@ -68,8 +69,8 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, int direction,
 	if (prop->pids[direction] == 0)
 	{
 		handle_sub_fds(ast, prop, direction, pipe_fds);
-		child->node_handler(ast, child);
-		exit_without_err(&ast);
+		status = child->node_handler(ast, child);
+		exit_with_err(&ast, status, NULL);
 	}
 }
 
