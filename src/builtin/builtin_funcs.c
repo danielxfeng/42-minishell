@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 21:08:49 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 22:44:19 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int	cmd_exit(t_ast *ast, t_cmd_prop *prop)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		status = EXIT_FAIL;
+		return (status);
 	}
 	else if (prop->size == 1)
 		status = EXIT_OK;
