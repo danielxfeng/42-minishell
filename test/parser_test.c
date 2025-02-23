@@ -850,6 +850,14 @@ void    testParser_Bug2(void)
     TEST_ASSERT_EQUAL_STRING("$", tokens[1]);
 }
 
+void    testParser_Bug3(void)
+{
+    t_parser *parser = create_parser(strdup("\"|\""), NULL);
+    TEST_ASSERT_EQUAL_INT(0, parse(parser));
+    char **tokens = output_tokens(parser);
+    TEST_ASSERT_EQUAL_STRING("|", tokens[0]);
+}
+
 // Main function to run the tests
 int	main(void)
 {
@@ -902,5 +910,6 @@ int	main(void)
     RUN_TEST(testParser_Reorder);
     RUN_TEST(testParser_Bug1);
     RUN_TEST(testParser_Bug2);
+    RUN_TEST(testParser_Bug3);
 	return (UNITY_END());
 }

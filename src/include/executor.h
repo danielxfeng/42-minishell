@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:41:14 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:59:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "mini_env.h"
 # include "utils.h"
+# include "parser.h"
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/types.h>
@@ -62,6 +63,7 @@ typedef struct s_ast
 {
 	t_ast_node				*root;
 	char					**tokens;
+	t_parser				*parser;
 	int						tk_size;
 	int						fd_in;
 	int						fd_out;
@@ -146,7 +148,7 @@ typedef struct s_pipe_prop
 // AST
 // The constructors of AST.
 
-t_ast						*create_ast(char **tokens, int tk_size, t_env *env);
+t_ast						*create_ast(char **tokens, int tk_size, t_env *env, t_parser *parser);
 t_ast_node					*create_pipe_node(t_ast *ast);
 t_ast_node					*create_cmd_node(t_ast *ast, int start, int size);
 t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in,
@@ -204,6 +206,6 @@ int							cmd_unset(t_ast *ast, t_cmd_prop *prop);
 int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 
-t_ast						*build_tree(char **tokens, int tk_size, t_env *env);
+t_ast						*build_tree(char **tokens, int tk_size, t_env *env, t_parser *parser);
 
 #endif

@@ -6,11 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:43:29 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:55:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
+#include "../include/parser.h"
 #include "../libs/libft/libft.h"
 #include <stdlib.h>
 
@@ -97,8 +98,9 @@ t_ast_node	*create_red_node(t_ast *ast, int idx, bool is_in, bool is_single)
 // @param tokens: the string array of tokens.
 // @param tk_size: the size of tokens.
 // @param env: the pointer to env.
+// @param parser: the pointer to parser.
 // @return the pointer to ast. Returns NULL when error on malloc.
-t_ast	*create_ast(char **tokens, int tk_size, t_env *env)
+t_ast	*create_ast(char **tokens, int tk_size, t_env *env, t_parser *parser)
 {
 	t_ast	*ast;
 	int		i;
@@ -113,10 +115,13 @@ t_ast	*create_ast(char **tokens, int tk_size, t_env *env)
 		tokens = NULL;
 		close_env(&env);
 		env = NULL;
+		close_parser(&parser, true);
+		parser = NULL;
 		exit_with_err(NULL, EXIT_FAIL, "minishell: malloc");
 	}
 	ast->root = NULL;
 	ast->tokens = tokens;
+	ast->parser = parser;
 	ast->tk_size = tk_size;
 	ast->fd_in = -1;
 	ast->fd_out = -1;
