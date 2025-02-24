@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:11:40 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 16:30:43 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:51:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	close_fds(t_ast *ast)
 {
 	int	backup_fds[2];
 	int	status;
-	
+
 	status = EXIT_OK;
 	backup_fds[0] = dup(STDIN_FILENO);
 	backup_fds[1] = dup(STDOUT_FILENO);

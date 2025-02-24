@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:19:51 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 13:55:45 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:52:14 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	return_with_err(int err_no, int rtn_code, char *msg)
 {
 	if (err_no != INVALID_ERR_NO)
 		errno = err_no;
-	if(msg)
+	if (msg)
 		perror(msg);
 	return (rtn_code);
 }

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 18:57:24 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:51:06 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ void	build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 	while (--curr >= left)
 	{
 		params[0] = curr;
-		if (ms_strcmp(tree->tokens[curr], "<") == 0 && tree->parser->tokens[curr]->type == RED)
+		if (tree->parser->tokens[curr]->type == RED)
 			*node = build_red_node_helper(tree, params, true, true);
-		else if (ms_strcmp(tree->tokens[curr], "<<") == 0 && tree->parser->tokens[curr]->type == RED)
+		else if (tree->parser->tokens[curr]->type == RED)
 			*node = build_red_node_helper(tree, params, true, false);
-		else if (ms_strcmp(tree->tokens[curr], ">") == 0 && tree->parser->tokens[curr]->type == RED)
+		else if (tree->parser->tokens[curr]->type == RED)
 			*node = build_red_node_helper(tree, params, false, true);
-		else if (ms_strcmp(tree->tokens[curr], ">>") == 0 && tree->parser->tokens[curr]->type == RED)
+		else if (tree->parser->tokens[curr]->type == RED)
 			*node = build_red_node_helper(tree, params, false, false);
 		else
 			continue ;
@@ -122,7 +122,7 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 	curr = right;
 	while (curr >= left)
 	{
-		if (ms_strcmp(tree->tokens[curr], "|") == 0 && tree->parser->tokens[curr]->type == PIPE)
+		if (tree->parser->tokens[curr]->type == PIPE)
 		{
 			*node = create_pipe_node(tree);
 			build_pipe_node(tree, &((*node)->left), left, curr - 1);
@@ -162,7 +162,7 @@ static void	build_pipe_node(t_ast *tree, t_ast_node **node, int left, int right)
 // @param tk_size: the size of tokens.
 // @param env: the pointer to env.
 // @param parser: the pointer to parser.
-// @return the pointer to ast. 
+// @return the pointer to ast.
 t_ast	*build_tree(char **tokens, int tk_size, t_env *env, t_parser *parser)
 {
 	t_ast	*tree;

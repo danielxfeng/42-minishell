@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 17:57:30 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:51:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	is_empty_cmd(t_ast *ast, t_cmd_prop *prop, char *cmd, int *status)
 			return (false);
 		++i;
 	}
-	return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start], 
+	return_prt_err(EXIT_CMD_ERR, NULL, ast->tokens[prop->start],
 		"command not found");
 	*status = EXIT_CMD_ERR;
 	return (true);
