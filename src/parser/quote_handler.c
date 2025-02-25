@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:17:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 12:14:18 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:08:32 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	handle_quote_helper(t_parser *parser,
 		return (status);
 	append_str_to_last_token(parser, ms_substr(parser->line,
 			parser->token_start, parser->i - parser->token_start));
+	parser->tokens[parser->size - 1]->is_quote = true;
 	++(parser->i);
 	parser->token_start = parser->i;
 	if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<'

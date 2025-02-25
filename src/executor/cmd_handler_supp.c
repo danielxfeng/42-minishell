@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/24 13:51:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:16:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	is_empty_cmd(t_ast *ast, t_cmd_prop *prop, char *cmd, int *status)
 {
 	int	i;
 
-	if (!cmd[0])
+	if (!cmd[0] && !(prop->is_quote))
 	{
 		if (prop->size > 1)
 		{
