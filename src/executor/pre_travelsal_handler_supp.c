@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 17:19:47 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 22:20:19 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+void	heredoc_expand(t_ast *ast, char **line);
 
 // @brief to run in a loop for reading lines from here_doc.
 //
@@ -43,6 +45,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop, int fd_write)
 			line = NULL;
 			break ;
 		}
+		heredoc_expand(ast, &line);
 		write(fd_write, line, ft_strlen(line));
 		write(fd_write, "\n", 1);
 		free(line);

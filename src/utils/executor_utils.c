@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:27:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/25 19:00:20 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 20:23:56 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ int	ms_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
+static bool	is_overflow(char *n, int64_t lb, bool is_negative)
+{
+	if (lb > INT64_MAX / 10 
+		|| (lb == INT64_MAX / 10 
+			&& ((!is_negative && (*n - '0') > (INT64_MAX % 10)) 
+			|| (is_negative && (*n - '0') > (INT64_MAX % 10) + 1))))
+		return (true);
+	return (false);
+}
+
 // @brief a custom atoi function.
 //
 // @param n: the number in string format.
@@ -55,11 +65,9 @@ bool	ms_atoi(char *n, int *nb)
 	lb = 0;
 	while (*n && *n >= '0' && *n <= '9')
 	{
-		if (!is_negative && (lb > INT64_MAX / 10 
-			|| (lb == INT64_MAX / 10 && ((*n - '0') > (INT64_MAX % 10)) )))
+		if (is_overflow(n, lb, is_negative))
 			return (false);
-		lb = lb * 10 + *n - '0';
-		++n;
+		lb = lb * 10 + *(n++) - '0';
 	}
 	if (is_negative)
 		lb = -lb;
