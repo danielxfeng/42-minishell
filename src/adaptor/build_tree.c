@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/24 13:51:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:13:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
 {
 	if (left > right)
 		return ;
-	*node = create_cmd_node(tree, left, right - left + 1);
+	*node = create_cmd_node(tree, left, right - left + 1, tree->parser->tokens[left]->is_quote);
 }
 
 // @brief helper function for build_red_node.

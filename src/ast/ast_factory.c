@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 18:55:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:10:16 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_ast_node	*create_pipe_node(t_ast *ast)
 }
 
 // @brief constructor of a AST node for CMD.
-t_ast_node	*create_cmd_node(t_ast *ast, int start, int size)
+t_ast_node	*create_cmd_node(t_ast *ast, int start, int size, bool is_quote)
 {
 	t_ast_node	*node;
 	t_cmd_prop	*prop;
@@ -56,6 +56,7 @@ t_ast_node	*create_cmd_node(t_ast *ast, int start, int size)
 	}
 	prop->start = start;
 	prop->size = size;
+	prop->is_quote = is_quote;
 	node->type = E_CMD;
 	node->prop = prop;
 	node->node_pre_handler = pre_cmd_handler;

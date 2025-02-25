@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/24 13:52:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:10:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_ast_node
 // `pid` sub-process for running the `cmd`.
 // `argv` the argv to be executed.
 // `full_cmd` the cmd with path.
+// `is_quote` is the cmd is wrapped by a quote.
 typedef struct s_cmd_prop
 {
 	int						start;
@@ -115,6 +116,7 @@ typedef struct s_cmd_prop
 	pid_t					pid;
 	char					**argv;
 	char					*full_cmd;
+	bool					is_quote;
 }							t_cmd_prop;
 
 // Represents properties of RED.
@@ -151,7 +153,8 @@ typedef struct s_pipe_prop
 t_ast						*create_ast(char **tokens, int tk_size, t_env *env,
 								t_parser *parser);
 t_ast_node					*create_pipe_node(t_ast *ast);
-t_ast_node					*create_cmd_node(t_ast *ast, int start, int size);
+t_ast_node					*create_cmd_node(t_ast *ast, int start, int size,
+								bool is_quote);
 t_ast_node					*create_red_node(t_ast *ast, int idx, bool is_in,
 								bool is_single);
 

@@ -6,12 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:27:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 13:23:33 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:00:20 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
+#include <stdint.h>
 
 // @brief handle the string cmp.
 //
@@ -40,6 +41,7 @@ int	ms_strcmp(char *s1, char *s2)
 bool	ms_atoi(char *n, int *nb)
 {
 	bool	is_negative;
+	int64_t	lb;
 
 	is_negative = false;
 	while (*n && *n == ' ')
@@ -50,14 +52,18 @@ bool	ms_atoi(char *n, int *nb)
 			is_negative = true;
 		++n;
 	}
-	*nb = 0;
+	lb = 0;
 	while (*n && *n >= '0' && *n <= '9')
 	{
-		*nb = *nb * 10 + *n - '0';
+		if (!is_negative && (lb > INT64_MAX / 10 
+			|| (lb == INT64_MAX / 10 && ((*n - '0') > (INT64_MAX % 10)) )))
+			return (false);
+		lb = lb * 10 + *n - '0';
 		++n;
 	}
 	if (is_negative)
-		*nb = -(*nb);
+		lb = -lb;
+	*nb = (int)lb;
 	if (*n == '\0')
 		return (true);
 	return (false);

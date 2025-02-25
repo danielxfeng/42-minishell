@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 12:15:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:06:56 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ typedef enum e_token_type
 // `type`: the type of token;
 // `pipe_idx`: inside the n-th pipe.
 // `is_end`: is this a completed token?
+// `is_quote`: is the token wrapped by a quote.
 typedef struct s_token
 {
 	char			*str;
 	t_token_type	type;
 	int				pipe_idx;
 	bool			is_end;
+	bool			is_quote;
 }					t_token;
 
 // Represents a parser.
