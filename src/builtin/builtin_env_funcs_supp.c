@@ -6,12 +6,14 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 08:33:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:48:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 15:30:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
+#include <sys/wait.h>
+#include <unistd.h>
 
 // @brief help to print out the env item in `export` output format.
 //
@@ -35,16 +37,25 @@ void	print_env_item_for_env(t_env_item *item)
 
 // @brief help to print out the env items.
 //
-// @param env: the pointer to env.
+// @param ast: the pointer to ast.
 // @param print_func: the function for printing the env item
 //  in different format.
-void	print_env(t_env *env, void (*print_func)(t_env_item *))
+void	print_env(t_ast *ast, void (*print_func)(t_env_item *))
 {
 	int	i;
+	int	pid;
 
-	i = 0;
-	while (i < env->size)
-		print_func(&(env->items[i++]));
+	pid = fork();
+	if (pid < 0)
+		close_builtin_proc(&ast, EXIT_FAIL, "minishell: fork");
+	if (pid == 0)
+	{
+		i = 0;
+		while (i < ast->env->size)
+			print_func(&(ast->env->items[i++]));
+		close_builtin_proc(&ast, EXIT_OK, NULL);
+	}
+	waitpid(pid, NULL, 0);
 }
 
 // @brief help to check if the char is legal in a env key.

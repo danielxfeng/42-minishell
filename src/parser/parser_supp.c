@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 12:55:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:53:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,32 @@ void	set_working_token(t_parser *parser)
 		append_token(parser);
 		set_token(parser, parser->size - 1, get_token_type(parser));
 	}
+}
+
+// @brief to help the red to return an error.
+//
+// @param parser: the pointer to parser.
+// @return the status code.
+int	return_red_err(t_parser *parser)
+{
+	char	str[3];
+
+	if (parser->line[parser->i] == '\0')
+		return (return_with_err_parser(&parser, 2, "newline"));
+	if ((parser->line[parser->i] == '<' && parser->line[parser->i + 1] == '<')
+		|| (parser->line[parser->i] == '>' && parser->line[parser->i
+				+ 1] == '>'))
+	{
+		str[0] = parser->tokens[parser->size - 1]->str[0];
+		str[1] = parser->tokens[parser->size - 1]->str[1];
+		str[2] = '\0';
+		return (return_with_err_parser(&parser, 2, str));
+	}
+	if (parser->line[parser->i] == '<' || parser->line[parser->i] == '>')
+	{
+		str[0] = parser->tokens[parser->size - 1]->str[0];
+		str[1] = '\0';
+		return (return_with_err_parser(&parser, 2, str));
+	}
+	return (EXIT_SUCCESS);
 }

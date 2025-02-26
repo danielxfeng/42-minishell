@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 18:45:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:52:38 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void			end_prev_token(t_parser *parser);
 bool			is_delimiter(char c);
 t_token_type	get_token_type(t_parser *parser);
 void			set_working_token(t_parser *parser);
+int				return_red_err(t_parser *parser);
 
 // @brief to handle the space.
 //
@@ -85,6 +86,8 @@ int	parser_handle_pipe(t_parser *parser)
 // @return the status code.
 int	parser_handle_red(t_parser *parser)
 {
+	int	status;
+
 	end_prev_token(parser);
 	append_token(parser);
 	set_token(parser, parser->size - 1, RED);
@@ -101,12 +104,9 @@ int	parser_handle_red(t_parser *parser)
 	parser->token_start = parser->i;
 	end_prev_token(parser);
 	skip_space(parser);
-	if (parser->line[parser->i] == '\0')
-		return (return_with_err_parser(&parser, 2, "newline"));
-	if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<'
-		|| parser->line[parser->i] == '>')
-		return (return_with_err_parser(&parser, 2, parser->tokens[parser->size
-					- 1]->str));
+	status = return_red_err(parser);
+	if (status != EXIT_SUCCESS)
+		return (status);
 	parser->token_start = parser->i;
 	return (EXIT_SUCCESS);
 }

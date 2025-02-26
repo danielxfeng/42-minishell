@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:37:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 11:07:31 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:18:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ int	check_option(t_ast *ast, t_cmd_prop *prop)
 	return (EXIT_OK);
 }
 
+// @brief help to set the env.
+//
+// @param ast: the pointer to tree.
+// @param key: the key of env.
+// @param dir: the path.
+// @return the value of env.
 static char	*env_set_helper(t_ast *ast, char *key, char **dir)
 {
 	char	*buf;
@@ -68,6 +74,7 @@ int	cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir)
 	if (chdir(dir) != 0)
 	{
 		free(dir);
+		free(env_item);
 		return (return_prt_err(EXIT_FAIL, "minishell: cd",
 				ast->tokens[prop->start + 1], NULL));
 	}
@@ -78,4 +85,43 @@ int	cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir)
 	free(env_item);
 	free(dir);
 	return (EXIT_OK);
+}
+
+// @brief help `echo` to print out the parameters.
+//
+// @param ast: the pointer to ast tree.
+// @param prop: the property of ast node.
+// @param no_line_break: the flag of the line break sign in the end.
+void	echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break)
+{
+	int	i;
+
+	i = 1;
+	if (no_line_break)
+		i = 2;
+	while (i < prop->size)
+	{
+		if (ms_strcmp("$?", ast->tokens[prop->start + i]) == 0)
+			printf("%d", ast->prev_status);
+		else
+			printf("%s", ast->tokens[prop->start + i]);
+		if (i + 1 < prop->size)
+			printf(" ");
+		++i;
+	}
+	if (!no_line_break)
+		printf("\n");
+}
+
+// @brief help the echo to handle the empty args.
+//
+// @param ast: the pointer to ast tree.
+// @param prop: the property of the node.
+void	empty_echo_helper(t_ast *ast, t_cmd_prop *prop)
+{
+	if (prop->size == 1)
+	{
+		printf("\n");
+		close_builtin_proc(&ast, EXIT_OK, NULL);
+	}
 }
