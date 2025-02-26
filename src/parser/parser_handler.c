@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 18:45:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 15:52:39 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,30 @@ int	parser_handle_pipe(t_parser *parser)
 	return (EXIT_SUCCESS);
 }
 
+int	return_red_err(t_parser *parser)
+{
+	char	str[3];
+
+	if (parser->line[parser->i] == '\0')
+		return (return_with_err_parser(&parser, 2, "newline"));
+	if ((parser->line[parser->i] == '<' && parser->line[parser->i + 1] == '<')
+		|| (parser->line[parser->i] == '>' && parser->line[parser->i
+			+ 1] == '>'))
+	{
+		str[0] = parser->tokens[parser->size - 1]->str[0];
+		str[1] = parser->tokens[parser->size - 1]->str[1];
+		str[2] = '\0';
+		return (return_with_err_parser(&parser, 2, str));		
+	}
+	if (parser->line[parser->i] == '<' || parser->line[parser->i] == '>')
+	{
+		str[0] = parser->tokens[parser->size - 1]->str[0];
+		str[1] = '\0';
+		return (return_with_err_parser(&parser, 2, str));		
+	}
+	return (EXIT_SUCCESS);
+}
+
 // @brief to handle the redirector
 //
 // 1. Checks if there is a unclosed token, "cmd<cmd" works.
@@ -85,6 +109,7 @@ int	parser_handle_pipe(t_parser *parser)
 // @return the status code.
 int	parser_handle_red(t_parser *parser)
 {
+	int	status;
 	end_prev_token(parser);
 	append_token(parser);
 	set_token(parser, parser->size - 1, RED);
@@ -101,12 +126,9 @@ int	parser_handle_red(t_parser *parser)
 	parser->token_start = parser->i;
 	end_prev_token(parser);
 	skip_space(parser);
-	if (parser->line[parser->i] == '\0')
-		return (return_with_err_parser(&parser, 2, "newline"));
-	if (parser->line[parser->i] == '|' || parser->line[parser->i] == '<'
-		|| parser->line[parser->i] == '>')
-		return (return_with_err_parser(&parser, 2, parser->tokens[parser->size
-					- 1]->str));
+	status = return_red_err(parser);
+	if (status != EXIT_SUCCESS)
+		return (status);
 	parser->token_start = parser->i;
 	return (EXIT_SUCCESS);
 }
