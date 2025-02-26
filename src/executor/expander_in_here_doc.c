@@ -6,9 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:19:58 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/25 22:25:34 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 10:39:20 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../include/executor.h"
+#include "../libs/libft/libft.h"
+#include <stdlib.h>
 
 // @brief if we need to expand?
 //
@@ -39,7 +43,7 @@ static bool	need_expand(char *line, int *i)
 // @param line: the input line.
 // @param i: the index to the $.
 // @return env key.
-static char *heredoc_expander_get_key(t_ast *ast, char *line, int i)
+static char	*heredoc_expander_get_key(t_ast *ast, char *line, int i)
 {
 	int		end;
 	char	*key;
@@ -47,7 +51,8 @@ static char *heredoc_expander_get_key(t_ast *ast, char *line, int i)
 	if (line[i] == '?')
 		return (ft_strdup("?"));
 	end = i;
-	while (line[end] && line[end] != ' ' && line[end] != '\'' && line[end] != '"')
+	while (line[end] && line[end] != ' ' && line[end] != '\''
+		&& line[end] != '"')
 		++end;
 	key = ft_calloc(end - i + 1, sizeof(char));
 	if (!key)
@@ -68,17 +73,19 @@ static void	heredoc_expander_helper(t_ast *ast, char **line, int *i)
 	char	*new_line;
 
 	if (!need_expand(*line, i))
-		return	;
+		return ;
 	key = heredoc_expander_get_key(ast, *line, *i);
 	value = env_get(ast->env, key);
 	if (!value)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
-	new_line = ft_calloc(ft_strlen(*line) + ft_strlen(value) - ft_strlen(key), sizeof(char));
+	new_line = ft_calloc(ft_strlen(*line) + ft_strlen(value) - ft_strlen(key),
+			sizeof(char));
 	if (!new_line)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	ft_memcpy(new_line, *line, *i - 1);
 	ft_memcpy(new_line + *i - 1, value, ft_strlen(value));
-	ft_memcpy(new_line + *i + ft_strlen(value) - 1, *line + *i + strlen(key), ft_strlen(*line) - *i - ft_strlen(key));
+	ft_memcpy(new_line + *i + ft_strlen(value) - 1, *line + *i + ft_strlen(key),
+		ft_strlen(*line) - *i - ft_strlen(key));
 	free(key);
 	free(value);
 	free(*line);
@@ -91,7 +98,7 @@ static void	heredoc_expander_helper(t_ast *ast, char **line, int *i)
 // @param line: the pointer to line.
 void	heredoc_expand(t_ast *ast, char **line)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while ((*line)[i])
@@ -100,9 +107,9 @@ void	heredoc_expand(t_ast *ast, char **line)
 		{
 			heredoc_expander_helper(ast, line, &i);
 			if (i > (int)ft_strlen(*line))
-				return	;
-		}	
-		else	
+				return ;
+		}
+		else
 			++i;
 	}
 }
