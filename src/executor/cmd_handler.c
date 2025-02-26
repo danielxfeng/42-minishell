@@ -6,12 +6,13 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 17:52:51 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 16:42:38 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
 #include "../libs/libft/libft.h"
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -32,8 +33,20 @@ void		close_envp(char ***envp);
 // @return status code.
 static int	preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 {
-	int	status;
+	int			status;
+	char		*cmd;
+	struct stat	buf;
 
+	cmd = ast->tokens[prop->start];
+	if (cmd[ft_strlen(cmd) - 1] == '/' && access(cmd, F_OK) == 0)
+	{
+		stat(prop->full_cmd, &buf);
+		if (S_ISDIR(buf.st_mode))
+			return (return_prt_err(EXIT_EXEC_ERR, "minishell",
+					ast->tokens[prop->start], "Not a directory"));
+		return (return_prt_err(EXIT_EXEC_ERR, "minishell",
+				ast->tokens[prop->start], "Is a directory"));
+	}
 	status = parse_full_cmd_and_check(ast, prop);
 	if (status != 0)
 		return (status);
