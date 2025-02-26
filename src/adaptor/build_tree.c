@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/25 19:44:33 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 10:51:17 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static void	build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
 {
 	if (left > right)
 		return ;
-	*node = create_cmd_node(tree, left, right - left + 1, tree->parser->tokens[left]->is_quote);
+	*node = create_cmd_node(tree, left, right - left + 1,
+			tree->parser->tokens[left]->is_quote);
 }
 
 // @brief helper function for build_red_node.
@@ -67,24 +68,24 @@ static t_ast_node	*build_red_node_helper(t_ast *tree, int *params, bool is_in,
 // @param right: the right index of tokens.
 void	build_red_node(t_ast *tree, t_ast_node **node, int left, int right)
 {
-	int	curr;
-	int	params[3];
+	int				params[3];
+	t_token_type	type;
 
 	if (left > right)
 		return ;
-	curr = right + 1;
+	params[0] = right + 1;
 	params[1] = left;
 	params[2] = right;
-	while (--curr >= left)
+	while (--params[0] >= left)
 	{
-		params[0] = curr;
-		if (ms_strcmp(tree->tokens[curr], "<") == 0 && tree->parser->tokens[curr]->type == RED)
+		type = tree->parser->tokens[params[0]]->type;
+		if (ms_strcmp(tree->tokens[params[0]], "<") == 0 && type == RED)
 			*node = build_red_node_helper(tree, params, true, true);
-		else if (ms_strcmp(tree->tokens[curr], "<<") == 0 && tree->parser->tokens[curr]->type == RED)
+		else if (ms_strcmp(tree->tokens[params[0]], "<<") == 0 && type == RED)
 			*node = build_red_node_helper(tree, params, true, false);
-		else if (ms_strcmp(tree->tokens[curr], ">") == 0 && tree->parser->tokens[curr]->type == RED)
+		else if (ms_strcmp(tree->tokens[params[0]], ">") == 0 && type == RED)
 			*node = build_red_node_helper(tree, params, false, true);
-		else if (ms_strcmp(tree->tokens[curr], ">>") == 0 && tree->parser->tokens[curr]->type == RED)
+		else if (ms_strcmp(tree->tokens[params[0]], ">>") == 0 && type == RED)
 			*node = build_red_node_helper(tree, params, false, false);
 		else
 			continue ;
