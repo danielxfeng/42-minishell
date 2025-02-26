@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:40:44 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 13:55:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 15:06:42 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	close_tokens(t_ast *ast);
 // @param status: the status code to return.
 // @param msg: the error msg.
 // @return the status code.
-int	close_builtin_proc(t_ast **ast, int status, char *msg)
+void	close_builtin_proc(t_ast **ast, int status, char *msg)
 {
 	if (msg)
 		perror(msg);
@@ -42,5 +42,5 @@ int	close_builtin_proc(t_ast **ast, int status, char *msg)
 		free(*ast);
 		*ast = NULL;
 	}
-	return (status);
+	exit(status);
 }
