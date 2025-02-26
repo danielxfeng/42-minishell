@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:21:27 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 15:52:39 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:52:38 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void			end_prev_token(t_parser *parser);
 bool			is_delimiter(char c);
 t_token_type	get_token_type(t_parser *parser);
 void			set_working_token(t_parser *parser);
+int				return_red_err(t_parser *parser);
 
 // @brief to handle the space.
 //
@@ -74,30 +75,6 @@ int	parser_handle_pipe(t_parser *parser)
 	return (EXIT_SUCCESS);
 }
 
-int	return_red_err(t_parser *parser)
-{
-	char	str[3];
-
-	if (parser->line[parser->i] == '\0')
-		return (return_with_err_parser(&parser, 2, "newline"));
-	if ((parser->line[parser->i] == '<' && parser->line[parser->i + 1] == '<')
-		|| (parser->line[parser->i] == '>' && parser->line[parser->i
-			+ 1] == '>'))
-	{
-		str[0] = parser->tokens[parser->size - 1]->str[0];
-		str[1] = parser->tokens[parser->size - 1]->str[1];
-		str[2] = '\0';
-		return (return_with_err_parser(&parser, 2, str));		
-	}
-	if (parser->line[parser->i] == '<' || parser->line[parser->i] == '>')
-	{
-		str[0] = parser->tokens[parser->size - 1]->str[0];
-		str[1] = '\0';
-		return (return_with_err_parser(&parser, 2, str));		
-	}
-	return (EXIT_SUCCESS);
-}
-
 // @brief to handle the redirector
 //
 // 1. Checks if there is a unclosed token, "cmd<cmd" works.
@@ -110,6 +87,7 @@ int	return_red_err(t_parser *parser)
 int	parser_handle_red(t_parser *parser)
 {
 	int	status;
+
 	end_prev_token(parser);
 	append_token(parser);
 	set_token(parser, parser->size - 1, RED);
