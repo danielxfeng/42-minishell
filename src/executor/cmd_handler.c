@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 16:42:38 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:46:20 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ static int	preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 	struct stat	buf;
 
 	cmd = ast->tokens[prop->start];
-	if (cmd[ft_strlen(cmd) - 1] == '/' && access(cmd, F_OK) == 0)
+	if (cmd[ft_strlen(cmd) - 1] == '/' && access(cmd, F_OK) == 0
+		&& stat(cmd, &buf) != -1)
 	{
-		stat(prop->full_cmd, &buf);
 		if (S_ISDIR(buf.st_mode))
 			return (return_prt_err(EXIT_EXEC_ERR, "minishell",
-					ast->tokens[prop->start], "Not a directory"));
+					ast->tokens[prop->start], "Is a directory"));
 		return (return_prt_err(EXIT_EXEC_ERR, "minishell",
-				ast->tokens[prop->start], "Is a directory"));
+				ast->tokens[prop->start], "Not a directory"));
 	}
 	status = parse_full_cmd_and_check(ast, prop);
 	if (status != 0)

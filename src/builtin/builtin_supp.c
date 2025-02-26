@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 09:37:48 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 15:19:18 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:18:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir)
 	if (chdir(dir) != 0)
 	{
 		free(dir);
+		free(env_item);
 		return (return_prt_err(EXIT_FAIL, "minishell: cd",
 				ast->tokens[prop->start + 1], NULL));
 	}

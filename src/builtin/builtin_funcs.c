@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 15:21:41 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:29:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 	if (!dir)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	if (prop->size == 1 && ms_strcmp("", dir) == 0)
+	{
+		free(dir);
 		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "HOME not set"));
+	}
 	return (cd_helper(ast, prop, dir));
 }
 
