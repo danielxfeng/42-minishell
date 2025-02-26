@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:15:09 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 11:26:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/26 13:54:52 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	close_red_node(t_ast_node *node)
 }
 
 // @brief the helper function of the destructor of ast node.
-static void	close_ast_node(t_ast_node *node)
+void	close_ast_node(t_ast_node *node)
 {
 	if (node)
 	{

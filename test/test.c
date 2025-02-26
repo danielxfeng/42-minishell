@@ -8,6 +8,8 @@
 #include <string.h>
 #include <fcntl.h>
 
+// valgrind --leak-check=full --leak-check=full --show-leak-kinds=all --suppressions=/home/xifeng/Downloads/readline.supp ../minishell 
+
 int	run_shell(char **envp);
 
 // Setup function called before each test
