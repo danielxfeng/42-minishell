@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 17:46:20 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/27 13:10:16 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ static int	preprocess_cmd(t_ast *ast, t_cmd_prop *prop)
 	return (EXIT_OK);
 }
 
+// @brief help to handle the sub-process.
+//
+// @param prop: property of the node.
+// @param envp: the env.
+void	sub_proc_helper(t_cmd_prop *prop, char **envp)
+{
+	if (prop->pid == 0)
+	{
+		sig_default();
+		//sig_ignore();
+		execve(prop->full_cmd, prop->argv, envp);
+		sig_init();
+	}	
+}
+
 // @ brief to execute the `cmd` node.
 //
 // The command node is a leaf node.
@@ -86,8 +101,7 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 	envp = env_output(ast->env);
 	if (!envp)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
-	if (prop->pid == 0)
-		execve(prop->full_cmd, prop->argv, envp);
+	sub_proc_helper(prop, envp);
 	close_envp(&envp);
 	waitpid(prop->pid, &status, 0);
 	return (return_process_res(status));
