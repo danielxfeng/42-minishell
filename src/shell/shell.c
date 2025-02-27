@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 18:46:27 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/27 09:02:13 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ int	run_shell(char **envp)
 	int		status;
 
 	env = create_env(envp);
-	signal(SIGINT, catch_sigint);
-	signal(SIGQUIT, catch_sigquit);
+	// signal(SIGINT, catch_sigint);
+	// signal(SIGQUIT, catch_sigquit);
+	sig_init();
 	status = EXIT_OK;
 	while (true)
 	{
