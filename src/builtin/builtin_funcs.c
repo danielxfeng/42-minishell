@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 17:29:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/27 07:57:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		empty_echo_helper(t_ast *ast, t_cmd_prop *prop);
 // argv: ast->tokens[prop->start];
 int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 {
-	int		status;
+	int		status = 0;
 	int		pid;
 	bool	no_line_break;
 
