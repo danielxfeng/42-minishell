@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/25 22:20:19 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/27 13:44:51 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop, int fd_write)
 	char	*eof;
 
 	eof = ast->tokens[prop->idx];
+	sig_heredoc();
 	while (1)
 	{
 		line = readline("> ");
@@ -50,6 +51,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop, int fd_write)
 		write(fd_write, "\n", 1);
 		free(line);
 	}
+	sig_init();
 	return (EXIT_OK);
 }
 

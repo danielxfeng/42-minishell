@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 15:21:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/02/27 11:42:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,5 +214,12 @@ void						close_builtin_proc(t_ast **ast, int status,
 
 t_ast						*build_tree(char **tokens, int tk_size, t_env *env,
 								t_parser *parser);
+
+// sig
+
+void						sig_init(void);
+void						sig_default(void);
+void						sig_ignore(void);
+void						sig_heredoc(void);
 
 #endif
