@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/22 18:50:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/02 17:06:06 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ bool	is_empty_line(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ')
+		if (line[i] != ' ' && line[i] != '\t')	
 			return (false);
 		++i;
 	}

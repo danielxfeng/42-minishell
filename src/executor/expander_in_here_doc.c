@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:19:58 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 10:39:20 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/02 17:01:13 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	need_expand(char *line, int *i)
 	bool	multi_dollar;
 
 	++(*i);
-	if (!line[*i] || line[*i] == ' ')
+	if (!line[*i] || line[*i] == ' ' || line[*i] == '\t')
 		return (false);
 	multi_dollar = false;
 	while (line[*i] == '$')
@@ -51,8 +51,8 @@ static char	*heredoc_expander_get_key(t_ast *ast, char *line, int i)
 	if (line[i] == '?')
 		return (ft_strdup("?"));
 	end = i;
-	while (line[end] && line[end] != ' ' && line[end] != '\''
-		&& line[end] != '"')
+	while (line[end] && line[end] != ' ' && line[end] != '\t'
+		&& line[end] != '\'' && line[end] != '"')
 		++end;
 	key = ft_calloc(end - i + 1, sizeof(char));
 	if (!key)

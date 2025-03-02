@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:20:47 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 17:53:55 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/02 16:50:27 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // @param parser: the pointer to parser.
 void	skip_space(t_parser *parser)
 {
-	while (parser->line[parser->i] == ' ')
+	while (parser->line[parser->i] == ' ' || parser->line[parser->i] == '\t')
 		++(parser->i);
 }
 
