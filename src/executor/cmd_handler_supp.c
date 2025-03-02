@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:05:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/25 19:16:59 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/02 16:59:42 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	is_empty_cmd(t_ast *ast, t_cmd_prop *prop, char *cmd, int *status)
 	i = 0;
 	while (cmd[i])
 	{
-		if (cmd[i] != ' ')
+		if (cmd[i] != ' ' && cmd[i] != '\t' )
 			return (false);
 		++i;
 	}

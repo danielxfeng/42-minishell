@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 12:19:19 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/02 17:01:32 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,10 @@ static bool	need_expand(t_parser *parser, bool is_in_double_quote)
 	}
 	while (parser->line[i] == '$')
 		++i;
-	if (i == parser->i && (parser->line[i] != ' ' && parser->line[i] != '\0'
-			&& parser->line[i] != '<' && parser->line[i] != '>'
-			&& parser->line[i] != '|' && (!is_in_double_quote
-				|| parser->line[i] != '\"')))
+	if (i == parser->i && ((parser->line[i] != ' ' && parser->line[i] != '\t')
+			&& parser->line[i] != '\0' && parser->line[i] != '<'
+			&& parser->line[i] != '>' && parser->line[i] != '|'
+			&& (!is_in_double_quote || parser->line[i] != '\"')))
 		return (true);
 	append_str_to_last_token(parser, ms_substr(parser->line, parser->i - 1, i
 			- parser->i + 1));

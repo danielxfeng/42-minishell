@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:17:03 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 12:12:34 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/02 16:48:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ bool	is_delimiter(char c)
 		return (true);
 	if (c == '\'')
 		return (true);
+	if (c == '\t')
+		return (true);
 	return (false);
 }
 
@@ -50,7 +52,7 @@ int	parse(t_parser *parser)
 	while (true)
 	{
 		c = parser->line[parser->i];
-		if (c == ' ')
+		if (c == ' ' || c == '\t')
 			status = parser_handle_space(parser);
 		else if (c == '|')
 			status = parser_handle_pipe(parser);
