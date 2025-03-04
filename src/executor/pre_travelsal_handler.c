@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:23:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/23 22:06:35 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 15:04:56 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	pre_red_handler(t_ast *ast, t_ast_node *node)
 		res = here_doc_handler(ast, prop);
 	else if (prop->status == EXIT_OK)
 		res = open_file_helper(ast, prop);
-	if (!has_res_from_child || (has_res_from_child && prop->status == EXIT_OK))
+	if (res == 130 || !has_res_from_child || (has_res_from_child
+			&& prop->status == EXIT_OK))
 		prop->status = res;
 	return (prop->status);
 }

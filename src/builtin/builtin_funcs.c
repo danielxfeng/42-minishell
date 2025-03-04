@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/27 07:57:21 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 15:36:53 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,25 @@ int			return_process_res(int status);
 void		echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break);
 void		empty_echo_helper(t_ast *ast, t_cmd_prop *prop);
 
+static void	handle_sub_proc(t_ast *ast, int pid)
+{
+	if (pid < 0)
+		close_builtin_proc(&ast, EXIT_FAIL, "minishell: fork");
+}
+
 // @brief `echo` with option `-n`
 // check 'man' page for more information.
 // argc: prop->size;
 // argv: ast->tokens[prop->start];
 int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 {
-	int		status = 0;
+	int		status;
 	int		pid;
 	bool	no_line_break;
 
+	status = 0;
 	pid = fork();
-	if (pid < 0)
-		close_builtin_proc(&ast, EXIT_FAIL, "minishell: fork");
+	handle_sub_proc(ast, pid);
 	if (pid == 0)
 	{
 		empty_echo_helper(ast, prop);

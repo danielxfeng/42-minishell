@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 11:12:28 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 15:10:11 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 static void	parse_and_execute(t_env *env, char *line)
 {
 	int			len;
+	int			status;
 	t_parser	*parser;
 	t_ast		*ast;
 	char		**tokens;
@@ -39,8 +40,11 @@ static void	parse_and_execute(t_env *env, char *line)
 	while (tokens[len])
 		++len;
 	ast = build_tree(tokens, len, env, parser);
-	ast->root->node_pre_handler(ast, ast->root);
-	env->prev_status = ast->root->node_handler(ast, ast->root);
+	status = ast->root->node_pre_handler(ast, ast->root);
+	if (status == 130)
+		env->prev_status = status;
+	else
+		env->prev_status = ast->root->node_handler(ast, ast->root);
 	close_ast(&ast);
 	return ;
 }

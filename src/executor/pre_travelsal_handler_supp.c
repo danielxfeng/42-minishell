@@ -6,11 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 10:54:40 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 15:37:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
+#include "../include/global.h"
 #include "../libs/libft/libft.h"
 #include <fcntl.h>
 #include <readline/history.h>
@@ -20,7 +21,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-void	heredoc_expand(t_ast *ast, char **line);
+int			handle_red_sig(t_red_prop *prop, char **line);
+void		expand_and_write(t_ast *ast, char *line, int fd_write);
 
 // @brief to run in a loop for reading lines from here_doc.
 //
@@ -34,10 +36,14 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop, int fd_write)
 	char	*eof;
 
 	eof = ast->tokens[prop->idx];
+	g_here_doc_status = 0;
 	sig_heredoc();
-	while (1)
+	while (true)
 	{
+		rl_event_hook = stop_read_line;
 		line = readline("> ");
+		if (handle_red_sig(prop, &line) == 130)
+			return (130);
 		if (!line)
 			break ;
 		if (ms_strcmp(eof, line) == 0)
@@ -46,9 +52,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop, int fd_write)
 			line = NULL;
 			break ;
 		}
-		heredoc_expand(ast, &line);
-		write(fd_write, line, ft_strlen(line));
-		write(fd_write, "\n", 1);
+		expand_and_write(ast, line, fd_write);
 		free(line);
 	}
 	sig_init();
@@ -98,8 +102,9 @@ int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	prop->fd = pipe_fds[0];
 	if (dup2(backup[0], STDIN_FILENO) < 0 || dup2(backup[1], STDOUT_FILENO) < 0)
 		exit_and_close_pipe(ast, backup, pipe_fds, false);
-	prop->status = EXIT_OK;
-	return (EXIT_OK);
+	if (prop->status != 130)
+		prop->status = EXIT_OK;
+	return (prop->status);
 }
 
 static int	get_open_code(t_red_prop *prop)
@@ -123,8 +128,8 @@ static int	get_open_code(t_red_prop *prop)
 // @return the status code.
 int	open_file_helper(t_ast *ast, t_red_prop *prop)
 {
-	int			open_code;
-	char		*file_name;
+	int		open_code;
+	char	*file_name;
 
 	open_code = get_open_code(prop);
 	file_name = ast->tokens[prop->idx];

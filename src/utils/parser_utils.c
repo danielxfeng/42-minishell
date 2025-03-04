@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/02 17:06:06 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 15:20:58 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ char	*ms_substr(char *str, int start, int len)
 // @return if the given line contains space only.
 bool	is_empty_line(char *line)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\t')	
+		if (line[i] != ' ' && line[i] != '\t')
 			return (false);
 		++i;
 	}

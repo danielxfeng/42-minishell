@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 10:37:43 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 14:06:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,5 +225,6 @@ void						sig_init(void);
 void						sig_default(void);
 void						sig_ignore(void);
 void						sig_heredoc(void);
+int							stop_read_line(void);
 
 #endif
