@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/27 13:10:16 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 09:19:04 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 bool		is_empty_cmd(t_ast *ast, t_cmd_prop *prop, char *cmd, int *status);
 int			parse_full_cmd_and_check(t_ast *ast, t_cmd_prop *prop);
@@ -63,9 +64,8 @@ void	sub_proc_helper(t_cmd_prop *prop, char **envp)
 	if (prop->pid == 0)
 	{
 		sig_default();
-		//sig_ignore();
 		execve(prop->full_cmd, prop->argv, envp);
-		sig_init();
+		exit(EXIT_FAILURE);
 	}	
 }
 
@@ -103,6 +103,8 @@ int	cmd_handler(t_ast *ast, t_ast_node *ast_node)
 		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 	sub_proc_helper(prop, envp);
 	close_envp(&envp);
+	sig_ignore();
 	waitpid(prop->pid, &status, 0);
+	sig_init();
 	return (return_process_res(status));
 }

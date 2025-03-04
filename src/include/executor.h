@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/27 11:42:59 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 10:37:43 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/types.h>
+# include <unistd.h>
+
+# include "shell.h"
+# include "libs/libft/libft.h"
 
 # ifndef PATH_MAX
 #  define PATH_MAX 4096

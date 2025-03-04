@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 07:45:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/27 13:11:14 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 09:56:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	exec_builtin_func(t_ast *ast, t_cmd_prop *prop)
 	char	*cmd;
 	int		status;
 
-	sig_default();
 	cmd = ast->tokens[prop->start];
 	if (ms_strcmp(cmd, "cd") == 0)
 		status = cmd_cd(ast, prop);
@@ -66,6 +65,5 @@ int	exec_builtin_func(t_ast *ast, t_cmd_prop *prop)
 		status = cmd_env(ast, prop);
 	else
 		status = EXIT_FAIL;
-	sig_init();
 	return (status);
 }

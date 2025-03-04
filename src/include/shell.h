@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 11:07:22 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/27 11:42:34 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/04 10:40:55 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,7 @@
 void	exit_with_err_shell(t_env **env, char *msg);
 int		close_and_return(t_env **env, int status);
 bool	is_empty_line(char *line);
+
+//extern int g_heredoc_interrupted = 0;
 
 #endif
