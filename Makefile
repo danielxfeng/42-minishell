@@ -5,8 +5,8 @@ FLAG := -Wall -Wextra -Werror
 
 LIBFT_DIR := ./src/libs/libft
 LIBFT := $(LIBFT_DIR)/libft.a
-HEADERS := -I ./src -I $(LIBFT_DIR) 
-LINK := -L$(LIBFT_DIR) -lft -lncurses -lreadline
+HEADERS := -I ./src -I $(LIBFT_DIR) #-I/opt/homebrew/opt/readline/include
+LINK := -L$(LIBFT_DIR) -lft -lncurses -lreadline #-L/opt/homebrew/opt/readline/lib
 
 SRC_DIR := src
 SRC := $(shell find $(SRC_DIR) -type f -name "*.c")
