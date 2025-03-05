@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:26:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 15:37:54 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 18:59:36 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	handle_red_sig(t_red_prop *prop, char **line)
 	return (EXIT_OK);
 }
 
-void	expand_and_write(t_ast *ast, char *line, int fd_write)
+void	expand_and_write(t_ast *ast, char **line, int fd_write)
 {
-	heredoc_expand(ast, &line);
-	write(fd_write, line, ft_strlen(line));
+	heredoc_expand(ast, line);
+	write(fd_write, *line, ft_strlen(*line));
 	write(fd_write, "\n", 1);
 }
