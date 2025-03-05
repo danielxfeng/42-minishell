@@ -24,6 +24,7 @@ SRC := \
     ./src/builtin/builtin_env_funcs_supp.c \
     ./src/builtin/builtin_supp.c \
     ./src/builtin/builtin_funcs.c \
+    ./src/builtin/builtin_directory_funcs.c \
     ./src/builtin/builtin.c \
     ./src/executor/pipe_handler.c \
     ./src/executor/pre_travelsal_handler.c \
