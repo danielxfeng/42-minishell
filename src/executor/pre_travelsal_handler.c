@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:23:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/05 18:04:48 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 21:50:20 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	pre_red_handler(t_ast *ast, t_ast_node *node)
 	{
 		has_res_from_child = true;
 		prop->status = node->left->node_pre_handler(ast, node->left);
+		if (prop->status == 130)
+			return (prop->status);
 	}
 	if (prop->is_in && !(prop->is_single))
 		res = here_doc_handler(ast, prop);
