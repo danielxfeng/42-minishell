@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:23:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 15:04:56 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 18:04:48 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	open_file_helper(t_ast *ast, t_red_prop *prop);
 // @brief the pre-travelsal of the pipe node.
 int	pre_pipe_handler(t_ast *ast, t_ast_node *node)
 {
-	node->left->node_pre_handler(ast, node->left);
+	if (node->left->node_pre_handler(ast, node->left) == 130)
+		return (130);
 	return (node->right->node_pre_handler(ast, node->right));
 }
 
