@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:05:13 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 15:10:11 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 20:43:38 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <readline/readline.h>
 #include <signal.h>
 #include <stdlib.h>
+
+int	g_here_doc_status = 0;
 
 // @brief run the parser and executor.
 //

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 14:06:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 20:40:37 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <unistd.h>
 
 # include "shell.h"
-# include "libs/libft/libft.h"
+# include "../libs/libft/libft.h"
 
 # ifndef PATH_MAX
 #  define PATH_MAX 4096
