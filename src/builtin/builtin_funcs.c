@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 15:36:53 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 16:46:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include <unistd.h>
 
 int			check_option(t_ast *ast, t_cmd_prop *prop);
-int			cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir);
 int			return_process_res(int status);
 void		echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break);
 void		empty_echo_helper(t_ast *ast, t_cmd_prop *prop);
@@ -60,66 +59,6 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 	}
 	waitpid(pid, &status, 0);
 	return (return_process_res(status));
-}
-
-// @brief `cd` with only a relative or absolute path
-// check 'man' page for more information.
-// argc: prop->size;
-// argv: ast->tokens[prop->start];
-int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
-{
-	int		status;
-	char	*dir;
-
-	status = check_option(ast, prop);
-	if (status != EXIT_OK)
-		return (status);
-	if (prop->size > 2)
-		return (return_prt_err(EXIT_FAIL, "minishell", "cd",
-				"too many arguments"));
-	if (prop->size == 1)
-		dir = env_get(ast->env, "HOME");
-	else
-		dir = ft_strdup(ast->tokens[prop->start + 1]);
-	if (!dir)
-		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
-	if (prop->size == 1 && ms_strcmp("", dir) == 0)
-	{
-		free(dir);
-		return (return_prt_err(EXIT_FAIL, "minishell", "cd", "HOME not set"));
-	}
-	return (cd_helper(ast, prop, dir));
-}
-
-// @brief `pwd` with no options
-// check 'man' page for more information.
-// argc: prop->size;
-// argv: ast->tokens[prop->start];
-int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
-{
-	char	*buf;
-	int		status;
-	int		pid;
-
-	status = check_option(ast, prop);
-	if (status != EXIT_OK)
-		return (status);
-	buf = getcwd(NULL, 0);
-	if (!buf)
-		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL,
-				"minishell: getcwd"));
-	pid = fork();
-	if (pid < 0)
-		close_builtin_proc(&ast, EXIT_FAIL, "minishell: fork");
-	if (pid == 0)
-	{
-		printf("%s\n", buf);
-		free(buf);
-		close_builtin_proc(&ast, EXIT_OK, NULL);
-	}
-	free(buf);
-	waitpid(pid, NULL, 0);
-	return (EXIT_OK);
 }
 
 // @brief `exit` with no options
