@@ -6,12 +6,11 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 12:01:19 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 15:23:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 20:41:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/executor.h"
-#include "include/executor.h"
 #include <sys/wait.h>
 
 // @brief parses and returns the exit code from sub-processes

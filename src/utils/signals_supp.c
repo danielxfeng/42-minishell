@@ -6,11 +6,11 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:24:55 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 15:20:12 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/05 20:40:21 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/global.h"
+#include "../include/global.h"
 #include <readline/readline.h>
 #include <signal.h>
 #include <stdlib.h>
