@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/05 20:40:37 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 10:22:25 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ int							cmd_env(t_ast *ast, t_cmd_prop *prop);
 int							cmd_exit(t_ast *ast, t_cmd_prop *prop);
 void						close_builtin_proc(t_ast **ast, int status,
 								char *msg);
+void						exit_for_cd(t_ast *ast, char **dir);
 
 t_ast						*build_tree(char **tokens, int tk_size, t_env *env,
 								t_parser *parser);

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 07:50:41 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/24 13:52:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 10:50:45 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	check_cmd(t_ast *ast, t_cmd_prop *prop)
 	if (access(prop->full_cmd, F_OK) < 0)
 		return (return_prt_err(EXIT_CMD_ERR, "minishell",
 				ast->tokens[prop->start], NULL));
-	if (access(prop->full_cmd, R_OK) < 0 || access(prop->full_cmd, X_OK) < 0)
+	if (access(prop->full_cmd, X_OK) < 0)
 		return (return_prt_err(EXIT_EXEC_ERR, "minishell",
 				ast->tokens[prop->start], NULL));
 	stat(prop->full_cmd, &buf);

@@ -73,7 +73,7 @@ $(OBJ_DIR)/%.o: ./src/%.c
 	$(CC) -c $(FLAG) $< -o $@ $(HEADERS)
 
 clean:
-	$(RM) $(OBJ_DIR)/*.o
+	$(RM) $(OBJ)
 	$(RM) $(LIBFT_DIR)/*.o
 	$(RM) $(LIBFT_DIR)/libft.a
 

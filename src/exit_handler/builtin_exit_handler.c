@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:40:44 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 15:06:42 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 10:21:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,11 @@ void	close_builtin_proc(t_ast **ast, int status, char *msg)
 		*ast = NULL;
 	}
 	exit(status);
+}
+
+void	exit_for_cd(t_ast *ast, char **dir)
+{
+	free(*dir);
+	*dir = NULL;
+	exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
 }
