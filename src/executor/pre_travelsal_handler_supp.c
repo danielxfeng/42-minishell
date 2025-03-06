@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 18:13:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:03:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 #include <unistd.h>
 
 int			handle_red_sig(t_red_prop *prop, char **line);
-void		expand_and_write(t_ast *ast, char **line, int fd_write);
+void		expand_and_write(t_ast *ast, char **line, int fd_write,
+				t_red_prop *prop);
 
 // @brief to run in a loop for reading lines from here_doc.
 //
@@ -52,7 +53,7 @@ static int	read_lines_helper(t_ast *ast, t_red_prop *prop, int fd_write)
 			line = NULL;
 			break ;
 		}
-		expand_and_write(ast, &line, fd_write);
+		expand_and_write(ast, &line, fd_write, prop);
 		free(line);
 	}
 	sig_init();
