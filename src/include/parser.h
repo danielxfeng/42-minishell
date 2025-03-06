@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:28 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/25 19:06:56 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 18:09:57 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int					return_with_err_parser(t_parser **parser, int err_code,
 
 char				*ms_strjoin_parser(char const *s1, char const *s2);
 char				*ms_substr(char *str, int start, int len);
+bool				is_here_doc_eof(t_parser *parser);
 
 #endif

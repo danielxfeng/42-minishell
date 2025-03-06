@@ -6,11 +6,12 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 15:20:58 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 18:10:24 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libs/libft/libft.h"
+#include "../include/parser.h"
 #include <stdbool.h>
 
 // @brief a special version of strjoin that supports a null s1.
@@ -65,4 +66,13 @@ bool	is_empty_line(char *line)
 		++i;
 	}
 	return (true);
+}
+
+bool	is_here_doc_eof(t_parser *parser)
+{
+	if (parser->size > 1 && parser->tokens[parser->size - 1]->type == AFILE
+		&& parser->tokens[parser->size - 1]->is_end == false && ms_strcmp("<<",
+			parser->tokens[parser->size - 2]->str) == 0)
+		return (true);
+	return (false);
 }

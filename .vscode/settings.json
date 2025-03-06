@@ -31,7 +31,9 @@
     "ctype.h": "c",
     "errno.h": "c",
     "fcntl.h": "c",
-    "termios.h": "c"
+    "termios.h": "c",
+    "stdbool.h": "c",
+    "utils.h": "c"
   },
 "cmake.sourceDirectory": "/home/xifeng/42cursus/src/so_long/mlx",
 "C_Cpp.errorSquiggles": "disabled"
