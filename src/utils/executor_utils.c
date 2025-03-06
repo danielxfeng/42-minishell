@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:27:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/02 16:56:23 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:12:05 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,12 @@ bool	ms_atoi(char *n, int *nb)
 	if (*n == '\0')
 		return (true);
 	return (false);
+}
+
+void	apply_here_doc_quote_rule(t_ast_node *node)
+{
+	t_red_prop	*prop;
+
+	prop = (t_red_prop *)node->prop;
+	prop->is_quote = true;
 }

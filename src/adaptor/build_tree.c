@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 10:51:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:10:57 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 void				build_red_node(t_ast *tree, t_ast_node **node, int left,
 						int right);
+void				apply_here_doc_quote_rule(t_ast_node *node);
 
 // @brief to build a cmd node.
 //
@@ -49,6 +50,8 @@ static t_ast_node	*build_red_node_helper(t_ast *tree, int *params, bool is_in,
 
 	node = create_red_node(tree, params[0] + 1, is_in, is_single);
 	build_red_node(tree, &(node->left), params[1], params[0] - 1);
+	if (is_in && !is_single && tree->parser->tokens[params[0] + 1]->is_quote)
+		apply_here_doc_quote_rule(node);
 	return (node);
 }
 

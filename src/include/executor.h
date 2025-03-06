@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 21:04:45 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 10:22:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 18:33:44 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ typedef struct s_cmd_prop
 // only the right most `red` will set.
 // has been set.
 // `status`: saved status code on file opening error.
+// `is_quote` is the cmd is wrapped by a quote.
 typedef struct s_red_prop
 {
 	int						idx;
@@ -141,6 +142,7 @@ typedef struct s_red_prop
 	bool					is_single;
 	bool					is_skip;
 	int						status;
+	bool					is_quote;
 }							t_red_prop;
 
 // Represents properties of PIPE.
