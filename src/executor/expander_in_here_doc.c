@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:19:58 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/02 17:01:13 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:31:49 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 
 // @brief if we need to expand?
 //
+// expand on '$HOME ';
+// no expand on '$', '$$'
+// 
 // @param line: the input command line.
 // @param i: the index to $.
 // @return if we need to expand.

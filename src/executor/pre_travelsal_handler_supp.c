@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:47:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 19:03:59 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:27:02 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void		expand_and_write(t_ast *ast, char **line, int fd_write,
 				t_red_prop *prop);
 
 // @brief to run in a loop for reading lines from here_doc.
+//
+// sig handler is required.
 //
 // @param ast: the pointer to ast tree.
 // @param prop: the property of node.
@@ -108,6 +110,10 @@ int	here_doc_handler(t_ast *ast, t_red_prop *prop)
 	return (prop->status);
 }
 
+// @brief help to get the open code of a file.
+//
+// @param prop the property of `red` node.
+// @return the open code.
 static int	get_open_code(t_red_prop *prop)
 {
 	int	open_code;

@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:36:06 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 19:10:57 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:07:10 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ static void	build_cmd_node(t_ast *tree, t_ast_node **node, int left, int right)
 }
 
 // @brief helper function for build_red_node.
+//
+// apply here doc quote rule is for this corner case:
+// when there is a node of '<< "eof"', the input of the heredoc is not expanded.
 //
 // @param tree: the ast tree.
 // @param params: an array of indexes.

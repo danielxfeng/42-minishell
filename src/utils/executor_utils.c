@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 19:27:57 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 19:12:05 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:39:18 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	ms_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
+// @brief to check if the number is overflow.
 static bool	is_overflow(char *n, int64_t lb, bool is_negative)
 {
 	if (lb > INT64_MAX / 10 || (lb == INT64_MAX / 10 && ((!is_negative && (*n

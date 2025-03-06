@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:12 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/05 21:53:19 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:30:32 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ static void	perform_sub_proc(t_ast *ast, t_ast_node *node, int direction,
 // We create a pipe if this is our first pipe.
 // We then reuse this pipe even we have multiple pipe nodes.
 // We setup 2 sub-processes to handle the left/right child.
+//
+// Need to handle the sig handler.
 //
 // @param ast: the ast tree.
 // @param ast_node: the node to be executed.

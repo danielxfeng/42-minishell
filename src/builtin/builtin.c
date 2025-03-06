@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 07:45:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 09:56:25 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:22:37 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "../libs/libft/libft.h"
 
 // @brief if the given cmd a built-in function
-// TODO to implement.
 //
 // @param the given cmd to be matched.
 // @return if the function is built-in.
@@ -38,7 +37,6 @@ bool	is_builtin_func(char *cmd)
 }
 
 // @brief execute the built-in function.
-// TODO to implement.
 //
 // @param ast: the pointer to the ast.
 // @param prop: the property of node.

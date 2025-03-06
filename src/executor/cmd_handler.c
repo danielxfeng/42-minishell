@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:16:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/04 09:19:04 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:32:12 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	sub_proc_helper(t_cmd_prop *prop, char **envp)
 // We preprocess the node at first:
 //   - errer handling, built-in function, path parsing, etc...
 // Then create a new subprocess to execute the cmd.
+//
+// Need to handle the sig.
 //
 // @param ast: the ast tree.
 // @param ast_node: the `cmd` node.
