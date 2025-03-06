@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:45:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/05 17:54:53 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 10:35:03 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "../libs/libft/libft.h"
 #include <errno.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 int			check_option(t_ast *ast, t_cmd_prop *prop);
 
@@ -31,25 +31,16 @@ static void	env_set_helper(t_ast *ast, char *dir)
 
 	buf = env_get(ast->env, "PWD");
 	if (!buf)
-	{
-		free(dir);
-		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
-	}
+		exit_for_cd(ast, &dir);
 	env_item = ft_strjoin("OLDPWD=", buf);
 	free(buf);
 	if (!env_item)
-	{
-		free(dir);
-		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
-	}
+		exit_for_cd(ast, &dir);
 	env_set(ast->env, env_item);
 	free(env_item);
 	env_item = ft_strjoin("PWD=", dir);
 	if (!env_item)
-	{
-		free(dir);
-		exit_with_err(&ast, EXIT_FAIL, "minishell: malloc");
-	}
+		exit_for_cd(ast, &dir);
 	env_set(ast->env, env_item);
 	free(env_item);
 }
@@ -64,7 +55,6 @@ static int	cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir)
 {
 	char	*buf;
 
-	//env_item = env_set_helper(ast, "OLDPWD=", &dir);
 	if (chdir(dir) != 0)
 	{
 		free(dir);
@@ -75,8 +65,10 @@ static int	cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir)
 	if (!buf)
 	{
 		free(dir);
-		return (return_prt_err(EXIT_OK, "cd: error retrieving current directory",
-			"getcwd: cannot access parent directories", "No such file or directory"));
+		return (return_prt_err(EXIT_OK,
+				"cd: error retrieving current directory",
+				"getcwd: cannot access parent directories",
+				"No such file or directory"));
 	}
 	env_set_helper(ast, buf);
 	free(buf);
@@ -113,9 +105,9 @@ int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 	return (cd_helper(ast, prop, dir));
 }
 
-static char *get_pwd(t_ast *ast)
+static char	*get_pwd(t_ast *ast)
 {
-	char *buf;
+	char	*buf;
 
 	buf = env_get(ast->env, "PWD");
 	if (*buf && ft_strlen(buf) > 0)
@@ -143,7 +135,7 @@ int	cmd_pwd(t_ast *ast, t_cmd_prop *prop)
 	buf = get_pwd(ast);
 	if (!buf)
 		return (return_with_err(INVALID_ERR_NO, EXIT_FAIL,
-			"minishell: getcwd"));
+				"minishell: getcwd"));
 	pid = fork();
 	if (pid < 0)
 		close_builtin_proc(&ast, EXIT_FAIL, "minishell: fork");
