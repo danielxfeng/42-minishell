@@ -5,10 +5,11 @@ Thanks to [@Abdul](https://github.com/IbnBaqqi) for working with me on this proj
 ## Overview
 
 Mini-Shell is a simplified version of the Linux shell that follows the POSIX protocol. We divided this project into two main tasks and three support tasks:
+According my other [42 projects](https://github.com/danielxfeng/42cursus), this is still a OOP styled C implementation.
 
 - **Parser**: Parses user inputs and generates tokens for the `executor`.
 - **Executor**: Executes the tokens parsed by the `parser`.
-
+----
 - **Env**: Since `setenv` is disabled in this project, we needed to maintain a custom environment as a support library.
 - **Signal**: Handles system signals, [@Abdul](https://github.com/IbnBaqqi) did most of the work.
 - **Readline**: We use the `readline` library to build a command-line interface, which we call in an infinite loop.
