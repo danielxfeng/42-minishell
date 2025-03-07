@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 21:08:05 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 18:28:01 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:36:07 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,9 @@ static bool	need_expand(t_parser *parser, bool is_in_double_quote)
 // 1. Tries to get a string, by doing a while loop to skip normal chars.
 // 2. Checks the status of prev token, to decide if we append to prev token
 //    or create a new one.
-// 3. Gets from env.
-// 4. If we need to create a new one, we need to check the type:
+// 3. if it's the eof sign of `<<`, skip the expander.
+// 4. Gets from env.
+// 5. If we need to create a new one, we need to check the type:
 //    `cmd`? `param`? `file`?
 //
 // @param parser: the pointer to parser.

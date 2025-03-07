@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 08:33:10 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/02/26 15:30:17 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:19:41 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	print_env_item_for_env(t_env_item *item)
 }
 
 // @brief help to print out the env items.
+//
+// The print is executed in sub-proc for closing the pipe.
 //
 // @param ast: the pointer to ast.
 // @param print_func: the function for printing the env item

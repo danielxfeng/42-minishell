@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:29:42 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 18:10:24 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:40:09 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ bool	is_empty_line(char *line)
 	return (true);
 }
 
+// @brief to check if the current node is a eof sign of a heredoc node.
+//
+// @param parser: the pointer to parser.
 bool	is_here_doc_eof(t_parser *parser)
 {
 	if (parser->size > 1 && parser->tokens[parser->size - 1]->type == AFILE

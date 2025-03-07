@@ -10,7 +10,7 @@ Mini-Shell is a simplified version of the Linux shell that follows the POSIX pro
 - **Executor**: Executes the tokens parsed by the `parser`.
 
 - **Env**: Since `setenv` is disabled in this project, we needed to maintain a custom environment as a support library.
-- **Signal**: Handles system signals.
+- **Signal**: Handles system signals, [@Abdul](https://github.com/IbnBaqqi) did most of the work.
 - **Readline**: We use the `readline` library to build a command-line interface, which we call in an infinite loop.
 
 ![overview](./imgs/img1.png)
@@ -59,10 +59,6 @@ typedef struct s_ast_node
 }							t_ast_node;
 ```
 
-## Decoupling
-
-For better decoupling, we use the token array as the protocol between the `parser` and `executor`. This approach allows us to choose suitable data structures for each module individually and enhances decoupling.
-
 ## Parser
 
 Compared to the `Executor`, the `Parser` involves more hard-coded programming. We summarized several rules before implementation:
@@ -93,6 +89,7 @@ typedef struct s_token
     t_token_type    type;
     int             pipe_idx;   // index of pipe_block.
     bool            is_end;     // for expander and quote handler
+    bool            is_quote; 
 } t_token;
 ```
 

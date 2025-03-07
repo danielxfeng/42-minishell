@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 10:25:11 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/05 16:46:46 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:22:10 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ int			return_process_res(int status);
 void		echo_helper(t_ast *ast, t_cmd_prop *prop, bool no_line_break);
 void		empty_echo_helper(t_ast *ast, t_cmd_prop *prop);
 
+// @brief help to handle the malloc error for `echo`
+//
+// @param ast: the pointer to the ast tree.
+// @param pid: the pid of process.
 static void	handle_sub_proc(t_ast *ast, int pid)
 {
 	if (pid < 0)
@@ -29,6 +33,9 @@ static void	handle_sub_proc(t_ast *ast, int pid)
 }
 
 // @brief `echo` with option `-n`
+//
+// print is executed in sub-proc for end the pipe.
+//
 // check 'man' page for more information.
 // argc: prop->size;
 // argv: ast->tokens[prop->start];
@@ -62,6 +69,9 @@ int	cmd_echo(t_ast *ast, t_cmd_prop *prop)
 }
 
 // @brief `exit` with no options
+//
+// The overflow is treated as an error.
+//
 // check 'man' page for more information.
 // argc: prop->size;
 // argv: ast->tokens[prop->start];

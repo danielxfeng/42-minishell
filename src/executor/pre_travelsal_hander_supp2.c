@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:26:14 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 19:03:56 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:29:59 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 
 void	heredoc_expand(t_ast *ast, char **line);
 
+// @brief handle the red sig.
+//
+// @param prop: the property of the node.
+// @param line: the pointer to input line.
+// @return error or OK.
 int	handle_red_sig(t_red_prop *prop, char **line)
 {
 	if (g_here_doc_status == 1)
@@ -32,6 +37,12 @@ int	handle_red_sig(t_red_prop *prop, char **line)
 	return (EXIT_OK);
 }
 
+// @brief help to perform the possible expander and output to buf.
+//
+// @param ast: the pointer to the tree.
+// @param line: the cmd line.
+// @param fd_write: the fd to output.
+// @param prop: the prop of node.
 void	expand_and_write(t_ast *ast, char **line, int fd_write,
 		t_red_prop *prop)
 {

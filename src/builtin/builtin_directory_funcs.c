@@ -6,7 +6,7 @@
 /*   By: Xifeng <xifeng@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:45:18 by Xifeng            #+#    #+#             */
-/*   Updated: 2025/03/06 10:35:03 by Xifeng           ###   ########.fr       */
+/*   Updated: 2025/03/06 21:18:46 by Xifeng           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 
 int			check_option(t_ast *ast, t_cmd_prop *prop);
 
-// @brief help to set the env.
+// @brief help to set the env for `cd`.
+// `PWD` and 'OLDPWD' are set after `cd`.
 //
 // @param ast: the pointer to tree.
 // @param dir: the path.
@@ -45,7 +46,7 @@ static void	env_set_helper(t_ast *ast, char *dir)
 	free(env_item);
 }
 
-// @brief help the cd to handle the directory switch.
+// @brief help the 'cd' to handle the directory switch.
 //
 // @param ast: the pointer to ast tree.
 // @param prop: the property of node.
@@ -78,6 +79,13 @@ static int	cd_helper(t_ast *ast, t_cmd_prop *prop, char *dir)
 
 // @brief `cd` with only a relative or absolute path
 // check 'man' page for more information.
+//
+// 1 error handling.
+// 2 if `cd` is without a argument, we `cd` to `$HOME`.
+// 3 if `cd` failed, return error.
+// 4 handle a corner case that the target directory is deleted.
+// 5 set the env `PWD` and `OLDPWD`. 
+//
 // argc: prop->size;
 // argv: ast->tokens[prop->start];
 int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
@@ -105,6 +113,13 @@ int	cmd_cd(t_ast *ast, t_cmd_prop *prop)
 	return (cd_helper(ast, prop, dir));
 }
 
+// @brief get the current directory.
+//
+// We tried to get the directory from env first,
+// `getcwd` is called only when `$PWD` is not available.
+//
+// @param ast: the pointer to ast tree.
+// @return the string of pwd, the caller should free it.
 static char	*get_pwd(t_ast *ast)
 {
 	char	*buf;
@@ -120,6 +135,9 @@ static char	*get_pwd(t_ast *ast)
 }
 
 // @brief `pwd` with no options
+//
+// The print need to be executed in sub-process for closing the pipe.
+//
 // check 'man' page for more information.
 // argc: prop->size;
 // argv: ast->tokens[prop->start];
